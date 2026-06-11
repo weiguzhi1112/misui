@@ -2593,6 +2593,22 @@ body.zen-mode #chatMessageArea {
     padding-top: 20px !important;
     padding-bottom: 20px !important;
 }
+
+/* 局内横幅弹窗样式 */
+.in-app-banner {
+    position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+    width: 90vw; max-width: 400px; background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px; box-shadow: 0 8px 32px rgba(128,118,110,0.15);
+    padding: 16px; display: flex; align-items: center; gap: 12px;
+    z-index: 999999; transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(255,255,255,0.8); pointer-events: none;
+}
+.in-app-banner.show { top: 20px; pointer-events: auto; }
+.in-app-banner-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--accent); display: flex; justify-content: center; align-items: center; color: #fff; flex-shrink: 0; }
+.in-app-banner-text { flex: 1; overflow: hidden; }
+.in-app-banner-title { font-size: 14px; font-weight: bold; color: var(--text-main); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.in-app-banner-desc { font-size: 12px; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 
 </head>
@@ -2776,6 +2792,43 @@ body.zen-mode #chatMessageArea {
     </div>
     
     <button class="s-btn primary" id="saveConfigBtn">保存所有配置</button>
+
+        <div class="setting-card" style="margin-top: 24px;">
+            <div class="card-title">通知与提示音设置</div>
+            
+            <div class="tower-row" style="margin-bottom: 12px; padding: 12px;">
+                <div>
+                    <div class="tower-title" style="font-size: 13px;">系统通知弹窗</div>
+                    <div class="tower-desc" style="font-size: 10px;">允许在后台或桌面弹出系统级通知</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="sysNotifyToggle" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="tower-row" style="margin-bottom: 12px; padding: 12px;">
+                <div>
+                    <div class="tower-title" style="font-size: 13px;">网页局内横幅</div>
+                    <div class="tower-desc" style="font-size: 10px;">停留在网页时，在顶部弹出横幅提示</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="inAppBannerToggle" checked><span class="slider"></span></label>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+                <button class="s-btn" id="reqNotifyPermBtn" style="flex: 1; margin: 0; font-size: 12px; height: 40px; min-height: 40px;">申请通知权限</button>
+                <button class="s-btn primary" id="testNotifyBtn" style="flex: 1; margin: 0; font-size: 12px; height: 40px; min-height: 40px;">测试通知弹窗</button>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 8px;">自定义提示音 (留空为静音)</div>
+            <input type="text" class="s-input" id="notifySoundUrl" placeholder="填写音频直链，或使用下方本地上传" style="margin-bottom: 12px;">
+            
+            <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                <label class="s-btn" style="flex: 1; margin: 0; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); font-size: 12px; height: 40px; min-height: 40px; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+                    上传本地音频
+                    <input type="file" id="notifySoundFile" accept="audio/*" style="display:none;">
+                </label>
+                <button class="s-btn" id="testSoundBtn" style="flex: 1; margin: 0; font-size: 12px; height: 40px; min-height: 40px; background: #F0EDE8;">试听当前提示音</button>
+            </div>
+        </div>
+
             <!-- === 新增：专属备份与恢复卡片 (单文件智能内部切片) === -->
         <div class="setting-card" style="margin-top: 24px;">
             <div class="card-title">数据备份与恢复</div>
@@ -5908,6 +5961,11 @@ async function loadSettings() {
     document.getElementById('mainApiKey').value = await loadFromDB('mainApiKey') || '';
     document.getElementById('subApiUrl').value = await loadFromDB('subApiUrl') || '';
     document.getElementById('subApiKey').value = await loadFromDB('subApiKey') || '';
+    
+    document.getElementById('sysNotifyToggle').checked = (await loadFromDB('sysNotifyEnabled') !== false);
+    document.getElementById('inAppBannerToggle').checked = (await loadFromDB('inAppBannerEnabled') !== false);
+    document.getElementById('notifySoundUrl').value = await loadFromDB('notifySoundUrl') || '';
+    
     document.getElementById('globalWrongMailToggle').checked = (await loadFromDB('globalWrongMail') !== false); // 默认开启
 document.getElementById('globalAutoDiaryToggle').checked = (await loadFromDB('globalAutoDiary') !== false); // 默认开启
     const savedTemp = await loadFromDB('sysTemp');
@@ -5978,6 +6036,10 @@ document.getElementById('saveConfigBtn').addEventListener('click', async functio
     await saveToDB('globalWrongMail', document.getElementById('globalWrongMailToggle').checked);
 await saveToDB('globalAutoDiary', document.getElementById('globalAutoDiaryToggle').checked);
     await saveToDB('sysTemp', document.getElementById('tempInput').value);
+    
+    await saveToDB('sysNotifyEnabled', document.getElementById('sysNotifyToggle').checked);
+    await saveToDB('inAppBannerEnabled', document.getElementById('inAppBannerToggle').checked);
+    await saveToDB('notifySoundUrl', document.getElementById('notifySoundUrl').value.trim());
     
     const mainModel = document.getElementById('mainModelSelect').value;
     if (mainModel) await saveToDB('sysModel', mainModel);
@@ -17250,20 +17312,144 @@ document.getElementById('phoneClearWallpaperBtn').addEventListener('click', asyn
         document.getElementById('closeViewerBtn').addEventListener('click', () => {
             document.getElementById('fullScreenViewer').style.display = 'none';
         });
-
-        // 请求通知权限并发送通知
-        window.sendSystemNotification = function(title, body) {
-            if (!("Notification" in window)) return;
-            if (Notification.permission === "granted") {
-                new Notification(title, { body: body });
-            } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        new Notification(title, { body: body });
-                    }
-                });
+        // 播放提示音逻辑
+        window.playNotificationSound = async function() {
+            const soundUrl = await loadFromDB('notifySoundUrl');
+            if (!soundUrl) return; // 留空为静音
+            
+            try {
+                const audio = new Audio(soundUrl);
+                audio.play().catch(e => console.warn('音频播放失败:', e));
+            } catch (e) {
+                console.warn('音频加载失败:', e);
             }
         };
+
+        // 局内横幅弹窗逻辑
+        window.showInAppBanner = function(title, body) {
+            let banner = document.getElementById('inAppBanner');
+            if (!banner) {
+                banner = document.createElement('div');
+                banner.id = 'inAppBanner';
+                banner.className = 'in-app-banner';
+                document.body.appendChild(banner);
+            }
+            
+            banner.innerHTML = `
+                <div class="in-app-banner-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </div>
+                <div class="in-app-banner-text">
+                    <div class="in-app-banner-title">${title}</div>
+                    <div class="in-app-banner-desc">${body}</div>
+                </div>
+            `;
+            
+            // 强制重绘以触发动画
+            void banner.offsetWidth;
+            banner.classList.add('show');
+            
+            // 4秒后自动收起
+            setTimeout(() => {
+                banner.classList.remove('show');
+            }, 4000);
+        };
+
+        // 核心通知分发逻辑
+        window.sendSystemNotification = async function(title, body) {
+            const sysEnabled = await loadFromDB('sysNotifyEnabled') !== false;
+            const bannerEnabled = await loadFromDB('inAppBannerEnabled') !== false;
+            
+            // 播放提示音
+            window.playNotificationSound();
+
+            // 判断当前网页是否在后台
+            const isHidden = document.hidden;
+
+            // 如果在网页内，且开启了局内横幅，则优先弹出横幅
+            if (!isHidden && bannerEnabled) {
+                window.showInAppBanner(title, body);
+                return; // 局内已经弹了横幅，就不弹系统通知了
+            }
+
+            // 如果在后台，或者没开局内横幅，且开启了系统通知，则尝试弹出系统通知
+            if (sysEnabled && "Notification" in window) {
+                const send = () => {
+                    if (navigator.serviceWorker) {
+                        navigator.serviceWorker.ready.then(reg => {
+                            reg.showNotification(title, { body: body, icon: 'icon.png' });
+                        }).catch(() => {
+                            try { 
+                                if (typeof Notification === 'function' && Notification.prototype.constructor === Notification) {
+                                    new Notification(title, { body: body }); 
+                                }
+                            } catch(e) { 
+                                // 系统通知失败时，如果开启了横幅，作为降级补偿弹出横幅
+                                if (bannerEnabled) window.showInAppBanner(title, body);
+                            }
+                        });
+                    } else {
+                        try { 
+                            if (typeof Notification === 'function' && Notification.prototype.constructor === Notification) {
+                                new Notification(title, { body: body }); 
+                            }
+                        } catch(e) { 
+                            if (bannerEnabled) window.showInAppBanner(title, body);
+                        }
+                    }
+                };
+
+                if (Notification.permission === "granted") {
+                    send();
+                } else if (bannerEnabled) {
+                    // 没有权限时降级为横幅
+                    window.showInAppBanner(title, body);
+                }
+            } else if (bannerEnabled) {
+                // 不支持系统通知或关闭了系统通知时，降级为横幅
+                window.showInAppBanner(title, body);
+            }
+        };
+
+        // 绑定设置面板里的通知相关按钮事件
+        document.getElementById('reqNotifyPermBtn').addEventListener('click', () => {
+            if (!("Notification" in window)) {
+                showToast('当前浏览器不支持系统通知');
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    showToast('通知权限已获取！');
+                } else {
+                    showToast('通知权限被拒绝或忽略');
+                }
+            });
+        });
+
+        document.getElementById('testNotifyBtn').addEventListener('click', () => {
+            window.sendSystemNotification('测试通知', '这是一条测试消息，如果你能看到它，说明通知功能正常。');
+        });
+
+        document.getElementById('testSoundBtn').addEventListener('click', () => {
+            window.playNotificationSound();
+            showToast('正在播放提示音...');
+        });
+
+        // 处理本地音频上传转 Base64
+        document.getElementById('notifySoundFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async (event) => {
+                    const base64Audio = event.target.result;
+                    document.getElementById('notifySoundUrl').value = base64Audio;
+                    await saveToDB('notifySoundUrl', base64Audio);
+                    showToast('本地音频已加载，请点击保存配置');
+                };
+                reader.readAsDataURL(file);
+            }
+            e.target.value = '';
+        });
 
         window.addEventListener('load', () => {
             if ("Notification" in window && Notification.permission === "default") {

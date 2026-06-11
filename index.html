@@ -23,7 +23,7 @@
 <style>
 /* --- style.css --- */
     :root {
-        --bg-color: #F0F0F0;
+        --bg-color: #FFFFFF;
         --surface: #FFFFFF;
         --text-main: #222222;
         --text-sub: #888888;
@@ -3574,6 +3574,7 @@ body.zen-mode #chatMessageArea {
                 <div class="menu-item" id="menuRecall">撤回</div>
                 <div class="menu-item" id="menuDelete" style="color: #D67A7A;">删除</div>
                 <div class="menu-item" id="menuMultiSelect">多选</div>
+                <div class="menu-item" id="menuEditFakeImg" style="display:none;">编辑文字图</div>
             </div>
 
             <!-- === 新增：多选模式底部操作栏 === -->
@@ -4246,6 +4247,16 @@ body.zen-mode #chatMessageArea {
         <div class="slider-group" style="margin-bottom: 24px;">
             <div class="slider-label"><span>背景模糊度</span><span class="slider-value" id="chatBgBlurValue">0px</span></div>
             <input type="range" id="chatBgBlurSlider" min="0" max="20" step="1" value="0">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1.5px dashed rgba(184,156,142,0.2); padding-bottom: 16px;">
+            <div style="font-size: 13px; color: var(--text-main); font-weight: 700;">头像显示方式</div>
+            <select class="s-select" id="chatAvatarDisplayMode" style="width: 140px; padding: 6px 10px; border-radius: 10px; font-size: 12px;">
+                <option value="default">默认显示</option>
+                <option value="kkt">kkt模式</option>
+                <option value="merge1">头像合并1</option>
+                <option value="merge2">头像合并2</option>
+                <option value="hidden">头像隐藏</option>
+            </select>
         </div>
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1.5px dashed rgba(184,156,142,0.2); padding-bottom: 16px;">
             <div style="font-size: 13px; color: var(--text-main); font-weight: 700;">显示输入框上的横滑菜单</div>
@@ -5099,7 +5110,8 @@ window.formatMuteTime = function(secs) {
 window.showToast = function(msg) {
     const toast = document.createElement('div');
     toast.innerText = msg;
-    toast.style.cssText = 'position:fixed; top:-50px; left:50%; transform:translateX(-50%); background:var(--surface); color:var(--text-main); padding:12px 24px; border-radius:24px; font-size:13px; font-weight:bold; z-index:99999; box-shadow:0 8px 24px rgba(184,156,142,0.4); opacity:0; transition:opacity 0.4s, top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1.5px solid rgba(184,156,142,0.2); max-width: 85vw; text-align: center;';
+    // 修改为搭配 UI 的通透毛玻璃效果
+    toast.style.cssText = 'position:fixed; top:-50px; left:50%; transform:translateX(-50%); background:rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color:var(--text-main); padding:12px 24px; border-radius:24px; font-size:13px; font-weight:bold; z-index:99999; box-shadow:0 8px 24px rgba(184,156,142,0.15); opacity:0; transition:opacity 0.4s, top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(255,255,255,0.8); max-width: 85vw; text-align: center;';
     document.body.appendChild(toast);
     
     // 弹性掉落动画
@@ -10096,15 +10108,16 @@ window.openChatRoom = async function(id, name) {
     
     // --- 新增：加载专属聊天背景和自定义气泡CSS ---
     const bgFile = await loadFromDB(`chat_bg_${id}`);
-    const area = document.getElementById('chatMessageArea');
+    const panel = document.getElementById('chatRoomPanel'); // 背景图加在外层
+    const area = document.getElementById('chatMessageArea'); // 模糊加在内层
     const settings = await loadFromDB(`chat_settings_${id}`) || {};
     
     if (bgFile) {
-        area.style.backgroundImage = `url(${URL.createObjectURL(bgFile)})`;
-        area.style.backgroundSize = 'cover';
-        area.style.backgroundPosition = 'center';
+        panel.style.backgroundImage = `url(${URL.createObjectURL(bgFile)})`;
+        panel.style.backgroundSize = 'cover';
+        panel.style.backgroundPosition = 'center';
     } else {
-        area.style.backgroundImage = '';
+        panel.style.backgroundImage = '';
     }
     
     // 应用背景模糊度
@@ -10202,7 +10215,7 @@ if (history.length > displayLimit) {
 
 let lastRenderedDateStr = ''; // 新增：用来记住上一条消息的日期
 
-msgsToRender.forEach(msg => {
+msgsToRender.forEach((msg, i) => {
     // 新增：判断是否跨天，如果是，插入一条日期分隔线
     let msgDateObj = new Date(msg.timestamp || Date.now());
     let currentDateStr = `${msgDateObj.getFullYear()}年${msgDateObj.getMonth() + 1}月${msgDateObj.getDate()}日`;
@@ -10380,13 +10393,46 @@ if (msg.role !== 'user' && msg.speakerName) {
             currentAiAvatarUrl = diaryAvatarCache[msg.speakerId];
         }
 
+        // 头像显示逻辑处理
+        let showAiAvatar = true;
+        let showMeAvatar = true;
+        let aiAvatarStyle = '';
+        let meAvatarStyle = '';
+
+        // 修复：正确判断连续发言人（兼容用户和AI）
+        let isSameAsPrev = i > 0 && msgsToRender[i - 1].role === msg.role && (msg.role === 'user' || msgsToRender[i - 1].speakerId === msg.speakerId);
+        let isSameAsNext = i < msgsToRender.length - 1 && msgsToRender[i + 1].role === msg.role && (msg.role === 'user' || msgsToRender[i + 1].speakerId === msg.speakerId);
+
+        if (settings.avatarDisplayMode === 'kkt') {
+            showMeAvatar = false;
+            if (isSameAsPrev) {
+                aiAvatarStyle = 'visibility: hidden;'; // 占位但不显示
+            }
+        } else if (settings.avatarDisplayMode === 'merge1') {
+            if (isSameAsNext) {
+                aiAvatarStyle = 'visibility: hidden;';
+                meAvatarStyle = 'visibility: hidden;';
+            }
+        } else if (settings.avatarDisplayMode === 'merge2') {
+            if (isSameAsPrev) {
+                aiAvatarStyle = 'visibility: hidden;';
+                meAvatarStyle = 'visibility: hidden;';
+            }
+        } else if (settings.avatarDisplayMode === 'hidden') {
+            showAiAvatar = false;
+            showMeAvatar = false;
+        }
+
+        let aiAvatarHtml = showAiAvatar ? `<div class="chat-bubble-avatar" style="${currentAiAvatarUrl ? `background-image:url(${currentAiAvatarUrl});border:none;` : 'background-color: rgba(184,156,142,0.2);'} ${aiAvatarStyle}"></div>` : '';
+        let meAvatarHtml = showMeAvatar ? `<div class="chat-bubble-avatar" style="${myAvatarUrl ? `background-image:url(${myAvatarUrl});border:none;` : 'background-color: #D4CCC2;'} ${meAvatarStyle}"></div>` : '';
+
         html += `
             <div class="chat-bubble-row ${msg.role === 'user' ? 'me' : 'ai'}" data-ts="${msg.timestamp}">
                 <div class="ms-checkbox"></div>
                 ${msg.role === 'user' ? timeHtml : ''}
-                ${msg.role === 'user' ? '' : `<div class="chat-bubble-avatar" style="${currentAiAvatarUrl ? `background-image:url(${currentAiAvatarUrl});border:none;` : 'background-color: rgba(184,156,142,0.2);'}"></div>`}
+                ${msg.role === 'user' ? '' : aiAvatarHtml}
                 ${finalBubbleBlock}
-                ${msg.role === 'user' ? `<div class="chat-bubble-avatar" style="${myAvatarUrl ? `background-image:url(${myAvatarUrl});border:none;` : 'background-color: #D4CCC2;'}"></div>` : timeHtml}
+                ${msg.role === 'user' ? meAvatarHtml : timeHtml}
             </div>
         `;
     });
@@ -11415,6 +11461,7 @@ document.getElementById('groupProfileMemberCount').innerText = `群聊成员 (${
     document.getElementById('chatCustomCss').value = settings.customCss || '';
     document.getElementById('chatBgBlurSlider').value = settings.bgBlur || 0;
     document.getElementById('chatBgBlurValue').innerText = (settings.bgBlur || 0) + 'px';
+    document.getElementById('chatAvatarDisplayMode').value = settings.avatarDisplayMode || 'default';
     
     // 监听滑块实时显示数值并预览模糊效果
     document.getElementById('chatBgBlurSlider').addEventListener('input', (e) => {
@@ -11612,6 +11659,7 @@ document.getElementById('saveChatSettingsBtn').addEventListener('click', async (
         boundCommands: activeCmdChips, 
         
         bgBlur: document.getElementById('chatBgBlurSlider').value,
+        avatarDisplayMode: document.getElementById('chatAvatarDisplayMode').value,
         customCss: document.getElementById('chatCustomCss').value,
         replyCount: document.getElementById('chatReplyCount').value.trim(),
         contextCount: parseInt(document.getElementById('chatContextCount').value) || 15,
@@ -11675,6 +11723,9 @@ if (newNoteName && newNoteName !== currentChatContact.name) {
             el.style.backgroundColor = '#D4CCC2';
         }
     });
+    
+    // 重新加载聊天记录以立即应用头像显示方式（如kkt、隐藏等）
+    loadChatHistory(currentChatContact.id);
 });
 
 // 真正给 AI 喂的核心提示词构建函数
@@ -11765,6 +11816,21 @@ if (rCount === '') {
     const days = ['日', '一', '二', '三', '四', '五', '六'];
     const currentTimeStr = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日 星期${days[now.getDay()]} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
+    // 注入文档规则：时间跨度认知与动态叙事节奏
+    const docRules = `
+<Timeline_Consistency_Protocol>
+# 内部时空一致性协议 
+1. 核心铁律：时间隔离。严禁将“过去的回忆”吸附到“叙事当下”。若事件发生于N天前，禁止在回忆描述中使用近指代词（如下午、刚才、今日），必须使用远指。
+2. 修正指令：强制远指。当角色回忆旧事时，必须在修饰语上建立时间景深，切断与当下的联系（如：想起那日下午的争吵 / 想起当时那一幕）。
+</Timeline_Consistency_Protocol>
+
+<Dynamic_Narrative_Engine>
+# 叙事节奏与动力调控引擎
+1. 弹性时空留白：当当前场景闭环时，必须切断时间流，执行跳跃。有约定锚点则精准跳跃，无约定锚点则大幅跳跃。
+2. 液体过渡技法：执行三段式桥接：①余韵(收束情绪) -> ②流逝(描写空档期的天气/心境/日常) -> ③起势(切入新时间)。
+3. 情境推进模式：关键时刻帧级慢速；留白发酵跳跃模式；僵局突破强制切断。
+</Dynamic_Narrative_Engine>`;
+
     let intervalContext = '';
     // 如果有历史记录，计算当前用户发的消息与上一次消息的间隔
     if (history && history.length >= 2) {
@@ -11785,7 +11851,7 @@ if (rCount === '') {
             }
         }
     }
-    const timeContext = `\n\n【时间感知】：当前现实时间是 ${currentTimeStr}。${intervalContext}`;
+    const timeContext = `\n\n【时间感知】：当前现实时间是 ${currentTimeStr}。${intervalContext}\n${docRules}`;
 
 // ===== 插入到 buildChatSystemPrompt 中 =====
 const allStickerGroups = await loadFromDB('sticker_groups') || [];
@@ -12242,9 +12308,17 @@ activeBubbleData = {
     text: extractedText || '未知内容',
     el: bubbleRow
 };
-    
-    // 如果是对方发的消息，隐藏“撤回”按钮
+        // 如果是对方发的消息，隐藏“撤回”按钮
     document.getElementById('menuRecall').style.display = activeBubbleData.isMe ? 'block' : 'none';
+    
+    // 如果包含文字图，显示编辑按钮
+    const fakeImg = bubbleRow.querySelector('.fake-img-card');
+    if (fakeImg) {
+        document.getElementById('menuEditFakeImg').style.display = 'block';
+        activeBubbleData.fakeImgDesc = fakeImg.querySelector('.fake-img-desc').innerText;
+    } else {
+        document.getElementById('menuEditFakeImg').style.display = 'none';
+    }
 
     // 计算菜单位置，让它出现在手指附近
     const menuWidth = 240; 
@@ -12269,9 +12343,43 @@ document.addEventListener('click', (e) => {
 
 // 3. 菜单功能操作
 document.getElementById('menuCopy').addEventListener('click', () => {
-    navigator.clipboard.writeText(activeBubbleData.text).then(() => showToast('已复制内容'));
+    const textToCopy = activeBubbleData.text;
+    
+    // 尝试使用现代 Clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            showToast('已复制内容');
+        }).catch(err => {
+            fallbackCopyText(textToCopy); // 失败则降级
+        });
+    } else {
+        fallbackCopyText(textToCopy); // 不支持则直接降级
+    }
     contextMenu.classList.remove('show');
 });
+
+// 传统的复制降级方案，兼容所有环境
+function fallbackCopyText(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showToast('已复制内容');
+        } else {
+            showToast('复制失败，请手动复制');
+        }
+    } catch (err) {
+        showToast('复制失败，请手动复制');
+    }
+    document.body.removeChild(textArea);
+}
 
 // ★ 新增：自动同步最后一条消息预览的辅助引擎
 async function syncLastMessagePreview(contactId, history) {
@@ -12298,6 +12406,26 @@ async function syncLastMessagePreview(contactId, history) {
     }
     await updateContactPreview(contactId, previewText);
 }
+
+// 编辑文字图
+document.getElementById('menuEditFakeImg').addEventListener('click', () => {
+    contextMenu.classList.remove('show');
+    if (!activeBubbleData || !currentChatContact) return;
+    
+    showBeautifulDialog('编辑文字图', '修改文字图的内容：', 'prompt', activeBubbleData.fakeImgDesc, async (newText) => {
+        if (newText && newText.trim()) {
+            let history = await loadFromDB(`chat_history_${currentChatContact.id}`) || [];
+            let msg = history.find(m => m.timestamp === activeBubbleData.ts);
+            if (msg) {
+                // 替换原来的 [图片:xxx] 内容
+                msg.content = msg.content.replace(/\[图片[:：]\s*([\s\S]*?)\]/gi, `[图片:${newText.trim()}]`);
+                await saveToDB(`chat_history_${currentChatContact.id}`, history);
+                loadChatHistory(currentChatContact.id); // 刷新界面
+                showToast('文字图已更新');
+            }
+        }
+    });
+});
 
 // 撤回/删除单条
 async function deleteSingleMessage() {
@@ -14039,7 +14167,8 @@ await saveToDB(`chat_history_${contactId}`, history);
 
 // 发送系统通知
 if (window.sendSystemNotification) {
-    window.sendSystemNotification(speakerName || '群聊消息', cleanText || '发来了一条消息');
+    let notifyName = typeof speakerName !== 'undefined' ? speakerName : (typeof role !== 'undefined' && role ? role.name : 'TA');
+    window.sendSystemNotification(notifyName, cleanText || '发来了一条消息');
 }
 
 // --- 改为局部追加，避免闪屏 ---
@@ -14705,27 +14834,27 @@ else if (cleanText.includes('[日记提议:')) {
     const match = cleanText.match(/\[日记提议:(.*?)\]([\s\S]*)/i);
     if (match) { msgType = 'rename_proposal'; proposedName = match[1].trim(); cleanText = match[2].trim(); }
 }
-
-            const ts = Date.now() + i; 
-history.push({ role: 'assistant', speakerId: speakerInfo ? speakerInfo.id : undefined, speakerName: speakerName ? speakerName : undefined, content: cleanText, msgType: msgType, voiceDuration: voiceDur, rpAmount: rpAmt, locationName: locName, quoteText: quoteText, proposedName: proposedName, innerVoice: turnInnerVoice, timestamp: ts });
+const ts = Date.now() + i; 
+history.push({ role: 'assistant', speakerId: role ? role.id : undefined, speakerName: role ? role.name : undefined, content: cleanText, msgType: msgType, voiceDuration: voiceDur, rpAmount: rpAmt, locationName: locName, quoteText: quoteText, proposedName: proposedName, innerVoice: turnInnerVoice, timestamp: ts });
             await saveToDB(`chat_history_${contactId}`, history);
             
-            // 发送系统通知
-            if (window.sendSystemNotification) {
-                window.sendSystemNotification(speakerName || 'TA', cleanText || '发来了一条消息');
-            }
+// 发送系统通知
+if (window.sendSystemNotification) {
+    let notifyName = typeof speakerName !== 'undefined' ? speakerName : (typeof role !== 'undefined' && role ? role.name : 'TA');
+    window.sendSystemNotification(notifyName, cleanText || '发来了一条消息');
+}
 
-            let aiAvatarUrl = diaryAvatarCache[speakerInfo.id];
-            if (!aiAvatarUrl) {
-                const f = await loadFromDB(`char_avatar_${speakerInfo.id}`);
+            let aiAvatarUrl = role ? diaryAvatarCache[role.id] : '';
+            if (!aiAvatarUrl && role) {
+                const f = await loadFromDB(`char_avatar_${role.id}`);
                 aiAvatarUrl = f ? URL.createObjectURL(f) : '';
-                diaryAvatarCache[speakerInfo.id] = aiAvatarUrl;
+                diaryAvatarCache[role.id] = aiAvatarUrl;
             }
 
             let md = new Date(ts);
 let tStr = `${md.getHours().toString().padStart(2,'0')}:${md.getMinutes().toString().padStart(2,'0')}`;
 
-// ★新增：AI群聊回复时跨天检测
+// ★新增：AI单聊回复时，只要跨天就弹日期
 let dateDividerHtml = '';
 if (i === 0) {
     let lastMsgTs = history.length > 1 ? history[history.length - 2].timestamp : 0;
@@ -14891,7 +15020,7 @@ formattedCleanText = formattedCleanText.replace(/[\(（]【?发送了?表情包[
                     <div class="ms-checkbox"></div>
                     <div class="chat-bubble-avatar" style="${aiAvatarUrl ? `background-image:url(${aiAvatarUrl});border:none;` : 'background-color: rgba(184,156,142,0.2);'}"></div>
                     <div style="display:flex; flex-direction:column; max-width:85%; align-items:flex-start;">
-                        <div style="font-size:10px; color:var(--text-sub); margin-left:4px; margin-bottom:2px; font-weight:bold;">${speakerName}</div>
+                        <div style="font-size:10px; color:var(--text-sub); margin-left:4px; margin-bottom:2px; font-weight:bold;">${role ? role.name : 'TA'}</div>
                         <div ${bubbleStyle} style="max-width: 100%;">${quoteHtml}${contentHtml}</div>
                     </div>
                     ${timeHtml}
@@ -14903,10 +15032,10 @@ formattedCleanText = formattedCleanText.replace(/[\(（]【?发送了?表情包[
             else area.insertAdjacentHTML('beforeend', newRowHtml);
             
             area.scrollTop = area.scrollHeight;
-                    await updateContactPreview(contactId, `${speakerName}: ${cleanText}`);
+                    await updateContactPreview(contactId, `${role ? role.name : 'TA'}: ${cleanText}`);
     }
 hideTyping();
-checkAndTriggerMemorySummary(contactId); // <--- 在第11057行下面，加上这一句补上即可！
+checkAndTriggerMemorySummary(contactId);
     } catch (e) {
         hideTyping();
         showToast("群聊引擎报错：" + e.message);
@@ -17109,8 +17238,9 @@ document.getElementById('phoneClearWallpaperBtn').addEventListener('click', asyn
                 viewerText.style.display = 'none';
                 viewer.style.display = 'flex';
             } 
-            else if (e.target.classList.contains('chat-bubble')) {
-                viewerText.innerText = e.target.innerText;
+            else if (e.target.closest('.fake-img-card')) {
+                const desc = e.target.closest('.fake-img-card').querySelector('.fake-img-desc').innerText;
+                viewerText.innerText = desc;
                 viewerText.style.display = 'block';
                 viewerImg.style.display = 'none';
                 viewer.style.display = 'flex';
@@ -17141,5 +17271,10 @@ document.getElementById('phoneClearWallpaperBtn').addEventListener('click', asyn
             }
         });
     </script>
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+<script>
+  // 初始化 VConsole
+  var vConsole = new VConsole();
+</script>
 </body>
 </html>

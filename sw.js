@@ -18,7 +18,7 @@ self.addEventListener('fetch', (event) => {
 
 self.addEventListener('push', (event) => {
     let data = {
-        title: 'Starlight',
+        title: '月藏机',
         body: '你有一条新消息',
         icon: 'icon.png',
         badge: 'icon.png'
@@ -40,7 +40,7 @@ self.addEventListener('push', (event) => {
             body: data.body,
             icon: data.icon,
             badge: data.badge,
-            tag: 'starlight-message',
+            tag: '月藏-message',
             renotify: true
         })
     );

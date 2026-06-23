@@ -1424,6 +1424,32 @@ body.no-blur-mode .diary-fab-new {
     
 }
 .chat-session-card:active { transform: scale(0.96); }
+.chat-session-swipe-wrap {
+    position: relative;
+    overflow: visible;
+    border-radius: 30px 12px 30px 12px;
+    margin-bottom: 14px;
+}
+
+.chat-session-actions {
+    display: none;
+}
+
+.chat-session-action-btn {
+    display: none;
+}
+
+.chat-session-main-card {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0 !important;
+    transition: none;
+}
+
+.chat-session-swipe-wrap.show-actions .chat-session-main-card {
+    transform: none;
+}
+
 .chat-avatar { width: 52px; height: 52px; border-radius: 50%; background-color: rgba(184,156,142,0.15); background-size: cover; background-position: center; flex-shrink: 0; }
 .chat-info { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
 .chat-name-row { display: flex; justify-content: space-between; align-items: baseline; }
@@ -1530,16 +1556,15 @@ body.no-blur-mode .diary-fab-new {
 
 /* 全宽极简沉浸式底栏 */
 .chat-bottom-bar {
-    width: 100%; background: rgba(255, 255, 255, 0.85);
-    
-    /* 模糊度从 24px 降到 8px */
-    backdrop-filter: blur(8px); 
-    -webkit-backdrop-filter: blur(8px);
-    
-    
-    padding: 10px 5vw 15px 5vw; box-sizing: border-box;
-     z-index: 100;
+    width: 100%;
+    background: #FFFFFF;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    padding: 10px 5vw 15px 5vw;
+    box-sizing: border-box;
+    z-index: 100;
     padding-bottom: max(15px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(184, 156, 142, 0.12);
 }
 
 /* 输入区排版：完美等高对齐 */
@@ -2212,13 +2237,23 @@ body.no-blur-mode .diary-fab-new {
     transform: translateY(20px);
     transition: opacity 0.2s ease, transform 0.2s ease;
     width: 100%;
-    flex-direction: column; box-sizing: border-box;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: 22px;
+    padding: 14px 14px 10px 14px;
+    box-shadow: 0 10px 28px rgba(128,118,110,0.10);
 }
+
 .chat-sticker-panel.show { 
     display: flex;
     opacity: 1; 
     transform: translateY(0);
-    margin-top: 10px; margin-bottom: 4px;
+    margin-top: 10px;
+    margin-bottom: 4px;
 }
 
 .sticker-tabs { display: flex; justify-content: center; gap: 40px; margin-bottom: 12px; border-bottom: 1px solid rgba(184, 156, 142, 0.1); padding-bottom: 8px; }
@@ -2480,11 +2515,15 @@ body.no-blur-mode .diary-fab-new {
 
 /* 通话底栏 */
 .phone-bottom { 
-    padding: 12px 5vw; padding-bottom: max(15px, env(safe-area-inset-bottom)); 
-    display: flex; gap: 10px; align-items: center; 
-    background: rgba(253, 251, 247, 0.85); 
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border-top: none;
+    padding: 12px 5vw;
+    padding-bottom: max(15px, env(safe-area-inset-bottom));
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #FDFBF7;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-top: 1px solid rgba(184, 156, 142, 0.12);
     box-shadow: none;
 }
 .p-input { flex: 1; background: rgba(184, 156, 142, 0.1); border: 1.5px solid transparent; padding: 10px 16px; border-radius: 20px; color: var(--text-main); font-size: 14px; outline: none; transition: 0.3s; }
@@ -2529,8 +2568,8 @@ body.no-blur-mode .phone-bottom { background-color: #FDFBF7 !important; }
     justify-content: space-between;
     align-items: center;
     padding: 12px 5vw;
-    background: rgba(253,251,247,0.9);
-    border-top: none;
+    background: #FDFBF7;
+    border-top: 1px solid rgba(184, 156, 142, 0.12);
     box-shadow: none;
 }
 .read-btn { padding: 8px 16px; border-radius: 12px; background: rgba(184,156,142,0.1); color: var(--text-main); font-size: 13px; font-weight: bold; border: none; }
@@ -2656,11 +2695,20 @@ body.zen-mode #chatMessageArea {
         <span id="desktopFontResetBtn" style="color: #D67A7A; cursor: pointer; font-size: 11px; padding: 6px 12px; background: #FFF0F0; border-radius: 10px; font-weight: 600;">恢复默认</span>
     </div>
 
-    <input type="text" class="s-input" id="desktopFontUrl" placeholder="填入字体直链 (如: https://.../.ttf)" style="margin-bottom: 16px; font-family: monospace;">
+    <input type="text" class="s-input" id="desktopFontUrl" placeholder="填入字体直链 (如: https://.../.ttf / .otf / .woff2)" style="margin-bottom: 12px; font-family: monospace;">
+    
+    <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <button class="s-btn" id="uploadDesktopFontBtn" style="flex:1; margin:0; border:1.5px dashed rgba(184,156,142,0.5); background:transparent; color:var(--accent); font-size:12px; height:40px; min-height:40px; border-radius:12px;">上传本地字体 (20MB内)</button>
+        <button class="s-btn" id="clearDesktopFontTempBtn" style="flex:none; width:auto; margin:0; padding:0 14px; font-size:12px; height:40px; min-height:40px; border-radius:12px; background:#F0EDE8; color:var(--text-main);">清空</button>
+    </div>
+
+    <input type="file" id="desktopFontFileInput" accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf,font/woff,font/woff2" style="display:none;">
+
+    <div id="desktopFontStatus" style="font-size:11px; color:var(--text-sub); margin-bottom:16px; line-height:1.6;">当前未选择本地字体，可直接填写字体链接或上传本地字体文件。</div>
     
     <div style="display: flex; gap: 8px; margin-bottom: 16px; align-items: center;">
         <div class="acc-cards-wrapper" id="desktopFontPresetsList" style="flex: 1; margin-bottom: 0; padding-bottom: 0;"></div>
-        <button class="s-btn" id="desktopFontSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">+ 保存预设</button>
+        <button class="s-btn" id="desktopFontSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">归档</button>
     </div>
     
     <button class="s-btn primary" id="saveDesktopFontBtn">应用全局字体</button>
@@ -2674,7 +2722,7 @@ body.zen-mode #chatMessageArea {
             </div>
             
             <select class="s-select" id="appIconSelect" style="margin-bottom: 12px; font-weight: bold; text-align: center;">
-                <option value="聊天">聊天 APP</option>
+                <option value="聊天">私语 APP</option>
                 <option value="信笺">信笺 APP</option>
                 <option value="记账">记账 APP</option>
                 <option value="设置">设置 APP</option>
@@ -2735,7 +2783,7 @@ body.zen-mode #chatMessageArea {
                 <input type="color" id="aiBubbleTextColor" value="#333333" style="border:none; width:30px; height:30px; border-radius:4px; cursor:pointer;">
             </div>
 
-            <button class="s-btn primary" id="saveAdvancedBeautifyBtn">保存并应用设置</button>
+            <button class="s-btn primary" id="saveAdvancedBeautifyBtn">保存</button>
         </div>
 
         <!-- 新增：自定义全局 CSS 模块 -->
@@ -2749,10 +2797,10 @@ body.zen-mode #chatMessageArea {
             
             <div style="display: flex; gap: 8px; margin-bottom: 16px; align-items: center;">
                 <div class="acc-cards-wrapper" id="desktopCssPresetsList" style="flex: 1; margin-bottom: 0; padding-bottom: 0;"></div>
-                <button class="s-btn" id="desktopCssSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">+ 保存预设</button>
+                <button class="s-btn" id="desktopCssSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">归档</button>
             </div>
             
-            <button class="s-btn primary" id="saveDesktopCssBtn">保存并应用 CSS</button>
+            <button class="s-btn primary" id="saveDesktopCssBtn">保存</button>
         </div>
     </div>
 </div>
@@ -2766,10 +2814,16 @@ body.zen-mode #chatMessageArea {
     <div class="modal-content">
         <!-- 核心配置 -->
 <div class="setting-card">
-    <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
-    <span>核心配置</span>
-    <span id="openManualBtn" onclick="window.showManual()" style="font-size:11px; background:rgba(184,156,142,0.15); color:var(--accent); padding:4px 10px; border-radius:10px; cursor:pointer; font-weight:bold;">📖 使用说明</span>
-</div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div class="card-title" style="margin:0; display:flex; align-items:center; gap:8px;">
+            <span>核心配置</span>
+            <span id="openManualBtn" onclick="window.showManual()" style="font-size:11px; background:rgba(184,156,142,0.15); color:var(--accent); padding:4px 10px; border-radius:10px; cursor:pointer; font-weight:bold;">📖 使用说明</span>
+        </div>
+        <button class="s-btn" id="saveApiPresetBtn" style="flex:none; width:auto; padding:6px 14px; height:36px; min-height:36px; margin:0; font-size:12px; border:1.5px dashed rgba(184,156,142,0.5); background:transparent; color:var(--accent); border-radius:10px; font-weight:600;">保存</button>
+    </div>
+
+    <div style="font-size:12px; font-weight:600; color:var(--text-sub); margin-bottom:8px;">API 预设</div>
+    <div class="acc-cards-wrapper" id="apiPresetList" style="margin-bottom:16px; padding-bottom:4px;"></div>
     
     <!-- 主节点配置 -->
     <div class="api-group" style="margin-bottom: 12px;">
@@ -2802,7 +2856,7 @@ body.zen-mode #chatMessageArea {
         <input type="range" id="tempInput" min="0" max="2" step="0.1" value="0.7">
     </div>
     
-    <button class="s-btn primary" id="saveConfigBtn">保存所有配置</button>
+    <button class="s-btn primary" id="saveConfigBtn">保存</button>
 
         <div class="setting-card" style="margin-top: 24px;">
             <div class="card-title">通知与提示音设置</div>
@@ -3035,11 +3089,11 @@ body.zen-mode #chatMessageArea {
         </div>
         
                 <!-- 新建按钮 -->
-        <button class="s-btn primary" id="addNewCharBtn" style="margin-bottom: -4vh;">+ 创造新角色</button>
+<button class="s-btn primary" id="addNewCharBtn">创造新角色</button>
 
         <!-- 全屏编辑面板 -->
-        <div class="sub-panel" id="characterEditPanel">
-            <div class="panel-header" style="margin-bottom: 30px;">角色档案</div>
+<div class="sub-panel" id="characterEditPanel">
+    <div class="panel-header" style="margin-bottom: 30px;">角色档案</div>
             
             <!-- 头像上传区 -->
             <div class="char-avatar-upload" id="charEditAvatar">
@@ -3077,93 +3131,119 @@ body.zen-mode #chatMessageArea {
                 </label>
 
                 <!-- 解码控制台 (默认隐藏) -->
-                <div id="decoderConsole" style="display: none; margin-top: 16px; border-top: 1px dashed rgba(184,156,142,0.2); padding-top: 16px;">
-                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: var(--text-main); margin-bottom: 8px;">
-                        <span id="decoderStatus">待机中...</span>
-                        <span id="decoderProgressText">0 / 0 碎片</span>
-                    </div>
-                    <!-- 进度条 -->
-                    <div style="width: 100%; height: 6px; background: rgba(184,156,142,0.1); border-radius: 3px; overflow: hidden; margin-bottom: 12px;">
-                        <div id="decoderProgressBar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.3s;"></div>
-                    </div>
+<div id="decoderConsole" style="display: none; margin-top: 16px; border-top: 1px dashed rgba(184,156,142,0.2); padding-top: 16px;">
+    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: var(--text-main); margin-bottom: 8px;">
+        <span id="decoderStatus">待机中...</span>
+        <span id="decoderProgressText">0 / 0 碎片</span>
+    </div>
 
-                        <div id="decoderProgressBar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.3s;"></div>
-                    </div>
-                    
-                    <!-- 新增：指定切片开始位置 -->
-                    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 12px; font-size: 11px; gap: 6px;">
-                        <span style="color: var(--text-main); font-weight: bold;">从该碎片开始:</span>
-                        <input type="number" id="decoderStartIndex" value="1" min="1" class="s-input" style="width: 60px; height: 24px; min-height: 24px; padding: 0; text-align: center; border-radius: 6px; font-weight: bold;">
-                    </div>
-                    <!-- 终端日志框 -->
-                    <div id="decoderLog" style="background: rgba(0,0,0,0.85); color: #A3C7A3; font-family: monospace; font-size: 11px; padding: 12px; border-radius: 8px; height: 120px; overflow-y: auto; line-height: 1.6; margin-bottom: 12px; word-break: break-all; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
-                        > 终端初始化完毕...<br>
-                    </div>
-                    <!-- 操作按钮 -->
-<div style="display: flex; gap: 10px; margin-top: 16px; margin-bottom: 4px; align-items: center;">
-    <button class="s-btn primary" id="startDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; margin: 0; border-radius: 12px; box-shadow: 0 4px 12px rgba(184,156,142,0.3); display: flex; justify-content: center; align-items: center;">开始提炼</button>
-    <button class="s-btn" id="pauseDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; background: #F0EDE8; color: var(--text-main); margin: 0; border-radius: 12px; display: none; justify-content: center; align-items: center;">暂停 / 冷却</button>
-    <button class="s-btn danger" id="cancelDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; margin: 0; background: #FFF0F0; border-radius: 12px; display: flex; justify-content: center; align-items: center;">中断放弃</button>
+    <!-- 这段是解码进度条 -->
+    <div style="width: 100%; height: 6px; background: rgba(184,156,142,0.1); border-radius: 3px; overflow: hidden; margin-bottom: 12px;">
+        <div id="decoderProgressBar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.3s;"></div>
+    </div>
+
+    <!-- 这段是指定从哪一片开始继续处理 -->
+    <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 12px; font-size: 11px; gap: 6px;">
+        <span style="color: var(--text-main); font-weight: bold;">从该碎片开始:</span>
+        <input type="number" id="decoderStartIndex" value="1" min="1" class="s-input" style="width: 60px; height: 24px; min-height: 24px; padding: 0; text-align: center; border-radius: 6px; font-weight: bold;">
+    </div>
+
+    <!-- 这段是终端日志显示区域 -->
+    <div id="decoderLog" style="background: rgba(0,0,0,0.85); color: #A3C7A3; font-family: monospace; font-size: 11px; padding: 12px; border-radius: 8px; height: 120px; overflow-y: auto; line-height: 1.6; margin-bottom: 12px; word-break: break-all; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
+        > 终端初始化完毕...<br>
+    </div>
+
+    <!-- 这段是解码控制按钮 -->
+    <div style="display: flex; gap: 10px; margin-top: 16px; margin-bottom: 4px; align-items: center;">
+        <button class="s-btn primary" id="startDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; margin: 0; border-radius: 12px; box-shadow: 0 4px 12px rgba(184,156,142,0.3); display: flex; justify-content: center; align-items: center;">开始提炼</button>
+        <button class="s-btn" id="pauseDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; background: #F0EDE8; color: var(--text-main); margin: 0; border-radius: 12px; display: none; justify-content: center; align-items: center;">暂停 / 冷却</button>
+        <button class="s-btn danger" id="cancelDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; margin: 0; background: #FFF0F0; border-radius: 12px; display: flex; justify-content: center; align-items: center;">中断放弃</button>
+    </div>
 </div>
-                </div>
             </div>
             <!-- ================= 解码仪结束 ================= -->
             
             <div class="row-flex" style="margin-top: 20px;">
                 <button class="s-btn" id="cancelCharEditBtn">返回</button>
-                <button class="s-btn primary" id="saveCharBtn">保存档案</button>
+                <button class="s-btn primary" id="saveCharBtn">归档</button>
             </div>
             <button class="s-btn danger" id="deleteCharBtn" style="margin-top: 12px; display: none;">销毁该角色</button>
         </div>
     </div>
 </div>
 
-<!-- 指令 APP 面板 -->
+<!-- 指令 / 世界书 APP 面板 -->
 <div class="app-modal" id="commandAppModal">
     <div class="modal-header">
-        <span>指令库</span>
+        <span>指令与世界书</span>
         <div class="modal-close" id="closeCommandApp">关闭</div>
     </div>
     <div class="modal-content" style="position: relative;">
         
-        <!-- 顶部分类过滤条 -->
+        <div class="role-type-selector" id="commandLibraryTabs" style="margin-bottom: 12px;">
+            <div class="role-btn active" data-lib="command">指令库</div>
+            <div class="role-btn" data-lib="worldbook">世界书</div>
+        </div>
+
+        <div class="row-flex" style="margin-top: 0; margin-bottom: 12px;">
+            <label class="s-btn" style="flex:1; cursor:pointer; display:flex; justify-content:center; align-items:center;">
+                导入当前库
+                <input type="file" id="commandImportInput" accept=".json,.txt,.md,.text" style="display:none;">
+            </label>
+            <button class="s-btn" id="commandExportBtn" style="flex:1;">导出当前库</button>
+        </div>
+
         <div class="cmd-filter-bar" id="commandFilterBar"></div>
 
-        <!-- 指令列表容器 -->
         <div class="character-list" id="commandList"></div>
         
-        <!-- 新建按钮 -->
-        <button class="s-btn primary" id="addNewCommandBtn">+ 添加新指令</button>
+        <button class="s-btn primary" id="addNewCommandBtn">新增当前条目</button>
 
-        <!-- 指令编辑面板 -->
-        <div class="sub-panel" id="commandEditPanel">
-            
-            
-            <input type="hidden" id="commandEditId">
-            <input type="text" class="s-input" id="commandEditName" placeholder="指令名称 (如: NSFW破限)" style="margin-bottom: 12px; font-weight: 700; text-align: center; font-size: 15px;">
-            
-            <!-- 新增的分类输入框 -->
-            <input type="text" class="s-input" id="commandEditCategory" placeholder="所属分类 (如: 破限 / 设定 / 世界书)" style="margin-bottom: 16px; text-align: center;">
-            <!-- 指令插入位置选择器 -->
-<div class="role-type-selector" id="commandPosSelector" style="margin-bottom: 16px;">
-    <div class="role-btn active" data-pos="front">前置 (规则/设定)</div>
-    <div class="role-btn" data-pos="back">后置 (破限/强干预)</div>
-</div>
-<div class="tower-row" style="margin-top: 0; margin-bottom: 16px; padding: 12px 16px;">
-    <div>
-        <div class="tower-title" style="font-size: 13px;">全局强制挂载</div>
-        <div class="tower-desc" style="font-size: 10px;">开启后，所有聊天对象都会默认带上此指令</div>
+<div class="sub-panel" id="commandEditPanel">
+    <input type="hidden" id="commandEditId">
+
+    <input type="text" class="s-input" id="commandEditName" placeholder="名称" style="margin-bottom: 12px; font-weight: 700; text-align: center; font-size: 15px;">
+    <input type="text" class="s-input" id="commandEditCategory" placeholder="所属分组 / 分类" style="margin-bottom: 12px; text-align: center;">
+
+    <input type="text" class="s-input" id="commandEditKeys" placeholder="关键词，多个用逗号分隔" style="margin-bottom: 10px; text-align: center; display: none;">
+    <div id="commandEditKeysHint" style="display:none; font-size:11px; color:var(--text-sub); line-height:1.6; margin-bottom:12px; text-align:center;">
+        世界书命中关键词后会自动参与上下文。导入时系统也会尽量自动识别并填好。
     </div>
-    <label class="switch"><input type="checkbox" id="commandGlobalToggle"><span class="slider"></span></label>
-</div>
-            <textarea class="s-input edit-textarea" id="commandEditContent" placeholder="在此输入具体的指令规则内容..." style="min-height: 240px; flex-shrink: 0; margin-bottom: 20px;"></textarea>
-            
-            <div class="row-flex" style="margin-top: 20px;">
-                <button class="s-btn" id="cancelCommandEditBtn">返回</button>
-                <button class="s-btn primary" id="saveCommandBtn">保存指令</button>
-            </div>
-            <button class="s-btn danger" id="deleteCommandBtn" style="margin-top: 12px; display: none;">彻底删除此指令</button>
+
+    <div class="model-row" id="commandWorldbookMetaRow" style="margin-bottom: 12px; display:none;">
+        <input type="number" class="s-input" id="commandEditWeight" placeholder="权重" style="text-align:center;">
+        <input type="number" class="s-input" id="commandEditDepth" placeholder="深度" style="text-align:center;">
+    </div>
+
+    <div class="tower-row" id="commandEnabledRow" style="margin-top: 0; margin-bottom: 12px; padding: 12px 16px; display:none;">
+        <div>
+            <div class="tower-title" style="font-size: 13px;">启用此条目</div>
+            <div class="tower-desc" style="font-size: 10px;">关闭后保留但不参与调用</div>
         </div>
+        <label class="switch"><input type="checkbox" id="commandEnabledToggle" checked><span class="slider"></span></label>
+    </div>
+
+    <div class="role-type-selector" id="commandPosSelector" style="margin-bottom: 16px;">
+        <div class="role-btn active" data-pos="front">前置</div>
+        <div class="role-btn" data-pos="back">后置</div>
+    </div>
+
+    <div class="tower-row" style="margin-top: 0; margin-bottom: 16px; padding: 12px 16px;">
+        <div>
+            <div class="tower-title" style="font-size: 13px;">全局强制挂载</div>
+            <div class="tower-desc" style="font-size: 10px;">开启后，不绑定也会自动参与聊天</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="commandGlobalToggle"><span class="slider"></span></label>
+    </div>
+
+    <textarea class="s-input edit-textarea" id="commandEditContent" placeholder="在此输入内容..." style="min-height: 240px; flex-shrink: 0; margin-bottom: 20px;"></textarea>
+    
+    <div class="row-flex" style="margin-top: 20px;">
+        <button class="s-btn" id="cancelCommandEditBtn">返回</button>
+        <button class="s-btn primary" id="saveCommandBtn">归档</button>
+    </div>
+    <button class="s-btn danger" id="deleteCommandBtn" style="margin-top: 12px; display: none;">彻底删除当前条目</button>
+</div>
     </div>
 </div>
 
@@ -3455,7 +3535,7 @@ body.zen-mode #chatMessageArea {
         </div>
 
         <div class="cc-btns" style="margin-top: 20px;">
-            <button class="cc-btn primary" id="closeDiarySettingsBtn" style="background:var(--accent);">保存并关闭</button>
+            <button class="cc-btn primary" id="closeDiarySettingsBtn" style="background:var(--accent);">归档</button>
         </div>
     </div>
 </div>
@@ -3627,9 +3707,8 @@ body.zen-mode #chatMessageArea {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </div>
 
-            <!-- 全宽极简底栏 -->
-                        <!-- 全宽极简底栏 -->
-                                    <!-- === 新增：长按气泡悬浮菜单 === -->
+<!-- 全宽极简底栏 -->
+<!-- === 新增：长按气泡悬浮菜单 === -->
             <div id="bubbleContextMenu" class="bubble-context-menu">
                 <div class="menu-item" id="menuCopy">复制</div>
                 <div class="menu-item" id="menuQuote">引用</div>
@@ -3639,14 +3718,26 @@ body.zen-mode #chatMessageArea {
                 <div class="menu-item" id="menuMultiSelect">多选</div>
                 <div class="menu-item" id="menuEditFakeImg" style="display:none;">编辑文字图</div>
             </div>
-
+<div id="chatSessionContextMenu" class="chat-session-context-menu">
+    <div class="chat-session-context-item pin" id="sessionMenuPin">置顶</div>
+    <div class="chat-session-context-item css" id="sessionMenuCss">清空CSS</div>
+    <div class="chat-session-context-item clear" id="sessionMenuClear">清空记录</div>
+</div>
             <!-- === 新增：多选模式底部操作栏 === -->
-            <div id="multiSelectBar" class="multi-select-bar">
-                <div class="ms-btn" id="msCancel">取消</div>
-                <div class="ms-btn" id="msForward">合并转发</div>
-                <div class="ms-btn ms-delete" id="msDelete">删除 (<span id="msCount">0</span>)</div>
-            </div>
-                        
+<div id="multiSelectBar" class="multi-select-bar">
+    <div class="ms-toolbar-left">
+        <div class="ms-btn neutral" id="msCancel">取消</div>
+        <div class="ms-btn" id="msSelectAll">全选</div>
+    </div>
+
+    <div class="ms-toolbar-center" id="msSummary">已选 <span id="msCount">0</span> 条消息</div>
+
+    <div class="ms-toolbar-right">
+        <div class="ms-btn primary" id="msShot">聊天截图</div>
+        <div class="ms-btn" id="msForward">合并转发</div>
+        <div class="ms-btn ms-delete" id="msDelete">删除</div>
+    </div>
+</div>
             <div class="chat-bottom-bar">
                 
                 <!-- 输入框上方的快捷菜单栏 -->
@@ -3737,7 +3828,7 @@ body.zen-mode #chatMessageArea {
                             <label class="switch" style="transform: scale(0.75); margin: 0;"><input type="checkbox" id="newStickerAiUse"><span class="slider"></span></label>
                             <span style="font-size: 12px; color: var(--text-main); font-weight:700;">允许TA使用该分组</span>
                         </div>
-                        <button class="s-btn primary" id="saveStickerGroupBtn" style="width: 100%; height: 44px; min-height: 44px; font-size: 13px; border-radius: 14px;">保存分组</button>
+                        <button class="s-btn primary" id="saveStickerGroupBtn" style="width: 100%; height: 44px; min-height: 44px; font-size: 13px; border-radius: 14px;">归档</button>
                     </div>
                 </div>
             </div>
@@ -3882,7 +3973,7 @@ body.zen-mode #chatMessageArea {
                 <textarea class="s-input edit-textarea" id="phoneCustomCss" placeholder="在此输入自定义CSS代码..." style="min-height: 100px; resize: vertical; margin-bottom: 8px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FDFBF7;"></textarea>
             </div>
         </div>
-        <button class="s-btn primary" id="savePhoneSettingsBtn" style="flex:none; width:100%; height: 50px; min-height: 50px; border-radius: 16px; margin-top: 10px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(184,156,142,0.3);">保存电话设置</button>
+        <button class="s-btn primary" id="savePhoneSettingsBtn" style="flex:none; width:100%; height: 50px; min-height: 50px; border-radius: 16px; margin-top: 10px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(184,156,142,0.3);">归档</button>
     </div>
 </div>
 
@@ -4011,7 +4102,7 @@ body.zen-mode #chatMessageArea {
     
     <div class="row-flex" style="margin-top: auto; margin-bottom: 20px;">
         <button class="s-btn" id="cancelMemorySettingsBtn">取消</button>
-        <button class="s-btn primary" id="saveMemorySettingsBtn">保存所有设置</button>
+        <button class="s-btn primary" id="saveMemorySettingsBtn">归档</button>
     </div>
 </div>
 
@@ -4185,21 +4276,106 @@ body.zen-mode #chatMessageArea {
 
         /* === 气泡长按悬浮菜单 === */
 .bubble-context-menu {
-    position: fixed; z-index: 9999; background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-    border-radius: 16px; box-shadow: 0 8px 32px rgba(128,118,110,0.15);
-    border: 1px solid rgba(255,255,255,0.8); display: flex; flex-wrap: wrap;
-    width: 240px; padding: 6px; gap: 4px; opacity: 0; pointer-events: none;
-    transition: opacity 0.2s, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
-    transform: scale(0.9) translateY(10px); transform-origin: center bottom;
+    position: fixed;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(128,118,110,0.15);
+    border: 1px solid rgba(255,255,255,0.85);
+    display: flex;
+    flex-wrap: wrap;
+    width: 240px;
+    padding: 6px;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: scale(0.9) translateY(10px);
+    transform-origin: center bottom;
 }
-.bubble-context-menu.show { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+
+.bubble-context-menu.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1) translateY(0);
+}
+
 .bubble-context-menu .menu-item {
-    width: calc(33.33% - 4px); text-align: center; padding: 12px 0;
-    font-size: 13px; font-weight: 600; color: var(--text-main);
-    border-radius: 12px; cursor: pointer; transition: 0.2s;
+    width: calc(33.33% - 4px);
+    text-align: center;
+    padding: 12px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
 }
-.bubble-context-menu .menu-item:active { background: rgba(184,156,142,0.15); color: var(--accent); }
+
+.bubble-context-menu .menu-item:active {
+    background: rgba(184,156,142,0.15);
+    color: var(--accent);
+}
+
+.chat-session-context-menu {
+    position: fixed;
+    z-index: 10001;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px;
+    box-shadow: 0 12px 32px rgba(128,118,110,0.16);
+    border: 1px solid rgba(255,255,255,0.88);
+    display: flex;
+    flex-direction: column;
+    width: 132px;
+    padding: 6px;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: scale(0.92) translateY(10px);
+    transform-origin: top left;
+}
+
+.chat-session-context-menu.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1) translateY(0);
+}
+
+.chat-session-context-item {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.chat-session-context-item:active {
+    background: rgba(184,156,142,0.14);
+    color: var(--accent);
+}
+
+.chat-session-context-item.pin {
+    color: #6E8B69;
+}
+
+.chat-session-context-item.css {
+    color: #7E7772;
+}
+
+.chat-session-context-item.clear {
+    color: #D67A7A;
+}
 
 /* === 多选模式样式 === */
 /* 开启多选后，气泡集体向右平移留出位置 */
@@ -4246,17 +4422,102 @@ body.zen-mode #chatMessageArea {
 
 /* === 多选底栏 === */
 .multi-select-bar {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 65px;
-    background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 5vw; box-sizing: border-box; z-index: 200;
-    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    padding-bottom: max(15px, env(safe-area-inset-bottom)); border-top: 1px solid rgba(184,156,142,0.2); visibility: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-height: 74px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 4vw;
+    box-sizing: border-box;
+    z-index: 200;
+    transform: translateY(110%);
+    transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(184,156,142,0.14);
+    visibility: hidden;
+    box-shadow: 0 -10px 28px rgba(128,118,110,0.08);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
 }
-.multi-select-bar.show { transform: translateY(0); visibility: visible; }
-.ms-btn { padding: 10px 16px; font-size: 15px; font-weight: 600; color: var(--text-main); border-radius: 12px; cursor: pointer; }
-.ms-btn:active { background: rgba(184,156,142,0.1); }
-.ms-delete { color: #D67A7A; }
+
+.multi-select-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.multi-select-bar.show {
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.ms-toolbar-left,
+.ms-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ms-toolbar-center {
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-sub);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    min-width: max-content;
+}
+
+.ms-btn {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    border-radius: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(184,156,142,0.10);
+    border: 1px solid rgba(184,156,142,0.14);
+    transition: 0.2s;
+    user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.ms-btn:active {
+    transform: scale(0.94);
+    background: rgba(184,156,142,0.18);
+}
+
+.ms-btn.primary {
+    background: rgba(139,168,136,0.14);
+    color: #5F7B5E;
+    border-color: rgba(139,168,136,0.18);
+}
+
+.ms-btn.neutral {
+    background: rgba(150,143,137,0.10);
+    color: #6F6A66;
+    border-color: rgba(150,143,137,0.16);
+}
+
+.ms-delete {
+    background: rgba(214,122,122,0.12);
+    color: #D67A7A;
+    border-color: rgba(214,122,122,0.16);
+}
 
 /* 统一极简头部 */
 .phone-header-new {
@@ -4290,8 +4551,26 @@ body.zen-mode #chatMessageArea {
         <div id="chatSettingsCommandChips" style="margin-bottom: 4px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
     </div>
 
-    <!-- 个性化与 CSS 模块 -->
         <!-- 个性化与 CSS 模块 -->
+<div class="chat-setting-block">
+    <div class="block-title">聊天头像设置</div>
+    <div style="font-size:11px; color:var(--text-sub); margin-bottom:12px; line-height:1.6;">
+        这里可以直接替换当前聊天对象的头像，也可以替换当前聊天里“我”的头像。
+    </div>
+
+    <div class="row-flex" style="margin-top: 0; margin-bottom: 12px;">
+        <button class="s-btn" id="chatSetAiAvatarBtn" style="font-size: 13px; height: 44px; min-height: 44px; border-radius: 14px;">设置 TA 头像</button>
+        <button class="s-btn" id="chatClearAiAvatarBtn" style="font-size: 13px; height: 44px; min-height: 44px; border-radius: 14px; background:#FFF0F0; color:#D67A7A;">清除 TA 头像</button>
+    </div>
+
+    <div class="row-flex" style="margin-top: 0; margin-bottom: 4px;">
+        <button class="s-btn" id="chatSetUserAvatarBtn" style="font-size: 13px; height: 44px; min-height: 44px; border-radius: 14px;">设置我的头像</button>
+        <button class="s-btn" id="chatClearUserAvatarBtn" style="font-size: 13px; height: 44px; min-height: 44px; border-radius: 14px; background:#FFF0F0; color:#D67A7A;">清除我的头像</button>
+    </div>
+</div>
+
+<input type="file" id="chatAvatarUploadInput" accept="image/*" style="display:none;">
+
     <div class="chat-setting-block">
         <!-- 干净的网格预览背景，避免引号冲突错乱 -->
         <style>
@@ -4350,7 +4629,7 @@ body.zen-mode #chatMessageArea {
         
         <div style="display: flex; gap: 8px; margin-bottom: 4px; align-items: center;">
             <div class="acc-cards-wrapper" id="chatCssPresetsList" style="flex: 1; margin-bottom: 0; padding-bottom: 0;"></div>
-            <button class="s-btn" id="chatCssSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">+ 保存预设</button>
+            <button class="s-btn" id="chatCssSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">归档</button>
         </div>
     </div>
 
@@ -4415,7 +4694,7 @@ body.zen-mode #chatMessageArea {
 
     <div class="row-flex" style="margin-top: 10px; margin-bottom: 40px; gap: 16px;">
         <button class="s-btn" id="cancelChatSettingsBtn" style="height: 50px; min-height: 50px; margin: 0; border-radius: 16px; background: var(--surface); border: 1.5px solid rgba(184,156,142,0.2);">取消</button>
-        <button class="s-btn primary" id="saveChatSettingsBtn" style="height: 50px; min-height: 50px; margin: 0; border-radius: 16px; box-shadow: 0 6px 16px rgba(184,156,142,0.4);">保存所有设置</button>
+        <button class="s-btn primary" id="saveChatSettingsBtn" style="height: 50px; min-height: 50px; margin: 0; border-radius: 16px; box-shadow: 0 6px 16px rgba(184,156,142,0.4);">归档</button>
     </div>
 </div>
 
@@ -4475,7 +4754,7 @@ body.zen-mode #chatMessageArea {
 
             <div style="display:flex; gap: 8px;">
                 <button class="s-btn" id="generateScheduleBtn" style="flex:1; border: 1.5px dashed rgba(184,156,142,0.4); background: transparent; color: var(--accent); font-size: 12px; font-weight: 700; padding: 10px 0; min-height: 36px; height: 36px;">自动排表</button>
-                <button class="s-btn primary" id="saveScheduleBtn" style="flex:1; font-size: 12px; font-weight: 700; padding: 10px 0; min-height: 36px; height: 36px; box-shadow: 0 4px 12px rgba(184, 156, 142, 0.3);">保存</button>
+                <button class="s-btn primary" id="saveScheduleBtn" style="flex:1; font-size: 12px; font-weight: 700; padding: 10px 0; min-height: 36px; height: 36px; box-shadow: 0 4px 12px rgba(184, 156, 142, 0.3);">归档</button>
             </div>
         </div>
     </div>
@@ -4656,7 +4935,7 @@ body.zen-mode #chatMessageArea {
 </div>
 
     </div>
-    <button class="s-btn primary" id="saveReadSettingsBtn" style="flex:none; width:100%; height: 50px; min-height: 50px; border-radius: 16px; margin-top: 15px; margin-bottom: 0px; box-shadow: 0 4px 16px rgba(184,156,142,0.3); position: relative; z-index: 999;">保存所有设置</button>
+    <button class="s-btn primary" id="saveReadSettingsBtn" style="flex:none; width:100%; height: 50px; min-height: 50px; border-radius: 16px; margin-top: 15px; margin-bottom: 0px; box-shadow: 0 4px 16px rgba(184,156,142,0.3); position: relative; z-index: 999;">归档</button>
 </div>
 </div>
 <!-- 长按选中文本时的悬浮提问按钮 -->
@@ -4707,7 +4986,7 @@ body.zen-mode #chatMessageArea {
 
             <div class="row-flex">
                 <button class="s-btn" id="cancelAccEditBtn">取消</button>
-                <button class="s-btn primary" id="saveAccRecordBtn">保存</button>
+                <button class="s-btn primary" id="saveAccRecordBtn">归档</button>
             </div>
         </div>
     </div>
@@ -4837,7 +5116,7 @@ body.zen-mode #chatMessageArea {
             <label class="switch"><input type="checkbox" id="dreamApiToggle"><span class="slider"></span></label>
         </div>
         <div class="cc-btns" style="margin-top: 20px;">
-            <button class="cc-btn primary" id="closeDreamSettingsBtn" style="background:#9CACCB;">保存并关闭</button>
+            <button class="cc-btn primary" id="closeDreamSettingsBtn" style="background:#9CACCB;">归档</button>
         </div>
     </div>
 </div>
@@ -4915,7 +5194,7 @@ body.zen-mode #chatMessageArea {
 
         <div class="cc-btns" style="margin-top: 20px;">
             <button class="cc-btn cancel" id="cancelTowerBtn">取消</button>
-            <button class="cc-btn primary" id="saveTowerBtn" style="background:#D5E1D5; color:#4A5D4E;">保存</button>
+            <button class="cc-btn primary" id="saveTowerBtn" style="background:#D5E1D5; color:#4A5D4E;">归档</button>
         </div>
     </div>
 </div>
@@ -4928,7 +5207,7 @@ body.zen-mode #chatMessageArea {
             <textarea class="s-input edit-textarea" id="bondMemoryContent" placeholder="暂时还没有和任何人的羁绊记忆..." style="height: 180px; margin-bottom: 20px;"></textarea>
             <div class="cc-btns">
                 <button class="cc-btn cancel" id="closeBondBtn">取消</button>
-                <button class="cc-btn danger" id="saveBondBtn" style="background:#D5E1D5; color:#4A5D4E;">保存</button>
+                <button class="cc-btn danger" id="saveBondBtn" style="background:#D5E1D5; color:#4A5D4E;">归档</button>
             </div>
         </div>
     </div>
@@ -5080,7 +5359,7 @@ body.zen-mode #chatMessageArea {
     <div class="panel-header">编辑心情歌词</div>
     <input type="text" class="edit-input" id="editTitle" placeholder="歌名或标题">
     <textarea class="edit-input edit-textarea" id="editContent" placeholder="在此输入…(换行会自动生效)"></textarea>
-    <button class="s-btn primary" id="saveLyricBtn">保存并更新</button>
+    <button class="s-btn primary" id="saveLyricBtn">归档</button>
 </div>
 
 <!-- 之前原有的背景调节面板 -->
@@ -5224,6 +5503,112 @@ setTimeout(() => toast.remove(), 2200);
                 } catch (e) { resolve(null); }
             });
         }
+
+function normalizeApiBaseUrl(inputUrl) {
+    let url = (inputUrl || '').trim();
+
+    if (!url) {
+        return 'https://api.openai.com/v1';
+    }
+
+    if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url;
+    }
+
+    url = url.replace(/\/+$/, '');
+    url = url.replace(/\/chat\/completions$/i, '');
+    url = url.replace(/\/models$/i, '');
+    url = url.replace(/\/embeddings$/i, '');
+
+    if (!/\/v1$/i.test(url)) {
+        url += '/v1';
+    }
+
+    return url;
+}
+
+function buildApiUrl(baseUrl, path) {
+    const normalizedBaseUrl = normalizeApiBaseUrl(baseUrl);
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    return `${normalizedBaseUrl}${normalizedPath}`;
+}
+
+async function safeApiJson(response) {
+    const text = await response.text();
+    let data = null;
+
+    try {
+        data = text ? JSON.parse(text) : null;
+    } catch (error) {
+        throw new Error(`接口返回的不是合法 JSON：${text || '空响应'}`);
+    }
+
+    if (!response.ok) {
+        const message =
+            (data && data.error && data.error.message) ||
+            (data && data.message) ||
+            text ||
+            `HTTP ${response.status}`;
+        throw new Error(message);
+    }
+
+    if (!data) {
+        throw new Error('接口返回为空');
+    }
+
+    return data;
+}
+
+async function requestApiJson(baseUrl, path, fetchOptions = {}) {
+    const response = await fetch(buildApiUrl(baseUrl, path), fetchOptions);
+    return await safeApiJson(response);
+}
+
+async function requestChatCompletion(baseUrl, apiKey, payload) {
+    return await requestApiJson(baseUrl, '/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload)
+    });
+}
+
+async function requestModelsList(baseUrl, apiKey) {
+    return await requestApiJson(baseUrl, '/models', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`
+        }
+    });
+}
+
+function extractChatContent(data) {
+    if (
+        data &&
+        Array.isArray(data.choices) &&
+        data.choices[0] &&
+        data.choices[0].message &&
+        typeof data.choices[0].message.content === 'string'
+    ) {
+        return data.choices[0].message.content;
+    }
+    throw new Error('接口没有返回有效的对话内容');
+}
+
+async function getApiConfig(options = {}) {
+    const useSubApi = !!options.useSubApi;
+    const defaultModel = options.defaultModel || 'gpt-3.5-turbo';
+
+    const apiUrl = normalizeApiBaseUrl(
+        await loadFromDB(useSubApi ? 'subApiUrl' : 'mainApiUrl')
+    );
+    const apiKey = (await loadFromDB(useSubApi ? 'subApiKey' : 'mainApiKey')) || '';
+    const model = (await loadFromDB(useSubApi ? 'subSysModel' : 'sysModel')) || defaultModel;
+
+    return { apiUrl, apiKey, model };
+}
 
         const allWidgets = document.querySelectorAll('.custom-widget');
         
@@ -5455,6 +5840,18 @@ const targetEl = document.getElementById(currentUploadTargetId);
     settingsPanel.classList.add('show');
 }
 
+function saveWidgetSizeToDB(widget) {
+    const rect = widget.getBoundingClientRect();
+    const widthToSave = `${Math.round(rect.width)}px`;
+    const heightToSave = `${Math.round(rect.height)}px`;
+
+    widget.style.width = widthToSave;
+    widget.style.height = heightToSave;
+
+    saveToDB(widget.id + '_width', widthToSave);
+    saveToDB(widget.id + '_height', heightToSave);
+}
+
 allWidgets.forEach(widget => {
     let pressTimer;
     let resizeSaveTimer = null;
@@ -5465,7 +5862,11 @@ allWidgets.forEach(widget => {
         pressTimer = setTimeout(() => { openSettings(widget); }, 500);
     }, { passive: true });
 
-    widget.addEventListener('touchend', () => clearTimeout(pressTimer));
+    widget.addEventListener('touchend', () => {
+        clearTimeout(pressTimer);
+        saveWidgetSizeToDB(widget);
+    });
+
     widget.addEventListener('touchmove', () => clearTimeout(pressTimer));
 
     widget.addEventListener('mousedown', (e) => {
@@ -5474,17 +5875,22 @@ allWidgets.forEach(widget => {
         pressTimer = setTimeout(() => { openSettings(widget); }, 500);
     });
 
-    widget.addEventListener('mouseup', () => clearTimeout(pressTimer));
+    widget.addEventListener('mouseup', () => {
+        clearTimeout(pressTimer);
+        saveWidgetSizeToDB(widget);
+    });
+
     widget.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+
+    widget.addEventListener('pointerup', () => {
+        saveWidgetSizeToDB(widget);
+    });
 
     const resizeObserver = new ResizeObserver(() => {
         clearTimeout(resizeSaveTimer);
         resizeSaveTimer = setTimeout(() => {
-            const widthToSave = widget.style.width && widget.style.width.trim() !== '' ? widget.style.width : `${widget.offsetWidth}px`;
-            const heightToSave = widget.style.height && widget.style.height.trim() !== '' ? widget.style.height : `${widget.offsetHeight}px`;
-            saveToDB(widget.id + '_width', widthToSave);
-            saveToDB(widget.id + '_height', heightToSave);
-        }, 180);
+            saveWidgetSizeToDB(widget);
+        }, 120);
     });
 
     resizeObserver.observe(widget);
@@ -5988,32 +6394,138 @@ document.getElementById('tempInput').addEventListener('input', (e) => {
 });
 
 // 保存和加载配置 (增加到了双模型支持)
+let apiConfigPresets = [];
+
+// 这段是 API 预设列表渲染逻辑
+async function renderApiConfigPresets() {
+    apiConfigPresets = await loadFromDB('api_config_presets') || [];
+    const container = document.getElementById('apiPresetList');
+    container.innerHTML = '';
+
+    if (apiConfigPresets.length === 0) {
+        container.innerHTML = '<span style="font-size:11px; color:var(--text-sub);">暂无预设</span>';
+        return;
+    }
+
+    apiConfigPresets.forEach((preset, index) => {
+        const chip = document.createElement('div');
+        chip.className = 'acc-chip';
+        chip.style.padding = '6px 12px';
+        chip.style.fontSize = '11px';
+        chip.innerHTML = `${preset.name} <span style="margin-left:6px; color:#D67A7A; opacity:0.6; font-size:14px; font-weight:bold; display:inline-block; transform:translateY(1px);" onclick="deleteApiConfigPreset(event, ${index})">×</span>`;
+        chip.onclick = () => {
+            applyApiConfigPreset(preset);
+            showToast('已载入 API 预设：' + preset.name);
+        };
+        container.appendChild(chip);
+    });
+}
+
+// 这段是把预设内容填回设置界面的逻辑
+function applyApiConfigPreset(preset) {
+    document.getElementById('mainApiUrl').value = preset.mainApiUrl || '';
+    document.getElementById('mainApiKey').value = preset.mainApiKey || '';
+    document.getElementById('subApiUrl').value = preset.subApiUrl || '';
+    document.getElementById('subApiKey').value = preset.subApiKey || '';
+
+    document.getElementById('tempInput').value = preset.temp != null ? preset.temp : '0.7';
+    document.getElementById('tempDisplay').innerText = preset.temp != null ? preset.temp : '0.7';
+
+    if (preset.mainModel) {
+        document.getElementById('mainModelSelect').innerHTML = `<option value="${preset.mainModel}">${preset.mainModel} (预设)</option>`;
+    } else {
+        document.getElementById('mainModelSelect').innerHTML = `<option value="">请填写主节点并拉取...</option>`;
+    }
+
+    if (preset.subModel) {
+        document.getElementById('subModelSelect').innerHTML = `<option value="${preset.subModel}">${preset.subModel} (预设)</option>`;
+    } else {
+        document.getElementById('subModelSelect').innerHTML = `<option value="">请填写副节点并拉取...</option>`;
+    }
+}
+
+// 这段是删除单个 API 预设的逻辑
+window.deleteApiConfigPreset = async function(e, index) {
+    e.stopPropagation();
+    showBeautifulDialog('删除 API 预设', '确定要删除这个预设吗？', 'confirm', '', async () => {
+        apiConfigPresets.splice(index, 1);
+        await saveToDB('api_config_presets', apiConfigPresets);
+        renderApiConfigPresets();
+    });
+};
+
+// 这段是保存当前 API 配置为预设的逻辑
+document.getElementById('saveApiPresetBtn').addEventListener('click', () => {
+    const presetData = {
+        name: '',
+        mainApiUrl: normalizeApiBaseUrl(document.getElementById('mainApiUrl').value),
+        mainApiKey: document.getElementById('mainApiKey').value.trim(),
+        subApiUrl: document.getElementById('subApiUrl').value.trim() ? normalizeApiBaseUrl(document.getElementById('subApiUrl').value) : '',
+        subApiKey: document.getElementById('subApiKey').value.trim(),
+        mainModel: document.getElementById('mainModelSelect').value || '',
+        subModel: document.getElementById('subModelSelect').value || '',
+        temp: document.getElementById('tempInput').value
+    };
+
+    if (!presetData.mainApiUrl && !presetData.mainApiKey && !presetData.subApiUrl && !presetData.subApiKey) {
+        showToast('先填写一组 API 配置再归档预设');
+        return;
+    }
+
+    showBeautifulDialog('归档 API 预设', '给这组节点配置起个名字：', 'prompt', '', async (name) => {
+        if (!name || !name.trim()) {
+            return;
+        }
+
+        presetData.name = name.trim();
+        presetData.id = Date.now();
+
+        apiConfigPresets.push(presetData);
+        await saveToDB('api_config_presets', apiConfigPresets);
+        renderApiConfigPresets();
+        showToast('API 预设已归档');
+    });
+});
+
 async function loadSettings() {
-    document.getElementById('mainApiUrl').value = await loadFromDB('mainApiUrl') || '';
+    const savedMainApiUrl = await loadFromDB('mainApiUrl');
+    const savedSubApiUrl = await loadFromDB('subApiUrl');
+
+    document.getElementById('mainApiUrl').value = savedMainApiUrl ? normalizeApiBaseUrl(savedMainApiUrl) : '';
     document.getElementById('mainApiKey').value = await loadFromDB('mainApiKey') || '';
-    document.getElementById('subApiUrl').value = await loadFromDB('subApiUrl') || '';
+    document.getElementById('subApiUrl').value = savedSubApiUrl ? normalizeApiBaseUrl(savedSubApiUrl) : '';
     document.getElementById('subApiKey').value = await loadFromDB('subApiKey') || '';
     
     document.getElementById('sysNotifyToggle').checked = (await loadFromDB('sysNotifyEnabled') !== false);
     document.getElementById('inAppBannerToggle').checked = (await loadFromDB('inAppBannerEnabled') !== false);
     document.getElementById('notifySoundUrl').value = await loadFromDB('notifySoundUrl') || '';
     
-    document.getElementById('globalWrongMailToggle').checked = (await loadFromDB('globalWrongMail') !== false); // 默认开启
-document.getElementById('globalAutoDiaryToggle').checked = (await loadFromDB('globalAutoDiary') !== false); // 默认开启
+    document.getElementById('globalWrongMailToggle').checked = (await loadFromDB('globalWrongMail') !== false);
+    document.getElementById('globalAutoDiaryToggle').checked = (await loadFromDB('globalAutoDiary') !== false);
+
     const savedTemp = await loadFromDB('sysTemp');
-    if (savedTemp) {
+    if (savedTemp !== undefined && savedTemp !== null && savedTemp !== '') {
         document.getElementById('tempInput').value = savedTemp;
         document.getElementById('tempDisplay').innerText = savedTemp;
+    } else {
+        document.getElementById('tempInput').value = '0.7';
+        document.getElementById('tempDisplay').innerText = '0.7';
     }
     
     const savedMainModel = await loadFromDB('sysModel');
-    if (savedMainModel) document.getElementById('mainModelSelect').innerHTML = `<option value="${savedMainModel}">${savedMainModel} (已存)</option>`;
+    if (savedMainModel) {
+        document.getElementById('mainModelSelect').innerHTML = `<option value="${savedMainModel}">${savedMainModel} (已存)</option>`;
+    } else {
+        document.getElementById('mainModelSelect').innerHTML = `<option value="">请填写主节点并拉取...</option>`;
+    }
     
     const savedSubModel = await loadFromDB('subSysModel');
-    if (savedSubModel) document.getElementById('subModelSelect').innerHTML = `<option value="${savedSubModel}">${savedSubModel} (已存)</option>`;
+    if (savedSubModel) {
+        document.getElementById('subModelSelect').innerHTML = `<option value="${savedSubModel}">${savedSubModel} (已存)</option>`;
+    } else {
+        document.getElementById('subModelSelect').innerHTML = `<option value="">请填写副节点并拉取...</option>`;
+    }
 
-    // 读取流畅模式开关
-        // (这部分是原有的代码，参考定位)
     const perfMode = await loadFromDB('perfMode');
     const perfToggle = document.getElementById('perfModeToggle');
     if (perfMode === true) {
@@ -6024,7 +6536,6 @@ document.getElementById('globalAutoDiaryToggle').checked = (await loadFromDB('gl
         document.body.classList.remove('perf-mode');
     }
 
-    // ============= 新增：读取去模糊状态 =============
     const noBlurMode = await loadFromDB('noBlurMode');
     const blurToggle = document.getElementById('noBlurModeToggle');
     if (noBlurMode === true) {
@@ -6034,39 +6545,28 @@ document.getElementById('globalAutoDiaryToggle').checked = (await loadFromDB('gl
         blurToggle.checked = false;
         document.body.classList.remove('no-blur-mode');
     }
-    // ==============================================
+
+    await renderApiConfigPresets();
 }
-
-// 监听流畅模式开关
-document.getElementById('perfModeToggle').addEventListener('change', async function() {
-    const isChecked = this.checked;
-    if (isChecked) {
-        document.body.classList.add('perf-mode');
-    } else {
-        document.body.classList.remove('perf-mode');
-    }
-    await saveToDB('perfMode', isChecked);
-});
-
-// 监听：极致去模糊开关
-document.getElementById('noBlurModeToggle').addEventListener('change', async function() {
-    const isChecked = this.checked;
-    if (isChecked) {
-        document.body.classList.add('no-blur-mode');
-    } else {
-        document.body.classList.remove('no-blur-mode');
-    }
-    await saveToDB('noBlurMode', isChecked);
-});
 
 document.getElementById('saveConfigBtn').addEventListener('click', async function() {
     const btn = this;
-    await saveToDB('mainApiUrl', document.getElementById('mainApiUrl').value);
-    await saveToDB('mainApiKey', document.getElementById('mainApiKey').value);
-    await saveToDB('subApiUrl', document.getElementById('subApiUrl').value);
-    await saveToDB('subApiKey', document.getElementById('subApiKey').value);
+
+    const mainApiUrlInput = document.getElementById('mainApiUrl');
+    const subApiUrlInput = document.getElementById('subApiUrl');
+
+    const normalizedMainApiUrl = normalizeApiBaseUrl(mainApiUrlInput.value);
+    const normalizedSubApiUrl = subApiUrlInput.value.trim() ? normalizeApiBaseUrl(subApiUrlInput.value) : '';
+
+    mainApiUrlInput.value = normalizedMainApiUrl;
+    subApiUrlInput.value = normalizedSubApiUrl;
+
+    await saveToDB('mainApiUrl', normalizedMainApiUrl);
+    await saveToDB('mainApiKey', document.getElementById('mainApiKey').value.trim());
+    await saveToDB('subApiUrl', normalizedSubApiUrl);
+    await saveToDB('subApiKey', document.getElementById('subApiKey').value.trim());
     await saveToDB('globalWrongMail', document.getElementById('globalWrongMailToggle').checked);
-await saveToDB('globalAutoDiary', document.getElementById('globalAutoDiaryToggle').checked);
+    await saveToDB('globalAutoDiary', document.getElementById('globalAutoDiaryToggle').checked);
     await saveToDB('sysTemp', document.getElementById('tempInput').value);
     
     await saveToDB('sysNotifyEnabled', document.getElementById('sysNotifyToggle').checked);
@@ -6074,61 +6574,70 @@ await saveToDB('globalAutoDiary', document.getElementById('globalAutoDiaryToggle
     await saveToDB('notifySoundUrl', document.getElementById('notifySoundUrl').value.trim());
     
     const mainModel = document.getElementById('mainModelSelect').value;
-    if (mainModel) await saveToDB('sysModel', mainModel);
+    if (mainModel) {
+        await saveToDB('sysModel', mainModel);
+    }
     
     const subModel = document.getElementById('subModelSelect').value;
-    if (subModel) await saveToDB('subSysModel', subModel);
+    if (subModel) {
+        await saveToDB('subSysModel', subModel);
+    }
     
-    btn.innerText = "已保存！";
-    btn.style.background = "#A3C7A3"; 
-    setTimeout(() => { btn.innerText = "保存所有配置"; btn.style.background = "var(--accent)"; }, 1500);
+    btn.innerText = "已归档！";
+    btn.style.background = "#A3C7A3";
+    setTimeout(() => {
+        btn.innerText = "归档所有配置";
+        btn.style.background = "var(--accent)";
+    }, 1500);
 });
 
-// 提取出一个通用的网络请求拉取模型函数，主副共用
 async function fetchModels(btnId, urlId, keyId, selectId) {
     const btn = document.getElementById(btnId);
-    let url = document.getElementById(urlId).value.trim();
-    let key = document.getElementById(keyId).value.trim();
-    
-    if (!key) {
+    const urlInput = document.getElementById(urlId);
+    const keyInput = document.getElementById(keyId);
+    const select = document.getElementById(selectId);
+
+    const apiKey = keyInput.value.trim();
+    if (!apiKey) {
         btn.innerText = "缺Key!";
-        setTimeout(() => btn.innerText = "重新获取", 1500);
+        setTimeout(() => {
+            btn.innerText = btnId.includes('Main') ? "获取主模型" : "获取副模型";
+        }, 1500);
         return;
     }
-    
-    if (!url) url = 'https://api.openai.com/v1';
-    if (url.endsWith('/')) url = url.slice(0, -1);
-    if (!url.endsWith('/v1') && !url.includes('/models')) url += '/v1';
-    
+
+    const normalizedBaseUrl = normalizeApiBaseUrl(urlInput.value);
+    urlInput.value = normalizedBaseUrl;
+
     btn.innerText = "请求中...";
     try {
-        const response = await fetch(`${url}/models`, {
-            method: 'GET',
-            headers: { 'Authorization': `Bearer ${key}` }
+        const resJson = await requestModelsList(normalizedBaseUrl, apiKey);
+        const models = Array.isArray(resJson.data) ? resJson.data : [];
+
+        if (models.length === 0) {
+            throw new Error('接口没有返回模型列表');
+        }
+
+        select.innerHTML = '';
+        models.forEach(modelItem => {
+            const opt = document.createElement('option');
+            opt.value = modelItem.id;
+            opt.innerText = modelItem.id;
+            select.appendChild(opt);
         });
-        
-        if (!response.ok) throw new Error('网络错误');
-        
-        const resJson = await response.json();
-        const models = resJson.data; 
-        
-        if (models && Array.isArray(models)) {
-            const select = document.getElementById(selectId);
-            select.innerHTML = '';
-            models.forEach(m => {
-                let opt = document.createElement('option');
-                opt.value = m.id; opt.innerText = m.id;
-                select.appendChild(opt);
-            });
-            btn.innerText = "成功";
-        } else throw new Error('格式不符');
-    } catch(e) {
+
+        btn.innerText = "成功";
+    } catch (e) {
+        console.error('获取模型失败:', e);
         btn.innerText = "失败!";
+        showToast(`拉取模型失败：${e.message}`);
     }
-    setTimeout(() => btn.innerText = btnId.includes('Main') ? "获取主模型" : "获取副模型", 2000);
+
+    setTimeout(() => {
+        btn.innerText = btnId.includes('Main') ? "获取主模型" : "获取副模型";
+    }, 2000);
 }
 
-// 绑定两个按钮
 document.getElementById('fetchMainModelsBtn').addEventListener('click', () => fetchModels('fetchMainModelsBtn', 'mainApiUrl', 'mainApiKey', 'mainModelSelect'));
 document.getElementById('fetchSubModelsBtn').addEventListener('click', () => fetchModels('fetchSubModelsBtn', 'subApiUrl', 'subApiKey', 'subModelSelect'));
 
@@ -6279,23 +6788,71 @@ const validKeys = [
     };
 });
 
-// === 指令库 APP 交互逻辑 ===
+// === 指令 / 世界书 APP 交互逻辑 ===
 const commandEditPanel = document.getElementById('commandEditPanel');
 let commandList = [];
 let currentCommandFilter = '全部';
+let currentCommandLibraryTab = 'command';
 
-// 唤起美化版删除弹窗的通用函数
 function showBeautifulConfirm(onConfirm) {
     const cc = document.getElementById('customConfirm');
     cc.classList.add('show');
     document.getElementById('ccConfirm').onclick = () => {
         cc.classList.remove('show');
-        if(onConfirm) onConfirm();
+        if (onConfirm) onConfirm();
     };
     document.getElementById('ccCancel').onclick = () => cc.classList.remove('show');
 }
 
-// 插入位置开关的点击逻辑
+function normalizeCommandItem(item) {
+    return {
+        id: item.id || ('cmd_' + Date.now() + '_' + Math.random()),
+        name: item.name || '未命名条目',
+        category: item.category || '默认分组',
+        position: item.position || 'front',
+        isGlobal: !!item.isGlobal,
+        isEnabled: item.isEnabled !== false,
+        content: item.content || '',
+        libType: item.libType || ((item.category || '').includes('世界书') ? 'worldbook' : 'command'),
+        worldbookKeys: item.worldbookKeys || '',
+        weight: item.weight != null ? Number(item.weight) : 100,
+        depth: item.depth != null ? Number(item.depth) : 4
+    };
+}
+
+function getCurrentLibraryLabel() {
+    return currentCommandLibraryTab === 'worldbook' ? '世界书' : '指令';
+}
+
+function setCommandLibraryTab(lib) {
+    currentCommandLibraryTab = lib;
+    currentCommandFilter = '全部';
+    document.querySelectorAll('#commandLibraryTabs .role-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lib === lib);
+    });
+    document.getElementById('addNewCommandBtn').innerText = lib === 'worldbook' ? '+ 新增世界书条目' : '+ 添加新指令';
+    renderCommandList();
+}
+
+document.querySelectorAll('#commandLibraryTabs .role-btn').forEach(btn => {
+    btn.addEventListener('click', () => setCommandLibraryTab(btn.dataset.lib));
+});
+
+document.querySelectorAll('.app').forEach(app => {
+    if (app.innerText.includes('指令')) {
+        app.addEventListener('click', async () => {
+            commandModal.classList.add('open');
+            setCommandLibraryTab('command');
+            await renderCommandList();
+        });
+    }
+});
+
+document.getElementById('closeCommandApp').addEventListener('click', () => {
+    commandModal.classList.remove('open');
+    document.getElementById('commandEditPanel').classList.remove('show');
+});
+
 document.querySelectorAll('#commandPosSelector .role-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('#commandPosSelector .role-btn').forEach(b => b.classList.remove('active'));
@@ -6304,118 +6861,434 @@ document.querySelectorAll('#commandPosSelector .role-btn').forEach(btn => {
 });
 
 async function renderCommandList() {
-    commandList = await loadFromDB('ai_commands') || [];
+    commandList = (await loadFromDB('ai_commands') || []).map(normalizeCommandItem);
     const container = document.getElementById('commandList');
     const filterBar = document.getElementById('commandFilterBar');
-    
+
+    const currentList = commandList.filter(item => item.libType === currentCommandLibraryTab);
+
     let categories = ['全部'];
-    commandList.forEach(c => { if (c.category && !categories.includes(c.category)) categories.push(c.category); });
+    currentList.forEach(item => {
+        if (item.category && !categories.includes(item.category)) categories.push(item.category);
+    });
 
     filterBar.innerHTML = '';
     categories.forEach(cat => {
         const chip = document.createElement('div');
         chip.className = 'cmd-chip' + (currentCommandFilter === cat ? ' active' : '');
         chip.innerText = cat;
-        chip.onclick = () => { currentCommandFilter = cat; renderCommandList(); };
+        chip.onclick = () => {
+            currentCommandFilter = cat;
+            renderCommandList();
+        };
         filterBar.appendChild(chip);
     });
 
-    if (commandList.length === 0) {
-        container.innerHTML = '<div class="char-empty">还没有任何指令，点击下方添加吧~</div>'; return;
+    if (currentList.length === 0) {
+        container.innerHTML = `<div class="char-empty">当前${getCurrentLibraryLabel()}还没有内容，点击下方添加吧~</div>`;
+        return;
+    }
+
+    const filteredList = currentCommandFilter === '全部'
+        ? currentList
+        : currentList.filter(item => item.category === currentCommandFilter);
+
+    if (filteredList.length === 0) {
+        container.innerHTML = `<div class="char-empty">当前分组下没有${getCurrentLibraryLabel()}内容~</div>`;
+        return;
     }
 
     container.innerHTML = '';
-    const filteredList = currentCommandFilter === '全部' ? commandList : commandList.filter(c => c.category === currentCommandFilter);
 
-    if (filteredList.length === 0) {
-         container.innerHTML = '<div class="char-empty">当前分类下没有指令~</div>'; return;
-    }
-
-    filteredList.forEach(cmd => {
+    filteredList.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'char-card'; 
+        card.className = 'char-card';
 
-        let catBadge = cmd.category ? `<span class="cmd-badge">${cmd.category}</span>` : '';
-        // 渲染前置后置的高亮小尾巴
-        let posBadge = cmd.position === 'back' 
-            ? `<span class="cmd-badge" style="background: rgba(214,122,122,0.15); color: #D67A7A;">后置</span>` 
+        const catBadge = item.category ? `<span class="cmd-badge">${item.category}</span>` : '';
+        const posBadge = item.position === 'back'
+            ? `<span class="cmd-badge" style="background: rgba(214,122,122,0.15); color: #D67A7A;">后置</span>`
             : `<span class="cmd-badge" style="background: rgba(184,156,142,0.15); color: var(--accent);">前置</span>`;
-        
-        // 渲染全局标志
-        let globalBadge = cmd.isGlobal ? `<span class="cmd-badge" style="background: rgba(139,168,136,0.15); color: #8BA888;">全局</span>` : '';
+        const globalBadge = item.isGlobal
+            ? `<span class="cmd-badge" style="background: rgba(139,168,136,0.15); color: #8BA888;">全局</span>`
+            : '';
+        const keyBadge = item.libType === 'worldbook' && item.worldbookKeys
+            ? `<span class="cmd-badge" style="background: rgba(51,144,236,0.12); color: #3390EC;">关键词</span>`
+            : '';
+        const weightBadge = item.libType === 'worldbook'
+            ? `<span class="cmd-badge" style="background: rgba(150,143,137,0.12); color: var(--text-sub);">权重 ${item.weight}</span>`
+            : '';
+        const depthBadge = item.libType === 'worldbook'
+            ? `<span class="cmd-badge" style="background: rgba(150,143,137,0.12); color: var(--text-sub);">深度 ${item.depth}</span>`
+            : '';
+        const enableBadge = item.isEnabled
+            ? `<span class="cmd-badge" style="background: rgba(139,168,136,0.12); color: #6E8B69;">启用</span>`
+            : `<span class="cmd-badge" style="background: rgba(214,122,122,0.12); color: #D67A7A;">停用</span>`;
+
+        const previewExtra = item.libType === 'worldbook' && item.worldbookKeys
+            ? `关键词：${item.worldbookKeys}`
+            : (item.content || '空内容...');
 
         card.innerHTML = `
             <div class="char-card-info">
-                <div class="char-card-name">${cmd.name} ${catBadge} ${posBadge} ${globalBadge}</div>
-                <div class="char-card-desc">${cmd.content || '空指令...'}</div>
+                <div class="char-card-name">${item.name} ${catBadge} ${posBadge} ${globalBadge} ${keyBadge} ${weightBadge} ${depthBadge} ${enableBadge}</div>
+                <div class="char-card-desc">${previewExtra}</div>
             </div>
         `;
-        card.onclick = () => openCommandEditPanel(cmd);
+        card.onclick = () => openCommandEditPanel(item);
         container.appendChild(card);
     });
 }
 
-function openCommandEditPanel(cmd = null) {
-    // 恢复按钮选中状态的辅助函数
+function openCommandEditPanel(item = null) {
     const setPosBtn = (posValue) => {
         document.querySelectorAll('#commandPosSelector .role-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector(`#commandPosSelector .role-btn[data-pos="${posValue}"]`).classList.add('active');
+        const targetBtn = document.querySelector(`#commandPosSelector .role-btn[data-pos="${posValue}"]`);
+        if (targetBtn) targetBtn.classList.add('active');
     };
 
-    if (cmd) {
-    document.getElementById('commandGlobalToggle').checked = cmd.isGlobal || false;
-        document.getElementById('commandEditId').value = cmd.id;
-        document.getElementById('commandEditName').value = cmd.name;
-        document.getElementById('commandEditCategory').value = cmd.category || '';
-        document.getElementById('commandEditContent').value = cmd.content;
-        setPosBtn(cmd.position || 'front'); // 载入保存的位置
+    const isWorldbook = currentCommandLibraryTab === 'worldbook';
+    document.getElementById('commandEditKeys').style.display = isWorldbook ? 'block' : 'none';
+    document.getElementById('commandEditKeysHint').style.display = isWorldbook ? 'block' : 'none';
+    document.getElementById('commandWorldbookMetaRow').style.display = isWorldbook ? 'flex' : 'none';
+    document.getElementById('commandEnabledRow').style.display = isWorldbook ? 'flex' : 'none';
+
+    if (item) {
+        const normalized = normalizeCommandItem(item);
+        document.getElementById('commandEditId').value = normalized.id;
+        document.getElementById('commandEditName').value = normalized.name;
+        document.getElementById('commandEditCategory').value = normalized.category || '';
+        document.getElementById('commandEditContent').value = normalized.content || '';
+        document.getElementById('commandEditKeys').value = normalized.worldbookKeys || '';
+        document.getElementById('commandEditWeight').value = normalized.weight;
+        document.getElementById('commandEditDepth').value = normalized.depth;
+        document.getElementById('commandEnabledToggle').checked = normalized.isEnabled !== false;
+        document.getElementById('commandGlobalToggle').checked = normalized.isGlobal || false;
+        setPosBtn(normalized.position || 'front');
         document.getElementById('deleteCommandBtn').style.display = 'block';
     } else {
-    document.getElementById('commandGlobalToggle').checked = false;
         document.getElementById('commandEditId').value = 'cmd_' + Date.now();
         document.getElementById('commandEditName').value = '';
-        document.getElementById('commandEditCategory').value = currentCommandFilter === '全部' ? '' : currentCommandFilter; 
+        document.getElementById('commandEditCategory').value = currentCommandFilter === '全部' ? '' : currentCommandFilter;
         document.getElementById('commandEditContent').value = '';
-        setPosBtn('front'); // 默认前置
-        document.getElementById('deleteCommandBtn').style.display = 'none';    
+        document.getElementById('commandEditKeys').value = '';
+        document.getElementById('commandEditWeight').value = 100;
+        document.getElementById('commandEditDepth').value = 4;
+        document.getElementById('commandEnabledToggle').checked = true;
+        document.getElementById('commandGlobalToggle').checked = false;
+        setPosBtn('front');
+        document.getElementById('deleteCommandBtn').style.display = 'none';
     }
+
     commandEditPanel.classList.add('show');
 }
 
 document.getElementById('addNewCommandBtn').addEventListener('click', () => openCommandEditPanel(null));
-document.getElementById('cancelCommandEditBtn').addEventListener('click', () => commandEditPanel.classList.remove('show'));
+document.getElementById('cancelCommandEditBtn').addEventListener('click', () => {
+    commandEditPanel.classList.remove('show');
+});
 
 document.getElementById('saveCommandBtn').addEventListener('click', async () => {
     const id = document.getElementById('commandEditId').value;
-    const name = document.getElementById('commandEditName').value.trim() || '未命名指令';
-    const category = document.getElementById('commandEditCategory').value.trim() || '默认分类';
+    const name = document.getElementById('commandEditName').value.trim() || '未命名条目';
+    const category = document.getElementById('commandEditCategory').value.trim() || '默认分组';
     const content = document.getElementById('commandEditContent').value.trim();
     const position = document.querySelector('#commandPosSelector .role-btn.active').dataset.pos;
-const isGlobal = document.getElementById('commandGlobalToggle').checked; // ★新增这行
+    const isGlobal = document.getElementById('commandGlobalToggle').checked;
+    const worldbookKeys = document.getElementById('commandEditKeys').value.trim();
+    const weight = parseInt(document.getElementById('commandEditWeight').value) || 100;
+    const depth = parseInt(document.getElementById('commandEditDepth').value) || 4;
+    const isEnabled = document.getElementById('commandEnabledToggle').checked;
+
+    const newItem = normalizeCommandItem({
+        id,
+        name,
+        category,
+        position,
+        isGlobal,
+        isEnabled,
+        content,
+        libType: currentCommandLibraryTab,
+        worldbookKeys,
+        weight,
+        depth
+    });
+
     const existingIndex = commandList.findIndex(c => c.id === id);
-        if (existingIndex > -1) {
-        commandList[existingIndex] = { id, name, category, position, isGlobal, content };
+    if (existingIndex > -1) {
+        commandList[existingIndex] = newItem;
     } else {
-        commandList.push({ id, name, category, position, isGlobal, content });
+        commandList.push(newItem);
     }
 
     await saveToDB('ai_commands', commandList);
     commandEditPanel.classList.remove('show');
-    setTimeout(() => renderCommandList(), 400); 
+    setTimeout(() => renderCommandList(), 250);
 });
 
 document.getElementById('deleteCommandBtn').addEventListener('click', () => {
-    // 呼叫我们写好的美化版弹窗！
     showBeautifulConfirm(async () => {
         const id = document.getElementById('commandEditId').value;
         commandList = commandList.filter(c => c.id !== id);
-        if(currentCommandFilter !== '全部' && !commandList.some(c => c.category === currentCommandFilter)) {
-            currentCommandFilter = '全部';
-        }
         await saveToDB('ai_commands', commandList);
         commandEditPanel.classList.remove('show');
-        setTimeout(() => renderCommandList(), 400);
+        setTimeout(() => renderCommandList(), 250);
     });
+});
+
+function splitImportedLines(rawText) {
+    const lines = rawText.split('\n');
+    const items = [];
+    let current = [];
+
+    lines.forEach(line => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+            if (current.length > 0) {
+                items.push(current.join('\n').trim());
+                current = [];
+            }
+            return;
+        }
+        current.push(line);
+    });
+
+    if (current.length > 0) {
+        items.push(current.join('\n').trim());
+    }
+
+    return items.filter(Boolean);
+}
+
+function parseWorldbookKeysFromText(text) {
+    const patterns = [
+        /关键词[:：]\s*(.*)/i,
+        /keys?[:：]\s*(.*)/i,
+        /trigger[:：]\s*(.*)/i
+    ];
+
+    for (const pattern of patterns) {
+        const match = text.match(pattern);
+        if (match && match[1]) {
+            return match[1].split(/[,，、]/).map(k => k.trim()).filter(Boolean).join(', ');
+        }
+    }
+
+    return '';
+}
+
+function parseWorldbookWeightFromText(text) {
+    const match = text.match(/(?:权重|weight)[:：]\s*(-?\d+)/i);
+    return match ? parseInt(match[1]) : 100;
+}
+
+function parseWorldbookDepthFromText(text) {
+    const match = text.match(/(?:深度|depth)[:：]\s*(-?\d+)/i);
+    return match ? parseInt(match[1]) : 4;
+}
+
+function parseWorldbookEnabledFromText(text) {
+    if (/(?:禁用|停用|disabled[:：]?\s*true)/i.test(text)) return false;
+    return true;
+}
+
+function parseSillyTavernWorldbook(rawText, importGroupName) {
+    const parsed = JSON.parse(rawText);
+    let entries = [];
+
+    if (Array.isArray(parsed.entries)) {
+        entries = parsed.entries;
+    } else if (parsed.entries && typeof parsed.entries === 'object') {
+        entries = Object.values(parsed.entries);
+    } else if (parsed.worldbook && parsed.worldbook.entries) {
+        entries = Array.isArray(parsed.worldbook.entries)
+            ? parsed.worldbook.entries
+            : Object.values(parsed.worldbook.entries);
+    }
+
+    return entries.map((entry, index) => {
+        const keys = []
+            .concat(entry.keys || [])
+            .concat(entry.key || [])
+            .concat(entry.secondary_keys || [])
+            .filter(Boolean);
+
+        const name = entry.comment || entry.name || `世界书条目 ${index + 1}`;
+        const content = entry.content || entry.text || entry.description || '';
+        const weight = entry.order != null ? Number(entry.order) : (entry.weight != null ? Number(entry.weight) : 100);
+        const depth = entry.depth != null ? Number(entry.depth) : 4;
+        const category = importGroupName;
+        const isEnabled = entry.enabled !== false;
+        const isGlobal = !!entry.constant;
+
+        return normalizeCommandItem({
+            id: 'wb_' + Date.now() + '_' + index,
+            name,
+            category,
+            position: 'front',
+            isGlobal,
+            isEnabled,
+            content,
+            libType: 'worldbook',
+            worldbookKeys: keys.join(', '),
+            weight,
+            depth
+        });
+    }).filter(item => item.content.trim() || item.worldbookKeys.trim());
+}
+
+function parsePlainLibraryText(rawText, libType, importGroupName) {
+    const blocks = splitImportedLines(rawText);
+    const useBlocks = blocks.length > 0 ? blocks : [rawText.trim()].filter(Boolean);
+
+    return useBlocks.map((block, index) => {
+        const lines = block.split('\n');
+        let firstLine = (lines[0] || '').trim();
+        let rest = lines.slice(1).join('\n').trim();
+
+        if (libType === 'worldbook') {
+            const autoKeys = parseWorldbookKeysFromText(block);
+            const autoWeight = parseWorldbookWeightFromText(block);
+            const autoDepth = parseWorldbookDepthFromText(block);
+            const autoEnabled = parseWorldbookEnabledFromText(block);
+
+            if (!rest) rest = block;
+            if (!firstLine || firstLine.includes('关键词') || firstLine.includes('权重') || firstLine.includes('深度')) {
+                firstLine = `世界书条目 ${index + 1}`;
+            }
+
+            return normalizeCommandItem({
+                id: 'wb_' + Date.now() + '_' + index,
+                name: firstLine,
+                category: importGroupName,
+                position: 'front',
+                isGlobal: false,
+                isEnabled: autoEnabled,
+                content: rest,
+                libType: 'worldbook',
+                worldbookKeys: autoKeys,
+                weight: autoWeight,
+                depth: autoDepth
+            });
+        }
+
+        if (!rest) rest = block;
+        if (!firstLine) firstLine = `指令 ${index + 1}`;
+
+        return normalizeCommandItem({
+            id: 'cmd_' + Date.now() + '_' + index,
+            name: firstLine,
+            category: importGroupName,
+            position: 'front',
+            isGlobal: false,
+            isEnabled: true,
+            content: rest,
+            libType: 'command',
+            worldbookKeys: '',
+            weight: 100,
+            depth: 4
+        });
+    });
+}
+
+document.getElementById('commandImportInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+        const rawText = await file.text();
+        const importGroupName = `导入_${file.name.replace(/\.[^.]+$/, '')}_${new Date().getMonth() + 1}-${new Date().getDate()}`;
+        let importedItems = [];
+
+        if (currentCommandLibraryTab === 'worldbook' && file.name.toLowerCase().endsWith('.json')) {
+            try {
+                importedItems = parseSillyTavernWorldbook(rawText, importGroupName);
+            } catch (jsonError) {
+                importedItems = parsePlainLibraryText(rawText, 'worldbook', importGroupName);
+            }
+        } else {
+            importedItems = parsePlainLibraryText(rawText, currentCommandLibraryTab, importGroupName);
+        }
+
+        if (importedItems.length === 0) {
+            showToast('没有识别到可导入内容');
+            e.target.value = '';
+            return;
+        }
+
+        const oldList = (await loadFromDB('ai_commands') || []).map(normalizeCommandItem);
+        const merged = [...oldList];
+
+        importedItems.forEach(item => {
+            merged.push(item);
+        });
+
+        commandList = merged;
+        await saveToDB('ai_commands', merged);
+        await renderCommandList();
+        showToast(`已导入 ${importedItems.length} 条${getCurrentLibraryLabel()}内容，默认归入分组：${importGroupName}`);
+    } catch (err) {
+        showToast('导入失败：' + err.message);
+    }
+
+    e.target.value = '';
+});
+
+document.getElementById('commandExportBtn').addEventListener('click', async () => {
+    const allItems = (await loadFromDB('ai_commands') || []).map(normalizeCommandItem);
+    const currentItems = allItems.filter(item => item.libType === currentCommandLibraryTab);
+
+    if (currentItems.length === 0) {
+        showToast(`当前${getCurrentLibraryLabel()}为空，无法导出`);
+        return;
+    }
+
+    let blob;
+    let fileName;
+
+    if (currentCommandLibraryTab === 'worldbook') {
+        const entries = {};
+        currentItems.forEach((item, index) => {
+            const keys = (item.worldbookKeys || '')
+                .split(/[,，、]/)
+                .map(k => k.trim())
+                .filter(Boolean);
+
+            entries[index] = {
+                uid: index,
+                key: keys,
+                keys: keys,
+                comment: item.name,
+                content: item.content,
+                constant: !!item.isGlobal,
+                selective: true,
+                enabled: item.isEnabled !== false,
+                insertion_order: item.weight != null ? Number(item.weight) : 100,
+                depth: item.depth != null ? Number(item.depth) : 4,
+                position: item.position === 'back' ? 'after_char' : 'before_char',
+                category: item.category || '导出世界书'
+            };
+        });
+
+        blob = new Blob([JSON.stringify({ entries }, null, 2)], { type: 'application/json;charset=utf-8' });
+        fileName = `世界书导出_${Date.now()}.json`;
+    } else {
+        const text = currentItems.map(item => {
+            return `${item.name}\n${item.content}`;
+        }).join('\n\n');
+
+        blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        fileName = `指令导出_${Date.now()}.txt`;
+    }
+
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+
+    showToast(`${getCurrentLibraryLabel()}已导出`);
 });
 
 // === 经期手账 APP 交互逻辑 ===
@@ -7080,7 +7953,7 @@ const model = (await loadFromDB(useSubApi ? 'subSysModel' : 'sysModel')) || 'gpt
     throw new Error(`HTTP状态码 ${response.status} | 详细原因: ${errData}`);
 }
         
-        const data = await response.json();
+        const data = await safeApiJson(response);
         const reply = data.choices[0].message.content;
         
         // 解析文本并保存入库
@@ -7166,7 +8039,7 @@ const model = (await loadFromDB(useSubApi ? 'subSysModel' : 'sysModel')) || 'gpt
     throw new Error(`HTTP状态码 ${response.status} | 详细原因: ${errData}`);
 }
         
-        const data = await response.json();
+        const data = await safeApiJson(response);
         const reply = data.choices[0].message.content;
         
         // 正则提取它按要求输出的固定格式
@@ -7367,7 +8240,7 @@ if (dreamCurrentTab === 'interpret') {
         
         if (!res.ok) throw new Error('网络请求失败');
         
-        const data = await res.json();
+        const data = await safeApiJson(res);
         const reply = data.choices[0].message.content.trim();
         
         document.getElementById('dreamResultArea').style.display = 'block';
@@ -7499,7 +8372,7 @@ if(Math.random() > 0.25) return; // 25%的概率中奖触发
                 method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}`},
                 body:JSON.stringify({ model, messages:[{role:"system",content:sysPrompt}], temperature:0.9 })
             });
-            const data = await res.json();
+            const data = await safeApiJson(res);
             const replyText = data.choices[0].message.content;
             
             let parts = replyText.split('|');
@@ -7779,7 +8652,7 @@ document.getElementById('confirmSendBtn').addEventListener('click', async () => 
                 method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}`},
                 body:JSON.stringify({ model, messages:[{role:"system",content:sysPrompt}], temperature:0.8 })
             });
-            const data = await res.json();
+            const data = await safeApiJson(res);
             const replyContent = data.choices[0].message.content;
             
             let mailTitle = targetNameForSummary;
@@ -7906,7 +8779,7 @@ document.getElementById('checkNewMailBtn').addEventListener('click', async () =>
                 method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}`},
                 body:JSON.stringify({ model, messages:[{role:"system",content:sysPrompt}], temperature:0.9 })
             });
-            const data = await res.json();
+            const data = await safeApiJson(res);
             const replyText = data.choices[0].message.content;
             
             let parts = replyText.split('|');
@@ -7997,7 +8870,7 @@ document.getElementById('returnWrongMailBtn').addEventListener('click', async ()
                 body:JSON.stringify({ model, messages:[{role:"system",content:sysPrompt}], temperature:0.8 })
             });
             
-            const data = await res.json();
+            const data = await safeApiJson(res);
             const replyText = data.choices[0].message.content;
             
             let parts = replyText.split('|');
@@ -8053,7 +8926,7 @@ ${hText}
             method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}`},
             body:JSON.stringify({ model, messages:[{role:"system",content:sysSummary}], temperature:0.5 })
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         const newMemory = data.choices[0].message.content.trim();
         
         // 自动保存到本地羁绊记忆，并更新弹窗里显示的文字
@@ -8701,7 +9574,7 @@ const now = Date.now();
         const model = (await loadFromDB(useSubApi ? 'subSysModel' : 'sysModel')) || 'gpt-3.5-turbo';
 
         if (!apiKey) { 
-            showToast('未配置API，日记仅保存在本地'); 
+            showToast('未配置API，日记仅归档在本地'); 
             diariesData.unshift(newDiary); await saveToDB('diary_records', diariesData);
             diaryWritePanel.classList.remove('show'); renderExchangeDetailList();
             return; 
@@ -8770,7 +9643,7 @@ document.getElementById('openWriteDiaryBtn').style.display = 'flex';
                         temperature: 0.8 
                     })
                 });
-const data = await res.json();
+const data = await safeApiJson(res);
 let aiText = data.choices[0].message.content.trim();
 
 // --- 解析 角色 的心情 ---
@@ -9011,7 +9884,7 @@ if (!isGlobalAutoDiaryEnabled) return; // 开关关了，直接退出不花钱
             })
         });
         
-        const data = await res.json();
+        const data = await safeApiJson(res);
         const aiContent = data.choices[0].message.content.trim();
 
         // 存入数据库
@@ -9811,7 +10684,7 @@ document.getElementById('readChatAiReplyBtn').addEventListener('click', async ()
                 temperature: 0.85
             })
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         const reply = data.choices[0].message.content.trim();
         document.getElementById(loadId).innerText = reply;
         
@@ -10058,15 +10931,22 @@ let currentChatContact = null;
 // 1. 渲染会话列表 (信号页)
 async function renderChatSessionList() {
     let contacts = await loadFromDB('chat_contacts') || [];
-    contacts.sort((a, b) => (b.lastTime || 0) - (a.lastTime || 0)); // 按最新消息排序
+
+    contacts.sort((a, b) => {
+        const pinA = a.isPinned ? 1 : 0;
+        const pinB = b.isPinned ? 1 : 0;
+        if (pinA !== pinB) return pinB - pinA;
+        return (b.lastTime || 0) - (a.lastTime || 0);
+    });
+
     const container = document.getElementById('chatSessionList');
-    
     const activeContacts = contacts.filter(c => c.lastMessage);
+
     if (activeContacts.length === 0) {
         container.innerHTML = '<div style="text-align:center; color:var(--text-sub); font-size:12px; margin-top:40px; letter-spacing: 1px;">信箱空荡荡的，去频段唤醒某人吧</div>';
         return;
     }
-    
+
     let html = '';
     for (let contact of activeContacts) {
         let avatarUrl = diaryAvatarCache[contact.id];
@@ -10075,29 +10955,36 @@ async function renderChatSessionList() {
             avatarUrl = f ? URL.createObjectURL(f) : '';
             diaryAvatarCache[contact.id] = avatarUrl;
         }
-        
+
         let timeStr = '';
         if (contact.lastTime) {
             const d = new Date(contact.lastTime);
             timeStr = `${d.getHours()}:${d.getMinutes().toString().padStart(2,'0')}`;
         }
-        
+
+        const pinText = contact.isPinned ? '取消置顶' : '置顶';
+        const pinBadge = contact.isPinned ? '<span style="font-size:10px; color:var(--accent); font-weight:800; margin-left:6px;">[置顶]</span>' : '';
+
         html += `
-            <div class="chat-session-card" onclick="openChatRoom('${contact.id}', '${contact.name}')">
-                <div class="chat-avatar" style="${avatarUrl ? `background-image:url(${avatarUrl}); border:none;` : ''}">
-                    ${!avatarUrl ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(184,156,142,0.5)" stroke-width="2" style="margin: 14px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>` : ''}
-                </div>
-                <div class="chat-info" style="text-align: left;">
-                    <div class="chat-name-row">
-                        <div class="chat-name">${contact.name}</div>
-                        <div class="chat-time">${timeStr}</div>
+            <div class="chat-session-swipe-wrap" data-contact-id="${contact.id}">
+                <div class="chat-session-card chat-session-main-card" onclick="openChatRoom('${contact.id}', '${contact.name}')">
+                    <div class="chat-avatar" style="${avatarUrl ? `background-image:url(${avatarUrl}); border:none;` : ''}">
+                        ${!avatarUrl ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(184,156,142,0.5)" stroke-width="2" style="margin: 14px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>` : ''}
                     </div>
-                    <div class="chat-preview">${contact.lastMessage || ''}</div>
+                    <div class="chat-info" style="text-align: left;">
+                        <div class="chat-name-row">
+                            <div class="chat-name">${contact.name}${pinBadge}</div>
+                            <div class="chat-time">${timeStr}</div>
+                        </div>
+                        <div class="chat-preview">${contact.lastMessage || ''}</div>
+                    </div>
                 </div>
             </div>
         `;
     }
+
     container.innerHTML = html;
+    bindChatSessionSwipeActions();
 }
 
 // ==========================================
@@ -10711,6 +11598,198 @@ document.getElementById('addContactBtn').addEventListener('click', async () => {
     document.getElementById('addContactPanel').classList.add('show');
 });
 
+async function togglePinChat(contactId) {
+    let contacts = await loadFromDB('chat_contacts') || [];
+    let target = contacts.find(c => c.id === contactId);
+    if (!target) return;
+
+    target.isPinned = !target.isPinned;
+    await saveToDB('chat_contacts', contacts);
+    showToast(target.isPinned ? '已置顶' : '已取消置顶');
+    renderChatSessionList();
+}
+
+async function clearChatHistoryQuick(contactId) {
+    showBeautifulDialog('清空聊天记录', '确定要清空这个会话的所有聊天记录吗？', 'confirm', '', async () => {
+        await saveToDB(`chat_history_${contactId}`, []);
+        let contacts = await loadFromDB('chat_contacts') || [];
+        let target = contacts.find(c => c.id === contactId);
+        if (target) {
+            target.lastMessage = '此处暂未落笔';
+            target.lastTime = Date.now();
+            await saveToDB('chat_contacts', contacts);
+        }
+
+        if (currentChatContact && currentChatContact.id === contactId) {
+            document.getElementById('chatMessageArea').innerHTML = '<div style="text-align: center; font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">与 TA 的灵魂频段已连接</div>';
+        }
+
+        showToast('聊天记录已清空');
+        renderChatSessionList();
+    });
+}
+
+async function clearChatCssQuick(contactId) {
+    showBeautifulDialog('清空气泡 CSS', '确定要清空这个会话的自定义气泡 CSS 吗？', 'confirm', '', async () => {
+        let settings = await loadFromDB(`chat_settings_${contactId}`) || {};
+        settings.customCss = '';
+        await saveToDB(`chat_settings_${contactId}`, settings);
+
+        if (currentChatContact && currentChatContact.id === contactId) {
+            applyChatCustomCss('');
+            document.getElementById('chatCustomCss').value = '';
+            refreshCurrentChatViewRealtime();
+        }
+
+        showToast('该会话的气泡 CSS 已清空');
+    });
+}
+
+function closeAllChatSessionActions(exceptId = '') {
+    document.querySelectorAll('.chat-session-swipe-wrap.show-actions').forEach(el => {
+        if (!exceptId || el.dataset.contactId !== exceptId) {
+            el.classList.remove('show-actions');
+        }
+    });
+}
+
+let activeSessionMenuContactId = '';
+
+function hideChatSessionContextMenu() {
+    const menu = document.getElementById('chatSessionContextMenu');
+    if (menu) menu.classList.remove('show');
+    activeSessionMenuContactId = '';
+}
+
+function showChatSessionContextMenu(contactId, eventObj) {
+    const menu = document.getElementById('chatSessionContextMenu');
+    if (!menu) return;
+
+    activeSessionMenuContactId = contactId;
+
+    let contacts = [];
+    const applyLabels = async () => {
+        contacts = await loadFromDB('chat_contacts') || [];
+        const target = contacts.find(c => c.id === contactId);
+        document.getElementById('sessionMenuPin').innerText = target && target.isPinned ? '取消置顶' : '置顶';
+    };
+
+    applyLabels();
+
+    const menuWidth = 132;
+    const menuHeight = 150;
+    let left = eventObj.clientX + 10;
+    let top = eventObj.clientY - 10;
+
+    if (left + menuWidth > window.innerWidth - 10) {
+        left = window.innerWidth - menuWidth - 10;
+    }
+    if (top + menuHeight > window.innerHeight - 10) {
+        top = window.innerHeight - menuHeight - 10;
+    }
+    if (top < 10) top = 10;
+    if (left < 10) left = 10;
+
+    menu.style.left = left + 'px';
+    menu.style.top = top + 'px';
+    menu.classList.add('show');
+}
+
+function bindChatSessionSwipeActions() {
+    const wraps = document.querySelectorAll('.chat-session-swipe-wrap');
+
+    wraps.forEach(wrap => {
+        const card = wrap.querySelector('.chat-session-main-card');
+        if (!card) return;
+
+        let startX = 0;
+        let startY = 0;
+        let longPressTimer = null;
+
+        const clearLongPress = () => {
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+        };
+
+        card.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+
+            clearLongPress();
+            longPressTimer = setTimeout(() => {
+                clearLongPress();
+                showChatSessionContextMenu(wrap.dataset.contactId, touch);
+            }, 520);
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const deltaX = Math.abs(touch.clientX - startX);
+            const deltaY = Math.abs(touch.clientY - startY);
+            if (deltaX > 6 || deltaY > 6) {
+                clearLongPress();
+            }
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+            clearLongPress();
+        });
+
+        card.addEventListener('touchcancel', () => {
+            clearLongPress();
+        });
+
+        card.addEventListener('mousedown', (e) => {
+            clearLongPress();
+            longPressTimer = setTimeout(() => {
+                clearLongPress();
+                showChatSessionContextMenu(wrap.dataset.contactId, e);
+            }, 520);
+        });
+
+        card.addEventListener('mouseup', () => {
+            clearLongPress();
+        });
+
+        card.addEventListener('mouseleave', () => {
+            clearLongPress();
+        });
+
+        card.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            clearLongPress();
+            showChatSessionContextMenu(wrap.dataset.contactId, e);
+        });
+    });
+}
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.chat-session-context-menu')) {
+        hideChatSessionContextMenu();
+    }
+});
+
+document.getElementById('sessionMenuPin').addEventListener('click', async () => {
+    hideChatSessionContextMenu();
+    if (!activeSessionMenuContactId) return;
+    await togglePinChat(activeSessionMenuContactId);
+});
+
+document.getElementById('sessionMenuCss').addEventListener('click', async () => {
+    hideChatSessionContextMenu();
+    if (!activeSessionMenuContactId) return;
+    await clearChatCssQuick(activeSessionMenuContactId);
+});
+
+document.getElementById('sessionMenuClear').addEventListener('click', async () => {
+    hideChatSessionContextMenu();
+    if (!activeSessionMenuContactId) return;
+    await clearChatHistoryQuick(activeSessionMenuContactId);
+});
+
 // 7. 修复打开时同步加载两边列表
 document.querySelectorAll('.app').forEach(app => {
     if (app.innerText.includes('聊天')) {
@@ -10748,7 +11827,29 @@ document.getElementById('chatCustomCss').addEventListener('input', (e) => {
         document.head.appendChild(styleTag);
     }
     styleTag.innerHTML = e.target.value;
+    applyChatCustomCss(e.target.value);
+    refreshCurrentChatViewRealtime();
 });
+
+// 这段是聊天界面的实时刷新器：头像显示方式、我的画像、气泡样式改动后立刻重绘
+let chatRealtimeRefreshTimer = null;
+
+function refreshCurrentChatViewRealtime() {
+    clearTimeout(chatRealtimeRefreshTimer);
+    chatRealtimeRefreshTimer = setTimeout(async () => {
+        if (!currentChatContact) return;
+        if (!document.getElementById('chatRoomPanel').classList.contains('show')) return;
+
+        await loadChatHistory(currentChatContact.id);
+
+        if (typeof renderChatSessionList === 'function') {
+            renderChatSessionList();
+        }
+        if (typeof renderChatContacts === 'function') {
+            renderChatContacts();
+        }
+    }, 60);
+}
 
 // 实时更新提示词预览 (全自动无需点击)
 async function updateRealtimePromptPreview() {
@@ -11495,12 +12596,12 @@ document.getElementById('chatCssSavePresetBtn').addEventListener('click', () => 
     if (!currentCss) { showToast('CSS 代码是空的哦~'); return; }
     
     // 调用全局现成的美化版果冻弹窗
-    showBeautifulDialog('保存气泡预设', '给你的气泡样式起个好记的名字：', 'prompt', '', async (name) => {
+    showBeautifulDialog('归档气泡预设', '给你的气泡样式起个好记的名字：', 'prompt', '', async (name) => {
         if (name && name.trim()) {
             chatCssPresets.push({ name: name.trim(), css: currentCss, id: Date.now() });
             await saveToDB('chat_css_presets', chatCssPresets);
             renderCssPresets();
-            showToast('预设已保存');
+            showToast('预设已归档');
         }
     });
 });
@@ -11645,10 +12746,11 @@ document.getElementById('groupProfileMemberCount').innerText = `群聊成员 (${
     defaultChip.innerText = '默认无身份';
     defaultChip.dataset.id = '';
     defaultChip.onclick = () => {
-        chipsContainer.querySelectorAll('.acc-chip').forEach(c => c.classList.remove('active'));
-        defaultChip.classList.add('active');
-        updateRealtimePromptPreview(); 
-    };
+    chipsContainer.querySelectorAll('.acc-chip').forEach(c => c.classList.remove('active'));
+    defaultChip.classList.add('active');
+    updateRealtimePromptPreview();
+    refreshCurrentChatViewRealtime();
+};
     chipsContainer.appendChild(defaultChip);
 
     userRoles.forEach(r => {
@@ -11657,10 +12759,11 @@ document.getElementById('groupProfileMemberCount').innerText = `群聊成员 (${
         chip.innerText = r.name;
         chip.dataset.id = r.id;
         chip.onclick = () => {
-            chipsContainer.querySelectorAll('.acc-chip').forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            updateRealtimePromptPreview(); 
-        };
+   chipsContainer.querySelectorAll('.acc-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    updateRealtimePromptPreview();
+    refreshCurrentChatViewRealtime();
+};
         chipsContainer.appendChild(chip);
     });
 
@@ -11694,10 +12797,11 @@ document.getElementById('groupProfileMemberCount').innerText = `群聊成员 (${
     
     // 监听滑块实时显示数值并预览模糊效果
     document.getElementById('chatBgBlurSlider').addEventListener('input', (e) => {
-        document.getElementById('chatBgBlurValue').innerText = e.target.value + 'px';
-        document.getElementById('chatMessageArea').style.backdropFilter = `blur(${e.target.value}px)`;
-        document.getElementById('chatMessageArea').style.webkitBackdropFilter = `blur(${e.target.value}px)`;
-    });
+    document.getElementById('chatBgBlurValue').innerText = e.target.value + 'px';
+    document.getElementById('chatMessageArea').style.backdropFilter = `blur(${e.target.value}px)`;
+    document.getElementById('chatMessageArea').style.webkitBackdropFilter = `blur(${e.target.value}px)`;
+    refreshCurrentChatViewRealtime();
+});
 
         // 打开面板时，初始化预览气泡的 CSS
     let styleTag = document.getElementById('previewDynamicCss');
@@ -11714,6 +12818,19 @@ document.getElementById('chatAutoSummarySettings').style.display = settings.auto
 
 document.getElementById('chatInnerVoiceToggle').checked = settings.innerVoice || false;
 document.getElementById('chatInnerVoicePrompt').value = settings.innerVoicePrompt || '';
+
+document.getElementById('chatAvatarDisplayMode').onchange = () => {
+    refreshCurrentChatViewRealtime();
+};
+
+document.getElementById('chatQuickBarToggle').onchange = () => {
+    const shouldShow = document.getElementById('chatQuickBarToggle').checked;
+    document.getElementById('chatQuickBar').style.display = shouldShow ? 'flex' : 'none';
+};
+
+document.getElementById('chatBilingualToggle').onchange = () => {
+    refreshCurrentChatViewRealtime();
+};
 
 // 【核心修复】：如果是群聊，死死按住把它隐藏掉，绝不允许再次显示
 if (contactInfo && contactInfo.isGroup) {
@@ -11768,6 +12885,80 @@ document.getElementById('chatClearWallpaperBtn').addEventListener('click', async
     const tx = db.transaction('allDataStore', 'readwrite');
     tx.objectStore('allDataStore').delete(`chat_bg_${currentChatContact.id}`);
     showToast('聊天背景已清除');
+});
+
+// 聊天头像上传逻辑
+let chatAvatarUploadTarget = '';
+
+document.getElementById('chatSetAiAvatarBtn').addEventListener('click', () => {
+    if (!currentChatContact) return;
+    chatAvatarUploadTarget = 'ai';
+    document.getElementById('chatAvatarUploadInput').click();
+});
+
+document.getElementById('chatClearAiAvatarBtn').addEventListener('click', async () => {
+    if (!currentChatContact) return;
+    const db = await initDB();
+    const tx = db.transaction('allDataStore', 'readwrite');
+    tx.objectStore('allDataStore').delete(`char_avatar_${currentChatContact.id}`);
+    delete diaryAvatarCache[currentChatContact.id];
+    showToast('已清除 TA 的头像');
+    refreshCurrentChatViewRealtime();
+});
+
+document.getElementById('chatSetUserAvatarBtn').addEventListener('click', async () => {
+    if (!currentChatContact) return;
+    const settings = await loadFromDB(`chat_settings_${currentChatContact.id}`) || {};
+    if (!settings.userRoleId) {
+        showToast('请先在上方“我的身份画像”里绑定一个我方角色，再设置我的头像');
+        return;
+    }
+    chatAvatarUploadTarget = 'user';
+    document.getElementById('chatAvatarUploadInput').click();
+});
+
+document.getElementById('chatClearUserAvatarBtn').addEventListener('click', async () => {
+    if (!currentChatContact) return;
+    const settings = await loadFromDB(`chat_settings_${currentChatContact.id}`) || {};
+    if (!settings.userRoleId) {
+        showToast('当前没有绑定“我的画像”');
+        return;
+    }
+    const db = await initDB();
+    const tx = db.transaction('allDataStore', 'readwrite');
+    tx.objectStore('allDataStore').delete(`char_avatar_${settings.userRoleId}`);
+    delete diaryAvatarCache[settings.userRoleId];
+    showToast('已清除我的头像');
+    refreshCurrentChatViewRealtime();
+});
+
+document.getElementById('chatAvatarUploadInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file || !currentChatContact) {
+        e.target.value = '';
+        return;
+    }
+
+    let targetId = '';
+    if (chatAvatarUploadTarget === 'ai') {
+        targetId = currentChatContact.id;
+    } else if (chatAvatarUploadTarget === 'user') {
+        const settings = await loadFromDB(`chat_settings_${currentChatContact.id}`) || {};
+        targetId = settings.userRoleId || '';
+    }
+
+    if (!targetId) {
+        showToast('没有找到要替换的头像对象');
+        e.target.value = '';
+        return;
+    }
+
+    await saveToDB(`char_avatar_${targetId}`, file);
+    diaryAvatarCache[targetId] = URL.createObjectURL(file);
+
+    showToast('头像已更新');
+    refreshCurrentChatViewRealtime();
+    e.target.value = '';
 });
 
 // ==========================================
@@ -12009,21 +13200,63 @@ const memoryText = (activeMemories.length > 0 || awakenedMemories.length > 0)
     const prefsText = prefs ? `\n【你在聊天中观察到的关于我的情报与喜好】：\n${prefs}` : '';
     // ========================================================
 
-    const commands = await loadFromDB('ai_commands') || [];
-    let frontCmdText = '';
-    let backCmdText = '';
-    const boundCmdIds = settings.boundCommands || [];
-    
-    // 把开启了全局的指令，和当前单独绑定的指令合并在一起读取
-    const activeCmds = commands.filter(c => c.isGlobal || boundCmdIds.includes(c.id));
-    
-    if (activeCmds.length > 0) {
-        activeCmds.forEach(c => {
-            if (c.position === 'back') backCmdText += `\n【附加强干预指令 - ${c.name}】：\n${c.content}\n`;
-            else frontCmdText += `\n【附加世界观/设定 - ${c.name}】：\n${c.content}\n`;
-        });
-    }
-    const bilingualText = settings.bilingual ? `\n8. 【最高强制指令 - 翻译思维链】：每次输出前，请先在内部逻辑中执行“语言属性检测”：1. 确认即将输出的句子是否包含英语、日语、粤语等非普通话。2. 若包含，必须在含有外语/方言的句末，附加严格格式的翻译。格式必须且只能是：[译: 标准普通话翻译]。严禁自创格式（如(翻译: xxx)、[EN: xxx]）！示例：What a beautiful day! [译: 今天天气真不错！]` : '';
+    const libraries = (await loadFromDB('ai_commands') || []).map(item => ({
+    id: item.id,
+    name: item.name || '未命名条目',
+    category: item.category || '默认分类',
+    position: item.position || 'front',
+    isGlobal: !!item.isGlobal,
+    isEnabled: item.isEnabled !== false,
+    content: item.content || '',
+    libType: item.libType || ((item.category || '').includes('世界书') ? 'worldbook' : 'command'),
+    worldbookKeys: item.worldbookKeys || '',
+    weight: item.weight != null ? Number(item.weight) : 100,
+    depth: item.depth != null ? Number(item.depth) : 4
+}));
+
+let frontCmdText = '';
+let backCmdText = '';
+let worldbookText = '';
+const boundCmdIds = settings.boundCommands || [];
+
+const activeCommands = libraries
+    .filter(c => c.libType !== 'worldbook' && c.isEnabled !== false && (c.isGlobal || boundCmdIds.includes(c.id)));
+
+if (activeCommands.length > 0) {
+    activeCommands.forEach(c => {
+        if (c.position === 'back') {
+            backCmdText += `\n【附加强干预指令 - ${c.name}】：\n${c.content}\n`;
+        } else {
+            frontCmdText += `\n【附加规则/设定 - ${c.name}】：\n${c.content}\n`;
+        }
+    });
+}
+
+const recentWorldbookContext = history.slice(-8).map(m => m.content || '').join('\n').toLowerCase();
+
+const activeWorldbooks = libraries
+    .filter(c => c.libType === 'worldbook' && c.isEnabled !== false)
+    .filter(c => {
+        if (c.isGlobal || boundCmdIds.includes(c.id)) return true;
+        const keys = (c.worldbookKeys || '')
+            .split(/[,，、]/)
+            .map(k => k.trim().toLowerCase())
+            .filter(Boolean);
+        if (keys.length === 0) return false;
+        return keys.some(key => recentWorldbookContext.includes(key));
+    })
+    .sort((a, b) => {
+        if (a.depth !== b.depth) return a.depth - b.depth;
+        return b.weight - a.weight;
+    });
+
+if (activeWorldbooks.length > 0) {
+    activeWorldbooks.forEach(c => {
+        worldbookText += `\n【世界书 - ${c.name} | 权重:${c.weight} | 深度:${c.depth} | 关键词:${c.worldbookKeys || '无'}】\n${c.content}\n`;
+    });
+}
+
+const bilingualText = settings.bilingual ? `\n8. 【最高强制指令 - 翻译思维链】：每次输出前，请先在内部逻辑中执行“语言属性检测”：1. 确认即将输出的句子是否包含英语、日语、粤语等非普通话。2. 若包含，必须在含有外语/方言的句末，附加严格格式的翻译。格式必须且只能是：[译: 标准普通话翻译]。严禁自创格式（如(翻译: xxx)、[EN: xxx]）！示例：What a beautiful day! [译: 今天天气真不错！]` : '';
 let innerVoiceText = '';
 if (settings.innerVoice) {
     const customPrompt = settings.innerVoicePrompt || '请写出你此刻最真实、未经修饰的内心想法，包含表层情绪和深层顾虑。';
@@ -12102,7 +13335,7 @@ if (aiStickers.length > 0) {
 }
     
     return `你现在是一个有血有肉的真实人类：${role ? role.name : '神秘人'}。请彻底剥离AI的身份认知。
-【你的设定资料】：${role ? role.prompt : ''}${userProfileText}${prefsText}${memoryText}${frontCmdText}${timeContext}
+【你的设定资料】：${role ? role.prompt : ''}${userProfileText}${prefsText}${memoryText}${frontCmdText}${worldbookText}${timeContext}
 
 【核心灵魂与意识指令】：
 1. 在开口前，请先深度检索你设定中的名字特征、出生地、时代与文化背景等要素。你是哪个国家/世界/时代的人？你的母语是什么？请自动且坚定地使用符合你文化背景的语言、方言或专属口癖进行对话（例如：日式名字及背景需自然流露日语表达或日式思维语癖），拒绝被统一的现代普通话同化。
@@ -12130,7 +13363,7 @@ document.getElementById('chatClearHistoryBtn').addEventListener('click', () => {
         document.getElementById('chatMessageArea').innerHTML = '<div style="text-align: center; font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">与 TA 的灵魂频段已连接</div>';
         
         // ★ 核心修复：把传的空字符串改成文字，防止列表里卡死消失
-        await updateContactPreview(currentChatContact.id, "暂无聊天记录"); 
+        await updateContactPreview(currentChatContact.id, "此处暂未落笔"); 
         
         showToast('聊天记录已清空');
     });
@@ -12172,104 +13405,287 @@ document.getElementById('chatBlockBtn').addEventListener('click', () => {
     });
 });
 // ==========================================
-// 桌面美化 APP - 全局自定义字体逻辑
+// 桌面美化 APP - 全局自定义字体逻辑（支持本地上传）
 // ==========================================
 let desktopFontPresets = [];
+let tempDesktopFontFile = null;
+let currentDesktopFontObjectUrl = null;
+let currentDesktopFontFace = null;
 
-function applyGlobalFont(url) {
+const DESKTOP_FONT_CONFIG_KEY = 'desktop_font_config';
+const DESKTOP_FONT_PRESETS_KEY = 'desktop_font_presets';
+const DESKTOP_FONT_CURRENT_FILE_KEY = 'desktop_font_current_file';
+const DESKTOP_FONT_MAX_SIZE = 20 * 1024 * 1024;
+
+function setDesktopFontStatus(text, color = 'var(--text-sub)') {
+    const statusEl = document.getElementById('desktopFontStatus');
+    if (statusEl) {
+        statusEl.innerText = text;
+        statusEl.style.color = color;
+    }
+}
+
+function clearDesktopFontStyleOnly() {
+    const styleTag = document.getElementById('dynamicGlobalFont');
+    if (styleTag) {
+        styleTag.innerHTML = '';
+    }
+}
+
+function ensureDesktopFontStyleTag() {
     let styleTag = document.getElementById('dynamicGlobalFont');
     if (!styleTag) {
         styleTag = document.createElement('style');
         styleTag.id = 'dynamicGlobalFont';
         document.head.appendChild(styleTag);
     }
-    if (url && url.trim() !== '') {
+    return styleTag;
+}
+
+function revokeCurrentDesktopFontObjectUrl() {
+    if (currentDesktopFontObjectUrl) {
+        URL.revokeObjectURL(currentDesktopFontObjectUrl);
+        currentDesktopFontObjectUrl = null;
+    }
+}
+
+async function removeCurrentDesktopFontFace() {
+    if (currentDesktopFontFace) {
+        try {
+            document.fonts.delete(currentDesktopFontFace);
+        } catch (e) {
+        }
+        currentDesktopFontFace = null;
+    }
+}
+
+async function applyGlobalFontConfig(config) {
+    await removeCurrentDesktopFontFace();
+    revokeCurrentDesktopFontObjectUrl();
+    clearDesktopFontStyleOnly();
+
+    if (!config || !config.sourceType) {
+        setDesktopFontStatus('当前使用系统默认字体。');
+        return;
+    }
+
+    let fontSourceUrl = '';
+
+    if (config.sourceType === 'url') {
+        fontSourceUrl = (config.url || '').trim();
+        if (!fontSourceUrl) {
+            setDesktopFontStatus('字体链接为空，已回退到系统字体。', '#D67A7A');
+            return;
+        }
+    } else if (config.sourceType === 'file') {
+        const fileBlob = await loadFromDB(config.fileKey);
+        if (!fileBlob) {
+            setDesktopFontStatus('本地字体文件丢失，已回退到系统字体。', '#D67A7A');
+            return;
+        }
+        currentDesktopFontObjectUrl = URL.createObjectURL(fileBlob);
+        fontSourceUrl = currentDesktopFontObjectUrl;
+    } else {
+        setDesktopFontStatus('字体来源格式无法识别，已回退到系统字体。', '#D67A7A');
+        return;
+    }
+
+    try {
+        const fontFace = new FontFace('CustomGlobalFont', `url("${fontSourceUrl}")`, {
+            display: 'swap'
+        });
+
+        await fontFace.load();
+        document.fonts.add(fontFace);
+        currentDesktopFontFace = fontFace;
+
+        const styleTag = ensureDesktopFontStyleTag();
         styleTag.innerHTML = `
-            @font-face {
-                font-family: 'CustomGlobalFont';
-                src: url('${url.trim()}');
-                font-display: swap;
-            }
             body, .app-name, .s-btn, .s-input, div, span, textarea, input, select, button {
                 font-family: 'CustomGlobalFont', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
             }
         `;
-    } else {
-        styleTag.innerHTML = '';
+
+        const displayName = config.displayName || (config.sourceType === 'file' ? '本地字体' : '网络字体');
+        setDesktopFontStatus(`当前已加载：${displayName}`, '#8BA888');
+    } catch (e) {
+        clearDesktopFontStyleOnly();
+        setDesktopFontStatus(`字体加载失败：${e.message}`, '#D67A7A');
     }
 }
 
-// 开机自动加载保存的字体
 (async function initDesktopFont() {
-    const savedFont = await loadFromDB('desktop_font_url');
-    if (savedFont) applyGlobalFont(savedFont);
+    const savedConfig = await loadFromDB(DESKTOP_FONT_CONFIG_KEY);
+    if (savedConfig) {
+        await applyGlobalFontConfig(savedConfig);
+    } else {
+        setDesktopFontStatus('当前使用系统默认字体。');
+    }
 })();
 
-// 渲染字体预设列表
 async function renderDesktopFontPresets() {
-    desktopFontPresets = await loadFromDB('desktop_font_presets') || [];
+    desktopFontPresets = await loadFromDB(DESKTOP_FONT_PRESETS_KEY) || [];
     const container = document.getElementById('desktopFontPresetsList');
     container.innerHTML = '';
-    
+
     if (desktopFontPresets.length === 0) {
         container.innerHTML = '<span style="font-size:11px; color:var(--text-sub);">暂无预设</span>';
         return;
     }
-    
+
     desktopFontPresets.forEach((preset, index) => {
         const chip = document.createElement('div');
         chip.className = 'acc-chip';
         chip.style.padding = '6px 12px';
         chip.style.fontSize = '11px';
         chip.innerHTML = `${preset.name} <span style="margin-left:6px; color:#D67A7A; opacity:0.6; font-size:14px; font-weight:bold; display:inline-block; transform:translateY(1px);" onclick="deleteDesktopFontPreset(event, ${index})">×</span>`;
-        // 点击加载预设
-        chip.onclick = () => {
-            document.getElementById('desktopFontUrl').value = preset.url;
-            applyGlobalFont(preset.url); // 即时预览
-            showToast('已应用字体：' + preset.name);
+        chip.onclick = async () => {
+            if (preset.sourceType === 'url') {
+                document.getElementById('desktopFontUrl').value = preset.url || '';
+                tempDesktopFontFile = null;
+            } else {
+                document.getElementById('desktopFontUrl').value = '';
+                tempDesktopFontFile = null;
+            }
+            await applyGlobalFontConfig(preset);
+            showToast('已加载字体预设：' + preset.name);
         };
         container.appendChild(chip);
     });
 }
 
-// 删除字体预设
 window.deleteDesktopFontPreset = async function(e, index) {
     e.stopPropagation();
-    showBeautifulDialog('删除字体', '确定要删除这个字体预设吗？', 'confirm', '', async () => {
+    showBeautifulDialog('删除字体预设', '确定要删除这个字体预设吗？', 'confirm', '', async () => {
+        const targetPreset = desktopFontPresets[index];
+        if (targetPreset && targetPreset.sourceType === 'file' && targetPreset.fileKey) {
+            const db = await initDB();
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            tx.objectStore(STORE_NAME).delete(targetPreset.fileKey);
+        }
+
         desktopFontPresets.splice(index, 1);
-        await saveToDB('desktop_font_presets', desktopFontPresets);
+        await saveToDB(DESKTOP_FONT_PRESETS_KEY, desktopFontPresets);
         renderDesktopFontPresets();
     });
 };
 
-// 重置清空
-document.getElementById('desktopFontResetBtn').addEventListener('click', () => {
-    document.getElementById('desktopFontUrl').value = '';
-    applyGlobalFont('');
-    showToast('已恢复默认系统字体（记得点击底部保存）');
+document.getElementById('uploadDesktopFontBtn').addEventListener('click', () => {
+    document.getElementById('desktopFontFileInput').click();
 });
 
-// 保存为预设 (呼叫果冻弹窗)
+document.getElementById('desktopFontFileInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > DESKTOP_FONT_MAX_SIZE) {
+        tempDesktopFontFile = null;
+        document.getElementById('desktopFontFileInput').value = '';
+        setDesktopFontStatus('字体文件超过 20MB，无法加载。', '#D67A7A');
+        showToast('字体文件不能超过 20MB');
+        return;
+    }
+
+    tempDesktopFontFile = file;
+    document.getElementById('desktopFontUrl').value = '';
+    setDesktopFontStatus(`已选本地字体：${file.name}，点击“应用全局字体”后正式生效。`, '#8BA888');
+
+    document.getElementById('desktopFontFileInput').value = '';
+});
+
+document.getElementById('clearDesktopFontTempBtn').addEventListener('click', () => {
+    tempDesktopFontFile = null;
+    document.getElementById('desktopFontUrl').value = '';
+    setDesktopFontStatus('已清空当前待上传字体。');
+});
+
+document.getElementById('desktopFontResetBtn').addEventListener('click', async () => {
+    tempDesktopFontFile = null;
+    document.getElementById('desktopFontUrl').value = '';
+
+    const db = await initDB();
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(DESKTOP_FONT_CURRENT_FILE_KEY);
+
+    await saveToDB(DESKTOP_FONT_CONFIG_KEY, null);
+    await applyGlobalFontConfig(null);
+    showToast('已恢复默认系统字体');
+});
+
 document.getElementById('desktopFontSavePresetBtn').addEventListener('click', () => {
     const currentUrl = document.getElementById('desktopFontUrl').value.trim();
-    if (!currentUrl) { showToast('链接是空的，先填入字体直链吧~'); return; }
-    
-    showBeautifulDialog('保存字体预设', '给这个字体起个名字：', 'prompt', '', async (name) => {
-        if (name && name.trim()) {
-            desktopFontPresets.push({ name: name.trim(), url: currentUrl, id: Date.now() });
-            await saveToDB('desktop_font_presets', desktopFontPresets);
-            renderDesktopFontPresets();
-            showToast('字体预设已保存！');
+
+    if (!tempDesktopFontFile && !currentUrl) {
+        showToast('请先填写字体链接或选择本地字体');
+        return;
+    }
+
+    showBeautifulDialog('归档字体预设', '给这组字体起个名字：', 'prompt', '', async (name) => {
+        if (!name || !name.trim()) return;
+
+        const presetId = Date.now();
+        let preset = {
+            id: presetId,
+            name: name.trim(),
+            sourceType: '',
+            url: '',
+            fileKey: '',
+            displayName: ''
+        };
+
+        if (tempDesktopFontFile) {
+            const presetFileKey = `desktop_font_preset_file_${presetId}`;
+            await saveToDB(presetFileKey, tempDesktopFontFile);
+            preset.sourceType = 'file';
+            preset.fileKey = presetFileKey;
+            preset.displayName = tempDesktopFontFile.name;
+        } else {
+            preset.sourceType = 'url';
+            preset.url = currentUrl;
+            preset.displayName = currentUrl;
         }
+
+        desktopFontPresets.push(preset);
+        await saveToDB(DESKTOP_FONT_PRESETS_KEY, desktopFontPresets);
+        await renderDesktopFontPresets();
+        showToast('字体预设已归档');
     });
 });
 
-// 正式保存并应用
 document.getElementById('saveDesktopFontBtn').addEventListener('click', async () => {
-    const currentUrl = document.getElementById('desktopFontUrl').value;
-    applyGlobalFont(currentUrl);
-    await saveToDB('desktop_font_url', currentUrl);
-    showToast('全局字体已生效');
+    const currentUrl = document.getElementById('desktopFontUrl').value.trim();
+
+    if (tempDesktopFontFile) {
+        await saveToDB(DESKTOP_FONT_CURRENT_FILE_KEY, tempDesktopFontFile);
+
+        const config = {
+            sourceType: 'file',
+            fileKey: DESKTOP_FONT_CURRENT_FILE_KEY,
+            displayName: tempDesktopFontFile.name
+        };
+
+        await saveToDB(DESKTOP_FONT_CONFIG_KEY, config);
+        await applyGlobalFontConfig(config);
+        showToast('本地字体已应用');
+        return;
+    }
+
+    if (currentUrl) {
+        const config = {
+            sourceType: 'url',
+            url: currentUrl,
+            displayName: currentUrl
+        };
+
+        await saveToDB(DESKTOP_FONT_CONFIG_KEY, config);
+        await applyGlobalFontConfig(config);
+        showToast('网络字体已应用');
+        return;
+    }
+
+    await saveToDB(DESKTOP_FONT_CONFIG_KEY, null);
+    await applyGlobalFontConfig(null);
+    showToast('已恢复系统默认字体');
 });
 
 // ==========================================
@@ -12342,7 +13758,7 @@ document.getElementById('desktopCustomCss').addEventListener('input', (e) => {
 document.getElementById('desktopCssResetBtn').addEventListener('click', () => {
     document.getElementById('desktopCustomCss').value = '';
     applyDesktopCustomCss('');
-    showToast('已清空CSS代码（记得点击底部保存）');
+    showToast('已清空CSS代码（记得点击底部归档）');
 });
 
 // 6. 保存为预设 (呼叫果冻弹窗)
@@ -12350,12 +13766,12 @@ document.getElementById('desktopCssSavePresetBtn').addEventListener('click', () 
     const currentCss = document.getElementById('desktopCustomCss').value.trim();
     if (!currentCss) { showToast('代码是空的，先写点什么吧~'); return; }
     
-    showBeautifulDialog('保存全局美化预设', '给你的主题预设起个名字：', 'prompt', '', async (name) => {
+    showBeautifulDialog('归档全局美化预设', '给你的主题预设起个名字：', 'prompt', '', async (name) => {
         if (name && name.trim()) {
             desktopCssPresets.push({ name: name.trim(), css: currentCss, id: Date.now() });
             await saveToDB('desktop_css_presets', desktopCssPresets);
             renderDesktopCssPresets();
-            showToast('预设已保存！');
+            showToast('预设已归档！');
         }
     });
 });
@@ -12377,10 +13793,24 @@ document.querySelectorAll('.app').forEach(app => {
             const savedCss = await loadFromDB('desktop_custom_css') || '';
             document.getElementById('desktopCustomCss').value = savedCss;
             await renderDesktopCssPresets();
-            
-            // 新增：每次打开面板时，读取上次填的字体直链和预设
-            const savedFont = await loadFromDB('desktop_font_url') || '';
-            document.getElementById('desktopFontUrl').value = savedFont;
+
+            tempDesktopFontFile = null;
+            const savedFontConfig = await loadFromDB(DESKTOP_FONT_CONFIG_KEY);
+
+            if (savedFontConfig && savedFontConfig.sourceType === 'url') {
+                document.getElementById('desktopFontUrl').value = savedFontConfig.url || '';
+            } else {
+                document.getElementById('desktopFontUrl').value = '';
+            }
+
+            if (savedFontConfig && savedFontConfig.sourceType === 'file') {
+                setDesktopFontStatus(`当前已加载：${savedFontConfig.displayName || '本地字体'}`, '#8BA888');
+            } else if (savedFontConfig && savedFontConfig.sourceType === 'url') {
+                setDesktopFontStatus(`当前已加载：${savedFontConfig.displayName || '网络字体'}`, '#8BA888');
+            } else {
+                setDesktopFontStatus('当前使用系统默认字体。');
+            }
+
             await renderDesktopFontPresets();
         });
     }
@@ -12612,7 +14042,7 @@ function fallbackCopyText(text) {
 
 // ★ 新增：自动同步最后一条消息预览的辅助引擎
 async function syncLastMessagePreview(contactId, history) {
-    let previewText = '暂无聊天记录'; // 修改：默认显示暂无记录，防止会话被吞
+    let previewText = '此处暂未落笔'; // 修改：默认显示暂无记录，防止会话被吞
     if (history && history.length > 0) {
         let lastMsg = history[history.length - 1];
         let sender = lastMsg.role === 'user' ? '我: ' : (lastMsg.speakerName ? lastMsg.speakerName + ': ' : '');
@@ -12698,20 +14128,270 @@ document.getElementById('chatQuoteCancelBtn').addEventListener('click', () => {
 });
 
 // 4. 多选模式核心逻辑
+function updateMultiSelectUI() {
+    msCountText.innerText = selectedMessages.length;
+    const summaryEl = document.getElementById('msSummary');
+    if (summaryEl) {
+        summaryEl.innerHTML = `已选 <span id="msCount">${selectedMessages.length}</span> 条消息`;
+        msCountText = document.getElementById('msCount');
+    }
+
+    const selectableEls = document.querySelectorAll('.chat-bubble-row[data-ts], .chat-system-msg[data-ts]');
+    const selectedSet = new Set(selectedMessages);
+    const selectedCount = Array.from(selectableEls).filter(el => selectedSet.has(parseInt(el.dataset.ts))).length;
+
+    const selectAllBtn = document.getElementById('msSelectAll');
+    if (selectAllBtn) {
+        if (selectableEls.length > 0 && selectedCount === selectableEls.length) {
+            selectAllBtn.innerText = '取消全选';
+        } else {
+            selectAllBtn.innerText = '全选';
+        }
+    }
+}
+
+function exitMultiSelectMode() {
+    chatMessageArea.classList.remove('multi-mode');
+    multiSelectBar.classList.remove('show');
+    document.querySelectorAll('.chat-bubble-row.selected, .chat-system-msg.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
+    selectedMessages = [];
+    updateMultiSelectUI();
+}
+
+function getSelectableMessageElements() {
+    return Array.from(document.querySelectorAll('#chatMessageArea .chat-bubble-row[data-ts], #chatMessageArea .chat-system-msg[data-ts]'))
+        .filter(el => el.id !== 'chatLoadingBubble');
+}
+
+async function exportSelectedMessagesAsImage() {
+    if (!currentChatContact || selectedMessages.length === 0) {
+        showToast('请先选择消息');
+        return;
+    }
+
+    let history = await loadFromDB(`chat_history_${currentChatContact.id}`) || [];
+    const selectedSet = new Set(selectedMessages);
+    const picked = history.filter(m => selectedSet.has(m.timestamp)).sort((a, b) => a.timestamp - b.timestamp);
+
+    if (picked.length === 0) {
+        showToast('没有可截图的消息');
+        return;
+    }
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const width = 1080;
+    const paddingX = 56;
+    const topPadding = 70;
+    const bubbleMaxWidth = 650;
+    const lineHeight = 34;
+    const bubbleInnerPaddingX = 24;
+    const bubbleInnerPaddingY = 18;
+    const rowGap = 22;
+
+    function normalizePreviewText(msg) {
+        if (msg.role === 'system') return msg.content || '';
+
+        let text = msg.content || '';
+        if (msg.msgType === 'voice') text = `[语音 ${msg.voiceDuration || 0}"] ${msg.content || ''}`;
+        else if (msg.msgType === 'redpacket') text = `[红包] ${msg.content || ''}`;
+        else if (msg.msgType === 'location') text = `[定位] ${msg.locationName || ''} ${msg.content || ''}`.trim();
+        else if (msg.msgType === 'diary_invite') text = `[日记邀请] ${msg.content || ''}`;
+        else if (msg.msgType === 'forward_card') text = `[聊天记录卡片]`;
+        else if (msg.imageUrl) text = `[图片]`;
+        else if ((msg.content || '').match(/^\[表情包[:：](.*?)\]$/i)) text = msg.content;
+        else if ((msg.content || '').match(/^\[图片[:：]\s*([\s\S]*?)\]$/i)) text = msg.content;
+
+        return text.replace(/\[(?:译|翻译|EN|En|Eng)[:：]\s*([\s\S]*?)\]/gi, '').trim();
+    }
+
+    function wrapText(text, maxWidth, font = '28px -apple-system') {
+        ctx.font = font;
+        const lines = [];
+        const paragraphs = String(text).split('\n');
+
+        paragraphs.forEach(paragraph => {
+            if (!paragraph) {
+                lines.push('');
+                return;
+            }
+
+            let line = '';
+            for (let i = 0; i < paragraph.length; i++) {
+                const testLine = line + paragraph[i];
+                const testWidth = ctx.measureText(testLine).width;
+                if (testWidth > maxWidth && line) {
+                    lines.push(line);
+                    line = paragraph[i];
+                } else {
+                    line = testLine;
+                }
+            }
+            if (line) lines.push(line);
+        });
+
+        return lines.length ? lines : [''];
+    }
+
+    const rows = [];
+    let totalHeight = topPadding + 70;
+
+    picked.forEach(msg => {
+        const isMe = msg.role === 'user';
+        const speakerName = msg.role === 'system'
+            ? '系统'
+            : (isMe ? '我' : (msg.speakerName || currentChatContact.name));
+
+        const timeObj = new Date(msg.timestamp || Date.now());
+        const timeStr = `${timeObj.getMonth() + 1}/${timeObj.getDate()} ${timeObj.getHours().toString().padStart(2, '0')}:${timeObj.getMinutes().toString().padStart(2, '0')}`;
+
+        const plainText = normalizePreviewText(msg);
+        const wrapped = wrapText(plainText, bubbleMaxWidth - bubbleInnerPaddingX * 2);
+        const bubbleHeight = wrapped.length * lineHeight + bubbleInnerPaddingY * 2 + 30;
+
+        rows.push({
+            isMe,
+            speakerName,
+            timeStr,
+            wrapped,
+            bubbleHeight,
+            isSystem: msg.role === 'system'
+        });
+
+        totalHeight += bubbleHeight + rowGap + 36;
+    });
+
+    totalHeight += 60;
+
+    canvas.width = width;
+    canvas.height = Math.max(800, totalHeight);
+
+    ctx.fillStyle = '#F8F6F2';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    bgGradient.addColorStop(0, 'rgba(255,255,255,0.85)');
+    bgGradient.addColorStop(1, 'rgba(246,244,240,0.85)');
+    ctx.fillStyle = bgGradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#6F6862';
+    ctx.font = '700 34px -apple-system';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${currentChatContact.name} 的聊天截图`, canvas.width / 2, 58);
+
+    let currentY = topPadding;
+
+    rows.forEach(row => {
+        if (row.isSystem) {
+            ctx.fillStyle = 'rgba(184,156,142,0.16)';
+            const sysText = `${row.timeStr}  ·  ${row.wrapped.join(' ')}`;
+            const sysLines = wrapText(sysText, width - 240, '22px -apple-system');
+            const sysHeight = sysLines.length * 28 + 24;
+            const sysWidth = width - 220;
+            const sysX = (width - sysWidth) / 2;
+
+            roundRect(ctx, sysX, currentY, sysWidth, sysHeight, 22);
+            ctx.fill();
+
+            ctx.fillStyle = '#7E7772';
+            ctx.font = '22px -apple-system';
+            ctx.textAlign = 'center';
+            sysLines.forEach((line, index) => {
+                ctx.fillText(line, width / 2, currentY + 34 + index * 28);
+            });
+
+            currentY += sysHeight + rowGap;
+            return;
+        }
+
+        const bubbleWidth = Math.min(
+            bubbleMaxWidth,
+            Math.max(
+                220,
+                Math.max(...row.wrapped.map(line => {
+                    ctx.font = '28px -apple-system';
+                    return ctx.measureText(line).width;
+                })) + bubbleInnerPaddingX * 2
+            )
+        );
+
+        const bubbleX = row.isMe ? width - paddingX - bubbleWidth : paddingX;
+        const nameX = row.isMe ? bubbleX + bubbleWidth : bubbleX;
+        const timeX = row.isMe ? bubbleX + bubbleWidth : bubbleX;
+
+        ctx.fillStyle = row.isMe ? '#2F2F2F' : '#FFFFFF';
+        roundRect(ctx, bubbleX, currentY + 22, bubbleWidth, row.bubbleHeight, 28);
+        ctx.fill();
+
+        if (!row.isMe) {
+            ctx.strokeStyle = 'rgba(184,156,142,0.16)';
+            ctx.lineWidth = 2;
+            roundRect(ctx, bubbleX, currentY + 22, bubbleWidth, row.bubbleHeight, 28);
+            ctx.stroke();
+        }
+
+        ctx.fillStyle = row.isMe ? '#FFFFFF' : '#55514D';
+        ctx.font = '28px -apple-system';
+        ctx.textAlign = 'left';
+        row.wrapped.forEach((line, index) => {
+            ctx.fillText(line, bubbleX + bubbleInnerPaddingX, currentY + 58 + index * lineHeight);
+        });
+
+        ctx.fillStyle = '#9A948E';
+        ctx.font = '20px -apple-system';
+        ctx.textAlign = row.isMe ? 'right' : 'left';
+        ctx.fillText(row.speakerName, nameX, currentY);
+        ctx.fillText(row.timeStr, timeX, currentY + row.bubbleHeight + 54);
+
+        currentY += row.bubbleHeight + rowGap + 36;
+    });
+
+    const dataUrl = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `${currentChatContact.name}_聊天截图_${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    showToast('聊天截图已生成');
+}
+
+function roundRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+}
+
 document.getElementById('menuMultiSelect').addEventListener('click', () => {
     contextMenu.classList.remove('show');
-    chatMessageArea.classList.add('multi-mode'); 
-    multiSelectBar.classList.add('show'); 
+    chatMessageArea.classList.add('multi-mode');
+    multiSelectBar.classList.add('show');
     selectedMessages = [];
-    msCountText.innerText = '0';
-    
-    activeBubbleData.el.classList.add('selected');
-    selectedMessages.push(activeBubbleData.ts);
-    msCountText.innerText = selectedMessages.length;
+
+    if (activeBubbleData && activeBubbleData.el) {
+        activeBubbleData.el.classList.add('selected');
+        selectedMessages.push(activeBubbleData.ts);
+    }
+
+    updateMultiSelectUI();
 });
 
 chatMessageArea.addEventListener('click', (e) => {
     if (!chatMessageArea.classList.contains('multi-mode')) return;
+
     const bubbleRow = e.target.closest('.chat-bubble-row, .chat-system-msg[data-ts]');
     if (!bubbleRow || bubbleRow.id === 'chatLoadingBubble') return;
 
@@ -12723,132 +14403,68 @@ chatMessageArea.addEventListener('click', (e) => {
         bubbleRow.classList.add('selected');
         selectedMessages.push(ts);
     }
-    msCountText.innerText = selectedMessages.length;
+
+    updateMultiSelectUI();
 });
 
-// 取消多选
 document.getElementById('msCancel').addEventListener('click', () => {
-    chatMessageArea.classList.remove('multi-mode');
-    multiSelectBar.classList.remove('show');
-    document.querySelectorAll('.chat-bubble-row.selected, .chat-system-msg.selected').forEach(el => el.classList.remove('selected'));
+    exitMultiSelectMode();
 });
 
-// 多选删除
+document.getElementById('msSelectAll').addEventListener('click', () => {
+    const allEls = getSelectableMessageElements();
+    const selectedSet = new Set(selectedMessages);
+    const isAllSelected = allEls.length > 0 && allEls.every(el => selectedSet.has(parseInt(el.dataset.ts)));
+
+    if (isAllSelected) {
+        allEls.forEach(el => el.classList.remove('selected'));
+        selectedMessages = [];
+    } else {
+        selectedMessages = [];
+        allEls.forEach(el => {
+            el.classList.add('selected');
+            selectedMessages.push(parseInt(el.dataset.ts));
+        });
+    }
+
+    updateMultiSelectUI();
+});
+
+document.getElementById('msShot').addEventListener('click', async () => {
+    await exportSelectedMessagesAsImage();
+});
+
 document.getElementById('msDelete').addEventListener('click', () => {
     if (selectedMessages.length === 0) return;
+
     showBeautifulDialog('批量删除', `确定要删除选中的 ${selectedMessages.length} 条消息吗？`, 'confirm', '', async () => {
         let history = await loadFromDB(`chat_history_${currentChatContact.id}`) || [];
         history = history.filter(m => !selectedMessages.includes(m.timestamp));
         await saveToDB(`chat_history_${currentChatContact.id}`, history);
-        
-        // ★ 修复：同步更新外面的最新预览文字
         await syncLastMessagePreview(currentChatContact.id, history);
-        
-        // 给所有被选中的气泡加上丝滑消失动画
+
         document.querySelectorAll('.chat-bubble-row.selected, .chat-system-msg.selected').forEach(el => {
             el.style.transition = 'all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
             el.style.opacity = '0';
             el.style.transform = 'scale(0.8)';
             setTimeout(() => {
-                el.style.height = '0px'; el.style.margin = '0px'; el.style.padding = '0px';
+                el.style.height = '0px';
+                el.style.margin = '0px';
+                el.style.padding = '0px';
             }, 100);
             setTimeout(() => el.remove(), 400);
         });
 
-        chatMessageArea.classList.remove('multi-mode');
-        multiSelectBar.classList.remove('show');
+        exitMultiSelectMode();
         showToast('已批量删除');
     });
 });
 
-// 多选转发
-// 核心合并转发函数 (带选择联系人列表)
-window.executeForward = async function(msgTimestamps) {
-    if (!currentChatContact || msgTimestamps.length === 0) return;
-    let history = await loadFromDB(`chat_history_${currentChatContact.id}`) || [];
-    
-    let selectedMsgs = history.filter(m => msgTimestamps.includes(m.timestamp)).sort((a, b) => a.timestamp - b.timestamp);
-    if (selectedMsgs.length === 0) return;
-
-    let previewLines = [];
-    for (let i = 0; i < Math.min(selectedMsgs.length, 4); i++) {
-        let m = selectedMsgs[i];
-        let name = m.role === 'user' ? '我' : (m.speakerName || currentChatContact.name);
-        let text = m.content || '[图片/特殊消息]';
-        previewLines.push(`${name}: ${text}`);
-    }
-    let previewText = previewLines.join('\n') + (selectedMsgs.length > 4 ? '\n...' : '');
-
-    // 获取所有联系人
-    let contacts = await loadFromDB('chat_contacts') || [];
-    if (contacts.length === 0) { showToast('暂无可转发的联系人'); return; }
-    
-    // 生成列表 HTML
-    let listHtml = contacts.map(c => {
-        let avatarUrl = diaryAvatarCache[c.id] || '';
-        let groupBadge = c.isGroup ? '<span style="font-size:10px; background:rgba(184,156,142,0.15); color:var(--accent); padding:2px 4px; border-radius:4px; margin-left:4px;">群聊</span>' : '';
-        return `<div style="padding:14px; border-bottom:1px solid rgba(0,0,0,0.05); display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="confirmForwardTo('${c.id}')">
-            <div style="width:42px; height:42px; border-radius:14px; background-color:rgba(184,156,142,0.15); background-image:url('${avatarUrl}'); background-size:cover; border:1px solid rgba(184,156,142,0.3);"></div>
-            <div style="font-size:15px; color:var(--text-main); font-weight:bold;">${c.name}${groupBadge}</div>
-        </div>`;
-    }).join('');
-
-    // 弹出一个带联系人列表的遮罩
-    let modal = document.createElement('div');
-    modal.className = 'custom-confirm-overlay show';
-    modal.style.zIndex = '999999';
-    modal.innerHTML = `
-    <div class="custom-confirm-box" style="background:#F6F4F0; width: 85vw; max-width: 320px; padding: 20px 15px; text-align: left;">
-        <div class="cc-title" style="margin-bottom: 12px; text-align:center; font-size:16px;">发给谁？</div>
-        <div style="width: 100%; box-sizing: border-box; max-height: 50vh; overflow-y: auto; margin-bottom: 16px; background:#fff; border-radius:16px; border:1px solid rgba(184,156,142,0.15); box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);">
-            ${listHtml}
-        </div>
-        <button class="cc-btn cancel" style="width:100%; border-radius:14px; margin:0;" onclick="this.closest('.custom-confirm-overlay').remove()">取消</button>
-    </div>
-`;
-    document.body.appendChild(modal);
-
-    // 点击某个人后执行发送
-    window.confirmForwardTo = async function(targetContactId) {
-        modal.remove();
-        
-        let targetHistory = await loadFromDB(`chat_history_${targetContactId}`) || [];
-        const ts = Date.now();
-        targetHistory.push({
-            role: 'user',
-            content: previewText,
-            msgType: 'forward_card',
-            forwardData: selectedMsgs,
-            timestamp: ts
-        });
-        await saveToDB(`chat_history_${targetContactId}`, targetHistory);
-        await updateContactPreview(targetContactId, "我: [合并聊天记录]");
-        
-        // 如果恰好转发给了当前的聊天对象，直接在屏幕上刷出来
-        if (targetContactId === currentChatContact.id) {
-            await renderChatMessages(targetHistory, currentChatContact.id);
-        }
-        
-        // 退出多选和悬浮状态
-        const chatMessageArea = document.getElementById('chatMessageArea');
-        chatMessageArea.classList.remove('multi-mode');
-        document.getElementById('multiSelectBar').classList.remove('show');
-        document.querySelectorAll('.chat-bubble-row.selected, .chat-system-msg.selected').forEach(el => el.classList.remove('selected'));
-        document.getElementById('bubbleContextMenu').classList.remove('show');
-        
-        showToast('已成功转发！');
-    };
-};
-
-// 绑定单条长按转发
-document.getElementById('menuForward').onclick = () => {
-    document.getElementById('bubbleContextMenu').classList.remove('show');
-    if (activeBubbleData) executeForward([activeBubbleData.ts]);
-};
-
-// 绑定底部多选合并转发
 document.getElementById('msForward').onclick = () => {
-    if (selectedMessages.length === 0) { showToast('请至少选择一条消息'); return; }
+    if (selectedMessages.length === 0) {
+        showToast('请至少选择一条消息');
+        return;
+    }
     executeForward(selectedMessages);
 };
 
@@ -13074,9 +14690,9 @@ document.getElementById('generateScheduleBtn').addEventListener('click', async f
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
             body: JSON.stringify({ model, messages: [{ role: "system", content: sysPrompt }], temperature: 0.8 })
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         document.getElementById('scheduleContent').value = data.choices[0].message.content.trim();
-        showToast('排表完成，记得点击保存哦~');
+        showToast('排表完成，记得点击归档哦~');
     } catch (e) {
         showToast('排表失败：' + e.message);
     } finally {
@@ -13798,7 +15414,7 @@ window.handleDiaryInviteClick = async function(role, content, charId, timestamp)
                 method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}`},
                 body:JSON.stringify({ model, messages:[{role:"system",content:sysPrompt}], temperature:0.8 })
             });
-            const data = await res.json();
+            const data = await safeApiJson(res);
             const reply = data.choices[0].message.content.trim();
             
             // 解析同意/拒绝
@@ -13894,7 +15510,7 @@ const sysText = isAgree ? `${aiRole.name} 同意了你的日记邀请：“${msg
                         method:'POST', headers:{'Content-Type':'application/json', 'Authorization':`Bearer ${apiKey}`},
                         body:JSON.stringify({ model, messages:[{role:"system",content:sysPrompt}], temperature:0.8 })
                     });
-                    const data = await res.json();
+                    const data = await safeApiJson(res);
                     bookName = data.choices[0].message.content.trim().replace(/《|》|【|】|\[|\]/g, '');
                 } catch(e) {}
             }
@@ -14227,9 +15843,8 @@ if (!response.ok) {
     throw new Error(`HTTP状态码 ${response.status} | 详细原因: ${errData}`);
 }
 
-const data = await response.json();
+const data = await safeApiJson(response);
 
-// 👇 新增：精准抓取官方 API 本次请求的真实 Token 消耗
 if (data.usage) {
     let actualTokens = data.usage.total_tokens || 0;
     let promptTokens = data.usage.prompt_tokens || 0;
@@ -14747,12 +16362,27 @@ if (stickerRules.length > 0) {
 // ===================================================
 
     // ★★★ 核心修复：把指令集（世界书/规则）和双语翻译开关正式接入群聊！ ★★★
-    const commands = await loadFromDB('ai_commands') || [];
+    const libraries = (await loadFromDB('ai_commands') || []).map(item => ({
+        id: item.id,
+        name: item.name || '未命名条目',
+        category: item.category || '默认分类',
+        position: item.position || 'front',
+        isGlobal: !!item.isGlobal,
+        isEnabled: item.isEnabled !== false,
+        content: item.content || '',
+        libType: item.libType || ((item.category || '').includes('世界书') ? 'worldbook' : 'command'),
+        worldbookKeys: item.worldbookKeys || '',
+        weight: item.weight != null ? Number(item.weight) : 100,
+        depth: item.depth != null ? Number(item.depth) : 4
+    }));
+
     const boundCmdIds = settings.boundCommands || [];
-    const activeCmds = commands.filter(c => c.isGlobal || boundCmdIds.includes(c.id));
+    const activeCmds = libraries.filter(c => c.libType !== 'worldbook' && c.isEnabled !== false && (c.isGlobal || boundCmdIds.includes(c.id)));
     
     let frontCmdText = '';
     let backCmdText = '';
+    let worldbookText = '';
+
     if (activeCmds.length > 0) {
         activeCmds.forEach(c => {
             if (c.position === 'back') backCmdText += `\n【附加指令 - ${c.name}】：\n${c.content}`;
@@ -14760,9 +16390,29 @@ if (stickerRules.length > 0) {
         });
     }
 
-let innerVoiceText = '';
+    const recentWorldbookContext = history.slice(-10).map(m => m.content || '').join('\n').toLowerCase();
+    const activeWorldbooks = libraries
+        .filter(c => c.libType === 'worldbook' && c.isEnabled !== false)
+        .filter(c => {
+            if (c.isGlobal || boundCmdIds.includes(c.id)) return true;
+            const keys = (c.worldbookKeys || '').split(/[,，、]/).map(k => k.trim().toLowerCase()).filter(Boolean);
+            if (keys.length === 0) return false;
+            return keys.some(key => recentWorldbookContext.includes(key));
+        })
+        .sort((a, b) => {
+            if (a.depth !== b.depth) return a.depth - b.depth;
+            return b.weight - a.weight;
+        });
 
-const bilingualText = settings.bilingual ? `\n8. 【最高强制指令 - 翻译思维链】：每次输出前，请先在内部逻辑中执行“语言属性检测”：1. 确认即将输出的句子是否包含英语、日语、粤语等非普通话。2. 若包含，必须在含有外语/方言的句末，附加严格格式的翻译。格式必须且只能是：[译: 标准普通话翻译]。严禁自创格式（如(翻译: xxx)、[EN: xxx]）！示例：What a beautiful day! [译: 今天天气真不错！]` : '';
+    if (activeWorldbooks.length > 0) {
+        activeWorldbooks.forEach(c => {
+            worldbookText += `\n【世界书 - ${c.name} | 权重:${c.weight} | 深度:${c.depth} | 关键词:${c.worldbookKeys || '无'}】\n${c.content}\n`;
+        });
+    }
+
+    let innerVoiceText = '';
+
+    const bilingualText = settings.bilingual ? `\n8. 【最高强制指令 - 翻译思维链】：每次输出前，请先在内部逻辑中执行“语言属性检测”：1. 确认即将输出的句子是否包含英语、日语、粤语等非普通话。2. 若包含，必须在含有外语/方言的句末，附加严格格式的翻译。格式必须且只能是：[译: 标准普通话翻译]。严禁自创格式（如(翻译: xxx)、[EN: xxx]）！示例：What a beautiful day! [译: 今天天气真不错！]` : '';
 
     // ==== 新增修复：让群聊也能读取自动总结的记忆，并开启关键词雷达 ====
     const allMemories = await loadFromDB(`chat_memories_${contactId}`) || [];
@@ -14794,6 +16444,7 @@ const bilingualText = settings.bilingual ? `\n8. 【最高强制指令 - 翻译�
 ${memberDesc}
 ${memoryText}
 ${frontCmdText}
+${worldbookText}
 
 【核心推演与意识指令】：
 1. 群里的每个人都是有独立生活、情绪波动的真实人类。在发言前，请先深度检索该角色的国籍、时代与文化背景。ta的母语是什么？请自动且坚定地使用符合ta背景的语言、方言或专属口癖，拒绝被统一的现代普通话同化。
@@ -14869,7 +16520,7 @@ try {
 
         if (!response.ok) throw new Error("API 请求失败");
 
-const data = await response.json();
+const data = await safeApiJson(response);
 let reply = data.choices[0].message.content.trim();
 reply = reply.replace(/\[\d{1,2}月\d{1,2}日 \d{1,2}:\d{2}\]\s*/g, '');
 
@@ -15064,7 +16715,7 @@ else if (cleanText.includes('[日记提议:')) {
     if (match) { msgType = 'rename_proposal'; proposedName = match[1].trim(); cleanText = match[2].trim(); }
 }
 const ts = Date.now() + i; 
-history.push({ role: 'assistant', speakerId: role ? role.id : undefined, speakerName: role ? role.name : undefined, content: cleanText, msgType: msgType, voiceDuration: voiceDur, rpAmount: rpAmt, locationName: locName, quoteText: quoteText, proposedName: proposedName, innerVoice: turnInnerVoice, timestamp: ts });
+history.push({ role: 'assistant', speakerId: speakerInfo ? speakerInfo.id : undefined, speakerName: speakerInfo ? speakerInfo.name : undefined, content: cleanText, msgType: msgType, voiceDuration: voiceDur, rpAmount: rpAmt, locationName: locName, quoteText: quoteText, proposedName: proposedName, innerVoice: turnInnerVoice, timestamp: ts });
             await saveToDB(`chat_history_${contactId}`, history);
             
 // 发送系统通知
@@ -15372,7 +17023,7 @@ async function generateChatMemory(contactId, chatText, realName, currentHistoryL
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
             body: JSON.stringify({ model, messages: [{ role: "system", content: sysPrompt }], temperature: 0.3 })
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         const memoryContent = data.choices[0].message.content.trim();
 
         let memories = await loadFromDB(`chat_memories_${contactId}`) || [];
@@ -15430,7 +17081,7 @@ async function extractUserPreferences(contactId, chatText) {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
             body: JSON.stringify({ model, messages: [{ role: "system", content: sysPrompt }], temperature: 0.3 }) 
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         let newPrefs = data.choices[0].message.content.trim();
 
         if (newPrefs && newPrefs !== '无') {
@@ -15482,7 +17133,7 @@ async function refineChatMemories(contactId, realName, memories) {
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
             body: JSON.stringify({ model, messages: [{ role: "system", content: sysPrompt }], temperature: 0.3 })
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         const refinedContent = data.choices[0].message.content.trim();
 
         // 核心改造：不删旧数据，把目前所有的卡片标记为已归档！
@@ -15768,7 +17419,7 @@ document.getElementById('saveMemorySettingsBtn').addEventListener('click', async
     await saveToDB('memoryPrompt3', document.getElementById('memoryPrompt3').value.trim());
     
     document.getElementById('memorySettingsPanel').classList.remove('show');
-    showToast('记忆模块设置已保存');
+    showToast('记忆模块设置已归档');
 });
 
 // ====== 重置分卷大纲铸造进度引擎 ======
@@ -16070,7 +17721,7 @@ window.editArchivedMemory = async function(id) {
                 <textarea class="s-input edit-textarea" id="editArchiveContent" style="width:100%; min-height:140px; font-size:13px; line-height:1.6; box-sizing:border-box;" placeholder="记忆内容..."></textarea>
                 <div class="cc-btns" style="margin-top: 16px;">
                     <button class="cc-btn cancel" id="editArchiveCancelBtn">取消</button>
-                    <button class="cc-btn primary" id="editArchiveConfirmBtn" style="background:var(--accent);">保存修改</button>
+                    <button class="cc-btn primary" id="editArchiveConfirmBtn" style="background:var(--accent);">归档</button>
                 </div>
             </div>
         `;
@@ -16110,7 +17761,7 @@ window.editArchivedMemory = async function(id) {
         }
 
         await saveToDB(`chat_memories_${currentChatContact.id}`, allMemories);
-        showToast('修改已保存');
+        showToast('修改已归档');
         modal.classList.remove('show');
         performSearch(); // 刷新搜索列表，马上能看到最新效果
     };
@@ -16289,24 +17940,31 @@ if (_activeCmds.length > 0) {
                     const errText = await res.text();
                     throw new Error(`HTTP状态码: ${res.status}\n详细报错:\n${errText}`);
                 }
-                
-                const data = await res.json();
-                let rawContent = (data.choices && data.choices[0] && data.choices[0].message) ? data.choices[0].message.content : "";
-                
-                if (rawContent !== null) rawContent = rawContent.trim();
-                let outlineContent = rawContent;
+      
+            const data = await safeApiJson(res);
+let outlineContent = '';
 
-                // 【如果内容为空，把原始数据扔在屏幕上】
-                if (!outlineContent || outlineContent === '') {
-                    outlineContent = `【⚠️ API返回异常，抓取到的数据如下】：\n${JSON.stringify(data, null, 2)}`;
-                } else {
-                    let firstLineBreak = outlineContent.indexOf('\n');
-                    if (firstLineBreak > -1 && firstLineBreak < 30 && outlineContent.startsWith('【')) {
-                        outlineContent = outlineContent.substring(firstLineBreak).trim();
-                    }
-                }
+if (
+    data &&
+    Array.isArray(data.choices) &&
+    data.choices[0] &&
+    data.choices[0].message &&
+    typeof data.choices[0].message.content === 'string'
+) {
+    outlineContent = data.choices[0].message.content.trim();
+}
 
-                // 更新数据库
+// 这段是接口返回内容处理逻辑
+if (!outlineContent) {
+    outlineContent = `【⚠️ API返回异常，抓取到的数据如下】：\n${JSON.stringify(data, null, 2)}`;
+} else {
+    let firstLineBreak = outlineContent.indexOf('\n');
+    if (firstLineBreak > -1 && firstLineBreak < 30 && outlineContent.startsWith('【')) {
+        outlineContent = outlineContent.substring(firstLineBreak).trim();
+    }
+}
+
+// 更新数据库
                 let targetIds = targetMems.map(m => m.id);
                 allMemories.forEach(m => {
                     if (targetIds.includes(m.id)) m.hasBeenOutlined = true;
@@ -16806,7 +18464,7 @@ async function processNextChunk() {
             return; 
         }
 
-const data = await res.json();
+const data = await safeApiJson(res);
 const reply = data.choices[0].message.content.trim();
 
 // ★ 1. 发现是废话就直接跳过
@@ -17206,7 +18864,7 @@ const sysPrompt = `你现在是一个有血有肉的真实人类：${role ? role
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
             body: JSON.stringify({ model, messages: [{ role: 'system', content: sysPrompt }, ...currentCallRecords], temperature: 0.85 })
         });
-        const data = await res.json();
+        const data = await safeApiJson(res);
         let reply = data.choices[0].message.content.trim();
         
         currentCallRecords.push({ role: 'assistant', content: reply });
@@ -17408,7 +19066,9 @@ document.getElementById('closePhoneSettingsBtn').addEventListener('click', () =>
     document.getElementById('phoneSettingsPanel').classList.remove('show');
 });
 
-document.getElementById('savePhoneSettingsBtn').addEventListener('click', async () => {
+async function savePhoneSettingsSilently(showTip = false, closePanel = false) {
+    if (!currentChatContact) return;
+
     const settings = {
         useSubApi: document.getElementById('phoneUseSubApiToggle').checked,
         readChat: document.getElementById('phoneReadChatToggle').checked,
@@ -17416,15 +19076,58 @@ document.getElementById('savePhoneSettingsBtn').addEventListener('click', async 
         readMemory: document.getElementById('phoneReadMemoryToggle').checked,
         customCss: document.getElementById('phoneCustomCss').value
     };
+
     await saveToDB(`phone_settings_${currentChatContact.id}`, settings);
-    
-    // 应用 CSS
+
+    // 这段是电话界面的自定义样式实时生效
     let styleTag = document.getElementById('dynamicPhoneCss');
-    if (!styleTag) { styleTag = document.createElement('style'); styleTag.id = 'dynamicPhoneCss'; document.head.appendChild(styleTag); }
+    if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = 'dynamicPhoneCss';
+        document.head.appendChild(styleTag);
+    }
     styleTag.innerHTML = settings.customCss || '';
-    
-    showToast('电话设置已保存');
-    document.getElementById('phoneSettingsPanel').classList.remove('show');
+
+    if (showTip) {
+        showToast('电话设置已自动归档');
+    }
+    if (closePanel) {
+        document.getElementById('phoneSettingsPanel').classList.remove('show');
+    }
+}
+
+let phoneSettingsAutoSaveTimer = null;
+
+function triggerPhoneSettingsAutoSave(showTip = false) {
+    clearTimeout(phoneSettingsAutoSaveTimer);
+    phoneSettingsAutoSaveTimer = setTimeout(() => {
+        savePhoneSettingsSilently(showTip, false);
+    }, 180);
+}
+
+document.getElementById('phoneUseSubApiToggle').addEventListener('change', () => {
+    triggerPhoneSettingsAutoSave();
+});
+
+document.getElementById('phoneReadChatToggle').addEventListener('change', function(e) {
+    document.getElementById('phoneChatCountSetting').style.display = e.target.checked ? 'block' : 'none';
+    triggerPhoneSettingsAutoSave();
+});
+
+document.getElementById('phoneChatCount').addEventListener('input', () => {
+    triggerPhoneSettingsAutoSave();
+});
+
+document.getElementById('phoneReadMemoryToggle').addEventListener('change', () => {
+    triggerPhoneSettingsAutoSave();
+});
+
+document.getElementById('phoneCustomCss').addEventListener('input', () => {
+    triggerPhoneSettingsAutoSave();
+});
+
+document.getElementById('savePhoneSettingsBtn').addEventListener('click', async () => {
+    await savePhoneSettingsSilently(true, true);
 });
 
 document.getElementById('phoneSetWallpaperBtn').addEventListener('click', () => {
@@ -17644,7 +19347,7 @@ window.sendSystemNotification = async function(title, body) {
                     const base64Audio = event.target.result;
                     document.getElementById('notifySoundUrl').value = base64Audio;
                     await saveToDB('notifySoundUrl', base64Audio);
-                    showToast('本地音频已加载，请点击保存配置');
+                    showToast('本地音频已加载，请点击归档配置');
                 };
                 reader.readAsDataURL(file);
             }
@@ -17668,6 +19371,6 @@ window.sendSystemNotification = async function(title, body) {
                 });
             });
         }
-    </script>
+</script>
 </body>
 </html>

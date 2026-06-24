@@ -11892,7 +11892,7 @@ document.getElementById('sessionMenuClear').addEventListener('click', async () =
 
 // 7. 修复打开时同步加载两边列表
 document.querySelectorAll('.app').forEach(app => {
-    if (app.innerText.includes('聊天')) {
+    if (app.innerText.includes('私语')) {
         app.addEventListener('click', async () => { 
             await renderChatSessionList();
             await renderChatContacts(); 

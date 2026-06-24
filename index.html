@@ -2919,7 +2919,7 @@ body.zen-mode #chatMessageArea {
     <button class="s-btn" id="exportBackupBtn" style="flex: 1; margin: 0; background: var(--surface); border: 1.5px solid rgba(184,156,142,0.25); display: flex; justify-content: center; align-items: center; box-sizing: border-box; height: 48px; padding: 0;">导出备份</button>
     <label class="s-btn" style="flex: 1; margin: 0; background: var(--surface); border: 1.5px solid rgba(184,156,142,0.25); display: flex; justify-content: center; align-items: center; box-sizing: border-box; height: 48px; padding: 0; cursor: pointer;">
         导入备份
-        <input type="file" id="importBackupInput" accept=".json, .txt, .starlight, text/plain, */*" style="display:none;">
+        <input type="file" id="importBackupInput" accept=".json, .txt, .月藏, text/plain, */*" style="display:none;">
     </label>
 </div>
             <button class="s-btn danger" id="clearAllDataBtn" style="width: 100%; margin: 0;">恢复出厂设置</button>
@@ -15599,10 +15599,10 @@ if(closeManualBtn) {
 window.addEventListener('load', () => {
     // 延迟 3.5 秒，等开屏动画播完、主界面稳定后再弹出来，体验最丝滑
     setTimeout(() => {
-        if (!localStorage.getItem('starlight_has_seen_manual')) {
+        if (!localStorage.getItem('月藏_has_seen_manual')) {
             window.showManual();
             // 标记为已看，下次不再自动弹
-            localStorage.setItem('starlight_has_seen_manual', 'true');
+            localStorage.setItem('月藏_has_seen_manual', 'true');
         }
     }, 3500);
 });
@@ -18046,7 +18046,7 @@ function base64ToBlob(base64, type) {
 }
 
 // 内部切片分割符
-const SPLIT_TAG = "\n---STARLIGHT_CHUNK_SPLIT---\n";
+const SPLIT_TAG = "\n---月藏_CHUNK_SPLIT---\n";
 
 // 单文件打包导出
 document.getElementById('exportBackupBtn').addEventListener('click', async function() {
@@ -18117,7 +18117,7 @@ document.getElementById('exportBackupBtn').addEventListener('click', async funct
 
         // 把所有碎块拼成唯一的单文件
         const finalBlob = new Blob(blobParts, { type: "text/plain;charset=utf-8" });
-        const fileName = `Starlight备份_${new Date().getTime()}.starlight`;
+        const fileName = `月藏备份_${new Date().getTime()}.月藏`;
 
         const a = document.createElement("a");
         a.href = URL.createObjectURL(finalBlob);
@@ -19257,7 +19257,7 @@ window.sendSystemNotification = async function(title, body) {
                 body: body,
                 icon: 'icon.png',
                 badge: 'icon.png',
-                tag: 'starlight-message',
+                tag: '月藏-message',
                 renotify: true
             });
             return true;

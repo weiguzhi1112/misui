@@ -311,7 +311,7 @@
 /* === 新版：高级琉璃呼吸风开屏动画 === */
 .splash-screen {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: radial-gradient(circle at center, #FDFBF7 0%, var(--bg-color) 100%);
+    background: radial-gradient(circle at center, #FFFFFF 0%, var(--bg-color) 100%);
     z-index: 9999;
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s, transform 0.8s, visibility 0.8s;
@@ -396,7 +396,7 @@
 
 /* 替换或添加这些更精致的输入框样式 */
 .s-input, .s-select {
-    width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(184,156,142,0.15);
+    width: 100%; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.06);
     background: rgba(246, 244, 240, 0.6); font-size: 13px; color: var(--text-main); 
     outline: none; box-sizing: border-box; transition: border 0.3s;
 }
@@ -417,7 +417,7 @@
 .small-btn:active { transform: scale(0.95); background: var(--accent); color: #fff; }
 
 .s-btn {
-    flex: 1; padding: 14px; border-radius: 14px; border: none; background: #F0EDE8;
+    flex: 1; padding: 14px; border-radius: 14px; border: none; background: #FFFFFF;
     color: var(--text-main); font-weight: 600; font-size: 14px; cursor: pointer; transition: transform 0.1s, background 0.2s;
 }
 .s-btn:active { transform: scale(0.95); }
@@ -431,7 +431,7 @@
 
 /* 多段彩色比例条 */
 .storage-segmented-bar {
-    width: 100%; height: 10px; border-radius: 5px; background: #F0EDE8;
+    width: 100%; height: 10px; border-radius: 5px; background: #FFFFFF;
     display: flex; overflow: hidden; margin-bottom: 14px;
 }
 .segment { height: 100%; transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
@@ -510,7 +510,7 @@ body.no-blur-mode .chat-floating-header,
 body.no-blur-mode .chat-bottom-bar,
 body.no-blur-mode .diary-write-header,
 body.no-blur-mode .diary-fab-new {
-    background-color: #FDFBF7 !important; 
+    background-color: #FFFFFF !important; 
     
 }
 
@@ -531,9 +531,9 @@ body.no-blur-mode .diary-fab-new {
 .char-card:active { transform: scale(0.96); box-shadow: 0 4px 12px rgba(128,118,110,0.08); }
 
 .char-card-avatar {
-    width: 54px; height: 54px; border-radius: 18px; background-color: #F0EDE8;
+    width: 54px; height: 54px; border-radius: 18px; background-color: #FFFFFF;
     background-size: cover; background-position: center; flex-shrink: 0;
-    border: 1px solid rgba(184,156,142,0.15); display: flex; justify-content: center; align-items: center;
+    border: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: center; align-items: center;
 }
 .char-card-info { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 4px; }
 .char-card-name { font-size: 15px; font-weight: 700; color: var(--text-main); }
@@ -596,7 +596,7 @@ body.no-blur-mode .diary-fab-new {
     font-size: 10px; padding: 2px 6px; border-radius: 6px; font-weight: 700;
     margin-left: 8px; display: inline-block; transform: translateY(-1px);
 }
-.badge-char { background: rgba(184,156,142,0.15); color: var(--accent); }
+.badge-char { background: rgba(0,0,0,0.06); color: var(--accent); }
 .badge-user { background: rgba(150,143,137,0.15); color: var(--text-sub); }
 
 /* === 指令分类过滤条与标签 === */
@@ -762,13 +762,13 @@ body.no-blur-mode .diary-fab-new {
 .acc-ri-left { display: flex; flex-direction: column; gap: 4px; }
 .acc-ri-cat { font-size: 14px; font-weight: 700; color: var(--text-main); }
 .acc-ri-time { font-size: 11px; color: var(--text-sub); font-weight: 500; display: flex; gap: 6px; align-items: center; }
-.acc-ri-acc { background: rgba(184,156,142,0.15); padding: 2px 6px; border-radius: 6px; color: var(--accent); }
+.acc-ri-acc { background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 6px; color: var(--accent); }
 .acc-ri-right { font-size: 16px; font-weight: 700; text-align: right; }
 .acc-ri-right.in { color: #8BA888; } /* 收入的绿色 */
 .acc-ri-right.out { color: var(--text-main); } /* 支出的深色 */
 
 .acc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.acc-chip { padding: 8px 14px; background: #F0EDE8; border-radius: 12px; font-size: 12px; font-weight: 600; color: var(--text-sub); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+.acc-chip { padding: 8px 14px; background: #FFFFFF; border-radius: 12px; font-size: 12px; font-weight: 600; color: var(--text-sub); cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 .acc-chip.active { background: var(--surface); color: var(--accent); box-shadow: 0 2px 8px rgba(128,118,110,0.15); }
 
 /* 食谱专属美化样式 */
@@ -795,7 +795,7 @@ body.no-blur-mode .diary-fab-new {
 .diet-food.ai-text { color: var(--text-sub); font-style: italic; }
 
 .diet-del { 
-    width: 26px; height: 26px; flex-shrink: 0; background: #F6F4F0; border-radius: 50%; 
+    width: 26px; height: 26px; flex-shrink: 0; background: #FFFFFF; border-radius: 50%; 
     display: flex; align-items: center; justify-content: center; cursor: pointer;
     color: var(--text-sub); transition: 0.2s; margin-top: -2px; margin-right: -4px;
 }
@@ -833,16 +833,16 @@ body.no-blur-mode .diary-fab-new {
     border-bottom: none;
     z-index: 10;
 }
-.lt-btn { background: #F0EDE8; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 600; font-size: 13px; color: var(--text-main); }
-.lt-btn.primary { background: rgba(184,156,142,0.15); color: var(--accent); border: 1.5px solid var(--accent); }
+.lt-btn { background: #FFFFFF; border: none; padding: 8px 14px; border-radius: 12px; font-weight: 600; font-size: 13px; color: var(--text-main); }
+.lt-btn.primary { background: rgba(0,0,0,0.06); color: var(--accent); border: 1.5px solid var(--accent); }
 
-.letter-editor-area { flex: 1; padding: 20px 5vw; background: #FDFBF7; display: flex; flex-direction: column; overflow-y: auto;}
+.letter-editor-area { flex: 1; padding: 20px 5vw; background: #FFFFFF; display: flex; flex-direction: column; overflow-y: auto;}
 .letter-editor-area textarea { flex: 1; width: 100%; background: transparent; border: none; resize: none; font-size: 16px; line-height: 1.8; color: #333; outline: none; font-family: "KaiTi", "Kaiti SC", serif; letter-spacing: 1px;}
 
 /* 侧边栏抽屉 */
 .letter-drawer-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 100; }
 .letter-drawer-overlay.show { opacity: 1; pointer-events: auto; }
-.letter-drawer { position: absolute; top: 0; left: 0; width: 85%; height: 100%; background: #EAE6DF; z-index: 101; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s; transform: translateX(-105%); visibility: hidden; display: flex; flex-direction: column; box-shadow: 4px 0 24px rgba(0,0,0,0.15); }
+.letter-drawer { position: absolute; top: 0; left: 0; width: 85%; height: 100%; background: #FFFFFF; z-index: 101; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s; transform: translateX(-105%); visibility: hidden; display: flex; flex-direction: column; box-shadow: 4px 0 24px rgba(0,0,0,0.15); }
 .letter-drawer.show { transform: translateX(0); visibility: visible; }
 
 .drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 3vh 4vw 2vh; font-weight: 700; color: var(--text-main); font-size: 15px; border-bottom: 1px solid rgba(184,156,142,0.2); }
@@ -850,7 +850,7 @@ body.no-blur-mode .diary-fab-new {
 
 .drawer-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 .drawer-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 4vw; border-bottom: 1px solid rgba(184,156,142,0.1); font-size: 14px; font-weight: 600; color: var(--text-main); transition: 0.2s; cursor: pointer; }
-.drawer-item.active { background: #FDFBF7; border-left: 4px solid var(--accent); color: var(--accent); }
+.drawer-item.active { background: #FFFFFF; border-left: 4px solid var(--accent); color: var(--accent); }
 .drawer-item-del { color: #D67A7A; font-size: 18px; padding: 0 10px; font-weight: bold; opacity: 0.6; }
 .drawer-item-del:active { opacity: 1; transform: scale(1.2); }
 
@@ -1098,7 +1098,7 @@ body.no-blur-mode .diary-fab-new {
     padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600; background: rgba(255,255,255,0.6); color: var(--text-sub); 
     border: 1px solid rgba(255,255,255,0.8); white-space: nowrap; cursor: pointer; transition: 0.2s; flex-shrink: 0;
 }
-.mood-chip.active { background: var(--surface); color: var(--accent); border-color: transparent; box-shadow: 0 6px 16px rgba(184,156,142,0.15); transform: translateY(-2px); }
+.mood-chip.active { background: var(--surface); color: var(--accent); border-color: transparent; box-shadow: 0 6px 16px rgba(0,0,0,0.06); transform: translateY(-2px); }
 
 .custom-mood-input {
     width: 60px; outline: none; text-align: center;
@@ -1145,7 +1145,7 @@ body.no-blur-mode .diary-fab-new {
 
 .ec-avatar {
     width: 52px; height: 52px; border-radius: 16px; 
-    background-color: rgba(184,156,142,0.15); background-size: cover; background-position: center;
+    background-color: rgba(0,0,0,0.06); background-size: cover; background-position: center;
     flex-shrink: 0; border: 1px solid rgba(255,255,255,0.9); box-shadow: 0 4px 12px rgba(184,156,142,0.08);
     transform: none; /* 恢复正向不倾斜 */
 }
@@ -1258,7 +1258,7 @@ body.no-blur-mode .diary-fab-new {
     background: var(--accent);
 }
 .read-diary-ai-bg {
-    background: #FDFBF7; /* 淡淡的信纸色 */
+    background: #FFFFFF; /* 淡淡的信纸色 */
     border: 1px solid rgba(184, 156, 142, 0.15);
     box-shadow: 0 8px 32px rgba(184, 156, 142, 0.08);
 }
@@ -1367,12 +1367,12 @@ body.no-blur-mode .diary-fab-new {
 .art-action-card.left-card::after {
     content: ''; position: absolute; bottom: -20px; right: -20px;
     width: 80px; height: 80px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,156,142,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,0,0,0.06) 0%, transparent 70%);
 }
 .art-action-card.right-card::after {
     content: ''; position: absolute; top: -20px; left: -20px;
     width: 80px; height: 80px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,156,142,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0,0,0,0.06) 0%, transparent 70%);
 }
 
 /* == 信号空状态与动画 == */
@@ -1450,7 +1450,7 @@ body.no-blur-mode .diary-fab-new {
     transform: none;
 }
 
-.chat-avatar { width: 52px; height: 52px; border-radius: 50%; background-color: rgba(184,156,142,0.15); background-size: cover; background-position: center; flex-shrink: 0; }
+.chat-avatar { width: 52px; height: 52px; border-radius: 50%; background-color: rgba(0,0,0,0.06); background-size: cover; background-position: center; flex-shrink: 0; }
 .chat-info { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 6px; }
 .chat-name-row { display: flex; justify-content: space-between; align-items: baseline; }
 .chat-name { font-size: 16px; font-weight: 700; color: var(--text-main); }
@@ -1551,7 +1551,7 @@ body.no-blur-mode .diary-fab-new {
 }
 .quick-action-btn:active {
     transform: scale(0.85); background: var(--surface);
-    color: var(--accent); box-shadow: 0 4px 12px rgba(184,156,142,0.15);
+    color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 /* 全宽极简沉浸式底栏 */
@@ -1721,7 +1721,7 @@ body.no-blur-mode .diary-fab-new {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100dvh; /* 自动适配键盘高度 */
-    background: #FDFBF7; /* 温柔的信纸底色 */
+    background: #FFFFFF; /* 温柔的信纸底色 */
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -1745,7 +1745,7 @@ body.no-blur-mode .diary-fab-new {
     font-size: 15px; font-weight: 600; cursor: pointer; 
     padding: 8px 16px; border-radius: 16px; transition: 0.2s;
 }
-.dwh-btn.cancel { color: var(--text-sub); background: #F0EDE8; }
+.dwh-btn.cancel { color: var(--text-sub); background: #FFFFFF; }
 .dwh-btn.cancel:active { background: #E6E3DE; }
 .dwh-btn.publish { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(184, 156, 142, 0.3); }
 .dwh-btn.publish:active { transform: scale(0.95); }
@@ -1861,7 +1861,7 @@ body.no-blur-mode .diary-fab-new {
 }
 .chat-diary-invite-bubble:active { transform: scale(0.96); }
 .di-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-.di-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(184,156,142,0.15); display: flex; justify-content: center; align-items: center; color: var(--accent); flex-shrink: 0; }
+.di-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(0,0,0,0.06); display: flex; justify-content: center; align-items: center; color: var(--accent); flex-shrink: 0; }
 .di-info { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 2px; }
 .di-msg { font-size: 14px; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .di-hint { font-size: 11px; color: var(--text-sub); font-weight: normal; line-height: 1.4; margin-top: 2px; }
@@ -1878,7 +1878,7 @@ body.no-blur-mode .diary-fab-new {
     max-width: 120px;
     aspect-ratio: 3 / 4.4; /* 比例更修长像真书 */
     border-radius: 4px 10px 10px 4px;
-    background: linear-gradient(135deg, #FDFBF7, #EAE5D9);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     box-shadow: -4px 0 8px rgba(184,156,142,0.12) inset, 0 8px 20px rgba(128, 118, 110, 0.12);
     border: 1px solid rgba(255,255,255,0.9);
     border-left: 6px solid var(--accent); /* 书脊变细 */
@@ -1911,7 +1911,7 @@ body.no-blur-mode .diary-fab-new {
 .db-sub { font-size: 8px; color: var(--text-sub); font-weight: 800; letter-spacing: 1px; }
 
 /* === 日记本详情页美化 === */
-#exchangeDetailPanel { background: #FDFBF7 !important; }
+#exchangeDetailPanel { background: #FFFFFF !important; }
 .diary-book-header { text-align: center; margin-bottom: 24px; position: relative; }
 .diary-book-header::after { content:''; display:block; width:40px; height:3px; background:var(--accent); border-radius:2px; margin: 12px auto 0; opacity:0.5; }
 
@@ -2110,7 +2110,7 @@ body.no-blur-mode .diary-fab-new {
 .mem-float-btn.right-btn { 
     border-radius: 8px 20px 8px 20px; 
     background: linear-gradient(135deg, rgba(246,244,240,0.6), rgba(255,255,255,0.9)); 
-    margin-top: 12px; border-color: rgba(184,156,142,0.15);
+    margin-top: 12px; border-color: rgba(0,0,0,0.06);
 }
 .mem-float-btn:active { transform: scale(0.96); box-shadow: 0 4px 12px rgba(128,118,110,0.03); }
 .mem-float-icon { font-size: 16px; opacity: 0.8; }
@@ -2258,7 +2258,7 @@ body.no-blur-mode .diary-fab-new {
 
 .sticker-tabs { display: flex; justify-content: center; gap: 40px; margin-bottom: 12px; border-bottom: 1px solid rgba(184, 156, 142, 0.1); padding-bottom: 8px; }
 .sticker-tab { font-size: 13px; font-weight: 700; color: var(--text-sub); cursor: pointer; transition: 0.2s; padding: 4px 12px; border-radius: 12px; }
-.sticker-tab.active { background: rgba(184,156,142,0.15); color: var(--accent); }
+.sticker-tab.active { background: rgba(0,0,0,0.06); color: var(--accent); }
 
 .sticker-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; scrollbar-width: none; }
 .sticker-content::-webkit-scrollbar { display: none; }
@@ -2289,10 +2289,10 @@ body.no-blur-mode .diary-fab-new {
 
 .sticker-group-selector { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 4px; scrollbar-width: none; }
 .sticker-group-selector::-webkit-scrollbar { display: none; }
-.sticker-group-chip { padding: 8px 14px; border-radius: 14px; font-size: 12px; font-weight: 700; background: var(--surface); border: 1.5px solid rgba(184,156,142,0.15); color: var(--text-sub); white-space: nowrap; cursor: pointer; box-shadow: 0 2px 8px rgba(128,118,110,0.03); }
+.sticker-group-chip { padding: 8px 14px; border-radius: 14px; font-size: 12px; font-weight: 700; background: var(--surface); border: 1.5px solid rgba(0,0,0,0.06); color: var(--text-sub); white-space: nowrap; cursor: pointer; box-shadow: 0 2px 8px rgba(128,118,110,0.03); }
 .sticker-group-chip.active { background: rgba(184,156,142,0.1); border-color: var(--accent); color: var(--accent); }
 
-.sticker-manage-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; border: 1px solid rgba(184,156,142,0.15); box-shadow: var(--shadow); }
+.sticker-manage-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--surface); border-radius: 16px; margin-bottom: 10px; border: 1px solid rgba(0,0,0,0.06); box-shadow: var(--shadow); }
 
 /* ========================================================= */
 /* ===== iOS 刘海屏与底部小黑条 (Safe Area) 智能适配 ===== */
@@ -2333,7 +2333,7 @@ body.no-blur-mode .diary-fab-new {
 
 /* === 电话功能专属 UI (温馨奶咖沉浸风格) === */
 .phone-panel {
-    background: linear-gradient(180deg, #FDFBF7 0%, #F6F4F0 100%); /* 温馨浅色背景 */
+    background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%); /* 温馨浅色背景 */
     color: var(--text-main); z-index: 1000 !important;
 }
 /* 通话界面顶部导航：精美胶囊风格 */
@@ -2395,7 +2395,7 @@ body.no-blur-mode .diary-fab-new {
     width: 72px; height: 72px; border-radius: 24px;
     background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(246,244,240,0.3));
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 16px 32px rgba(184,156,142,0.15), inset 0 2px 10px rgba(255,255,255,0.8);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.06), inset 0 2px 10px rgba(255,255,255,0.8);
     border: 1px solid rgba(255,255,255,0.9);
     display: flex; justify-content: center; align-items: center; color: var(--accent);
 }
@@ -2520,7 +2520,7 @@ body.no-blur-mode .diary-fab-new {
     display: flex;
     gap: 10px;
     align-items: center;
-    background: #FDFBF7;
+    background: #FFFFFF;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-top: 1px solid rgba(184, 156, 142, 0.12);
@@ -2558,17 +2558,17 @@ body.no-blur-mode .diary-fab-new {
 .pd-ai .pd-bubble { background: #fff; color: var(--text-main); border-radius: 16px 16px 16px 4px; border: 1px solid rgba(255, 255, 255, 0.9); }
 
 /* 流畅模式去除毛玻璃联动补丁 */
-body.no-blur-mode .phone-bottom { background-color: #FDFBF7 !important; }
+body.no-blur-mode .phone-bottom { background-color: #FFFFFF !important; }
 
 /* === 阅读 APP 专属 UI === */
-.read-container { flex: 1; overflow-y: auto; background: #FDFBF7; padding: 20px 6vw; font-family: "KaiTi", "Kaiti SC", STSong, serif; font-size: 17px; line-height: 2; color: #333; letter-spacing: 1px; position: relative; }
+.read-container { flex: 1; overflow-y: auto; background: #FFFFFF; padding: 20px 6vw; font-family: "KaiTi", "Kaiti SC", STSong, serif; font-size: 17px; line-height: 2; color: #333; letter-spacing: 1px; position: relative; }
 .read-page-text { min-height: 60vh; text-align: justify; word-break: break-all; }
 .read-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 5vw;
-    background: #FDFBF7;
+    background: #FFFFFF;
     border-top: 1px solid rgba(184, 156, 142, 0.12);
     box-shadow: none;
 }
@@ -2576,7 +2576,7 @@ body.no-blur-mode .phone-bottom { background-color: #FDFBF7 !important; }
 .read-btn:active { background: rgba(184,156,142,0.2); }
 
 /* 右下角悬浮陪伴窗 */
-.read-companion-float { position: absolute; bottom: 80px; right: 5vw; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #fff, #F0EDE8); box-shadow: 0 8px 24px rgba(128,118,110,0.15); border: 2px solid #fff; display: flex; justify-content: center; align-items: center; z-index: 100; transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background-size: cover; background-position: center; cursor: pointer; }
+.read-companion-float { position: absolute; bottom: 80px; right: 5vw; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #fff, #FFFFFF); box-shadow: 0 8px 24px rgba(128,118,110,0.15); border: 2px solid #fff; display: flex; justify-content: center; align-items: center; z-index: 100; transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow: hidden; background-size: cover; background-position: center; cursor: pointer; }
 .read-companion-float:active { transform: scale(0.9); }
 .read-companion-float::after { content:''; position:absolute; top:-2px; right:-2px; width:14px; height:14px; background:#4CAF50; border-radius:50%; border:2px solid #fff; }
 
@@ -2586,7 +2586,7 @@ body.no-blur-mode .phone-bottom { background-color: #FDFBF7 !important; }
 .rc-header { padding: 12px 16px; border-bottom: 1px solid rgba(184,156,142,0.1); display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--text-main); font-size: 14px; }
 .rc-body { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 .rc-bubble { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-.rc-ai { align-self: flex-start; background: #F6F4F0; color: var(--text-main); border-radius: 16px 16px 16px 4px; }
+.rc-ai { align-self: flex-start; background: #FFFFFF; color: var(--text-main); border-radius: 16px 16px 16px 4px; }
 .rc-me { align-self: flex-end; background: var(--accent); color: #fff; border-radius: 16px 16px 4px 16px; }
 .rc-sys { align-self: center; background: transparent; color: var(--text-sub); font-size: 11px; font-style: italic; }
 
@@ -2598,7 +2598,7 @@ body.no-blur-mode .phone-bottom { background-color: #FDFBF7 !important; }
 .fake-img-card {
     width: 200px;
     height: 140px;
-    background: #EAE6DF; /* 替换掉刺眼的白底，用温柔的灰色模拟无图片质感 */
+    background: #FFFFFF; /* 替换掉刺眼的白底，用温柔的灰色模拟无图片质感 */
     border-radius: 16px;
     display: flex;
     flex-direction: column;
@@ -2659,8 +2659,108 @@ body.zen-mode #chatMessageArea {
 .in-app-banner-text { flex: 1; overflow: hidden; }
 .in-app-banner-title { font-size: 14px; font-weight: bold; color: var(--text-main); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .in-app-banner-desc { font-size: 12px; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-</style>
+/* =============================================
+   将所有暖色/彩色阴影统一替换为极淡中性灰
+   (透明度控制在 0.06 ~ 0.10，非常克制)
+   ============================================= */
 
+/* 1. 主要按钮阴影 (原来是暖棕色/粉色，现在变成极淡灰) */
+.s-btn.primary,
+#saveConfigBtn,
+#saveApiPresetBtn,
+#openAddRecordBtn,
+.diary-fab-new,
+.diary-fab,
+.irregular-btn,
+.chat-send-btn {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 2. 浮窗、卡片、弹窗的大面积阴影 (原来是棕色/粉色/蓝色，现在变淡灰) */
+.custom-confirm-box,
+.rp-modal-box,
+.period-status-card,
+.dream-glow-btn,
+.call-float-window,
+.pb-card,
+.acc-card,
+.diet-item,
+.mail-card,
+.exchange-char-card,
+.organic-card,
+.ai-diary-card,
+.mem-glass-card,
+.char-card {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 3. 红包按钮、悬浮操作区等 (原来是较深的暖色) */
+.rp-action-btn,
+.mem-float-btn,
+.widget {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 4. 如果觉得 0.06 太淡几乎看不见，可以统一改成 0.10 (稍明显一点点但依然很淡) */
+/* 把上面所有的 rgba(0, 0, 0, 0.06) 和 rgba(0, 0, 0, 0.08) 换成 rgba(0, 0, 0, 0.10) 即可 */
+
+/* =============================================
+   阅读 APP 界面全面去暖色（改为纯白/极简灰）
+   ============================================= */
+
+/* 1. 顶部导航栏 — 去米色、去暖棕边框 */
+#readingAppModal .modal-header {
+    background: #FFFFFF !important;
+    border-bottom: 1px solid #EEEEEE !important;
+}
+
+/* 2. 书架主背景 — 去暖米色 */
+#readShelfState {
+    background: #FFFFFF !important;
+}
+
+/* 3. 阅读正文区域背景 — 去暖米色 */
+.read-container {
+    background: #FFFFFF !important;
+}
+
+/* 4. 书本封面卡片 — 最核心的暖黄/棕色来源！彻底改成极简白 */
+.diary-book-cover {
+    background: #F8F8F8 !important;
+    border-left-color: #CCCCCC !important;
+    box-shadow: -4px 0 8px rgba(0,0,0,0.04) inset, 0 8px 20px rgba(0,0,0,0.04) !important;
+}
+
+/* 5. 书封上的装饰分割线 — 去暖色 */
+.db-title-wrapper {
+    border-top-color: rgba(0,0,0,0.06) !important;
+    border-bottom-color: rgba(0,0,0,0.06) !important;
+}
+
+/* 6. 红色小书签丝带 — 如果你也觉得突兀可以改成灰色 */
+.diary-book-cover::before {
+    background: #CCCCCC !important;
+}
+
+/* 7. 伴读面板、设置面板、聊天弹窗 — 全部变白 */
+#readCompanionPanel,
+#readSettingsPanel,
+.read-chat-panel {
+    background: #FFFFFF !important;
+}
+
+/* 8. 底部翻页控制栏 — 去暖色 */
+.read-controls {
+    background: #FFFFFF !important;
+    border-top-color: #EEEEEE !important;
+}
+
+/* 9. 书封上的文字副标题 — 稍微调浅避免显脏 */
+.db-sub {
+    color: #AAAAAA !important;
+}
+
+</style>
 </head>
 <body>
 <!-- 新版：极简琉璃呼吸风开屏加载 -->
@@ -2675,8 +2775,8 @@ body.zen-mode #chatMessageArea {
         </svg>
     </div>
     <!-- 名字与副标题 -->
-    <div class="splash-title">L U M I N A</div>
-    <div class="splash-subtitle">SYNCHRONIZING SOULS</div>
+    <div class="splash-title">月藏机</div>
+    <div class="splash-subtitle">小绥欢迎您的到来!祝您跟您的爱人幸福</div>
     <!-- 极简水平展开线 -->
     <div class="splash-loader-line"></div>
 </div>
@@ -2699,7 +2799,7 @@ body.zen-mode #chatMessageArea {
     
     <div style="display:flex; gap:8px; margin-bottom:12px;">
         <button class="s-btn" id="uploadDesktopFontBtn" style="flex:1; margin:0; border:1.5px dashed rgba(184,156,142,0.5); background:transparent; color:var(--accent); font-size:12px; height:40px; min-height:40px; border-radius:12px;">上传本地字体 (20MB内)</button>
-        <button class="s-btn" id="clearDesktopFontTempBtn" style="flex:none; width:auto; margin:0; padding:0 14px; font-size:12px; height:40px; min-height:40px; border-radius:12px; background:#F0EDE8; color:var(--text-main);">清空</button>
+        <button class="s-btn" id="clearDesktopFontTempBtn" style="flex:none; width:auto; margin:0; padding:0 14px; font-size:12px; height:40px; min-height:40px; border-radius:12px; background:#FFFFFF; color:var(--text-main);">清空</button>
     </div>
 
     <input type="file" id="desktopFontFileInput" accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf,font/woff,font/woff2" style="display:none;">
@@ -2722,7 +2822,7 @@ body.zen-mode #chatMessageArea {
             </div>
             
             <select class="s-select" id="appIconSelect" style="margin-bottom: 12px; font-weight: bold; text-align: center;">
-                <option value="聊天">私语 APP</option>
+                <option value="私语">私语 APP</option>
                 <option value="信笺">信笺 APP</option>
                 <option value="记账">记账 APP</option>
                 <option value="设置">设置 APP</option>
@@ -2783,7 +2883,7 @@ body.zen-mode #chatMessageArea {
                 <input type="color" id="aiBubbleTextColor" value="#333333" style="border:none; width:30px; height:30px; border-radius:4px; cursor:pointer;">
             </div>
 
-            <button class="s-btn primary" id="saveAdvancedBeautifyBtn">保存</button>
+            <button class="s-btn primary" id="saveAdvancedBeautifyBtn">归档</button>
         </div>
 
         <!-- 新增：自定义全局 CSS 模块 -->
@@ -2793,14 +2893,14 @@ body.zen-mode #chatMessageArea {
                 <span id="desktopCssResetBtn" style="color: #D67A7A; cursor: pointer; font-size: 11px; padding: 6px 12px; background: #FFF0F0; border-radius: 10px; font-weight: 600;">清空重置</span>
             </div>
 
-            <textarea class="s-input edit-textarea" id="desktopCustomCss" placeholder="在此输入自定义全局CSS代码...\n例如修改背景色: \nbody { --bg-color: #000000; }" style="min-height: 140px; resize: vertical; margin-bottom: 16px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FDFBF7;"></textarea>
+            <textarea class="s-input edit-textarea" id="desktopCustomCss" placeholder="在此输入自定义全局CSS代码...\n例如修改背景色: \nbody { --bg-color: #000000; }" style="min-height: 140px; resize: vertical; margin-bottom: 16px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FFFFFF;"></textarea>
             
             <div style="display: flex; gap: 8px; margin-bottom: 16px; align-items: center;">
                 <div class="acc-cards-wrapper" id="desktopCssPresetsList" style="flex: 1; margin-bottom: 0; padding-bottom: 0;"></div>
                 <button class="s-btn" id="desktopCssSavePresetBtn" style="flex: none; width: auto; padding: 6px 14px; height: 36px; min-height: 36px; margin: 0; font-size: 12px; border: 1.5px dashed rgba(184,156,142,0.5); background: transparent; color: var(--accent); border-radius: 10px; font-weight: 600;">归档</button>
             </div>
             
-            <button class="s-btn primary" id="saveDesktopCssBtn">保存</button>
+            <button class="s-btn primary" id="saveDesktopCssBtn">归档</button>
         </div>
     </div>
 </div>
@@ -2817,9 +2917,9 @@ body.zen-mode #chatMessageArea {
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
         <div class="card-title" style="margin:0; display:flex; align-items:center; gap:8px;">
             <span>核心配置</span>
-            <span id="openManualBtn" onclick="window.showManual()" style="font-size:11px; background:rgba(184,156,142,0.15); color:var(--accent); padding:4px 10px; border-radius:10px; cursor:pointer; font-weight:bold;">📖 使用说明</span>
+            <span id="openManualBtn" onclick="window.showManual()" style="font-size:11px; background:rgba(0,0,0,0.06); color:var(--accent); padding:4px 10px; border-radius:10px; cursor:pointer; font-weight:bold;">📖 使用说明</span>
         </div>
-        <button class="s-btn" id="saveApiPresetBtn" style="flex:none; width:auto; padding:6px 14px; height:36px; min-height:36px; margin:0; font-size:12px; border:1.5px dashed rgba(184,156,142,0.5); background:transparent; color:var(--accent); border-radius:10px; font-weight:600;">保存</button>
+        <button class="s-btn" id="saveApiPresetBtn" style="flex:none; width:auto; padding:6px 14px; height:36px; min-height:36px; margin:0; font-size:12px; border:1.5px dashed rgba(184,156,142,0.5); background:transparent; color:var(--accent); border-radius:10px; font-weight:600;">归档</button>
     </div>
 
     <div style="font-size:12px; font-weight:600; color:var(--text-sub); margin-bottom:8px;">API 预设</div>
@@ -2856,7 +2956,7 @@ body.zen-mode #chatMessageArea {
         <input type="range" id="tempInput" min="0" max="2" step="0.1" value="0.7">
     </div>
     
-    <button class="s-btn primary" id="saveConfigBtn">保存</button>
+    <button class="s-btn primary" id="saveConfigBtn">归档</button>
 
         <div class="setting-card" style="margin-top: 24px;">
             <div class="card-title">通知与提示音设置</div>
@@ -2890,7 +2990,7 @@ body.zen-mode #chatMessageArea {
     上传本地音频
     <input type="file" id="notifySoundFile" accept="audio/*" style="display:none;">
 </label>
-                <button class="s-btn" id="testSoundBtn" style="flex: 1; margin: 0; font-size: 11px; height: 34px; min-height: 34px; padding: 0 10px; border-radius: 12px; background: #F0EDE8;">试听当前提示音</button>
+                <button class="s-btn" id="testSoundBtn" style="flex: 1; margin: 0; font-size: 11px; height: 34px; min-height: 34px; padding: 0 10px; border-radius: 12px; background: #FFFFFF;">试听当前提示音</button>
             </div>
         </div>
 
@@ -3156,7 +3256,7 @@ body.zen-mode #chatMessageArea {
     <!-- 这段是解码控制按钮 -->
     <div style="display: flex; gap: 10px; margin-top: 16px; margin-bottom: 4px; align-items: center;">
         <button class="s-btn primary" id="startDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; margin: 0; border-radius: 12px; box-shadow: 0 4px 12px rgba(184,156,142,0.3); display: flex; justify-content: center; align-items: center;">开始提炼</button>
-        <button class="s-btn" id="pauseDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; background: #F0EDE8; color: var(--text-main); margin: 0; border-radius: 12px; display: none; justify-content: center; align-items: center;">暂停 / 冷却</button>
+        <button class="s-btn" id="pauseDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; background: #FFFFFF; color: var(--text-main); margin: 0; border-radius: 12px; display: none; justify-content: center; align-items: center;">暂停 / 冷却</button>
         <button class="s-btn danger" id="cancelDecodeBtn" style="flex: 1; height: 42px; min-height: 42px; font-size: 13px; font-weight: bold; margin: 0; background: #FFF0F0; border-radius: 12px; display: flex; justify-content: center; align-items: center;">中断放弃</button>
     </div>
 </div>
@@ -3351,8 +3451,8 @@ body.zen-mode #chatMessageArea {
         </div>
         
         <!-- 新增：中间的专属书架面板 -->
-<div class="sub-panel" id="exchangeBookshelfPanel" style="z-index: 140; background: #F6F4F0; padding: 0; display: flex; flex-direction: column;">
-    <div class="panel-header" style="padding: 6vh 5vw 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; border-bottom: 1px solid rgba(184,156,142,0.15);">
+<div class="sub-panel" id="exchangeBookshelfPanel" style="z-index: 140; background: #FFFFFF; padding: 0; display: flex; flex-direction: column;">
+    <div class="panel-header" style="padding: 6vh 5vw 20px; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.06);">
         <div id="closeBookshelfBtn" style="width:32px; height:32px; display:flex; align-items:center; cursor:pointer; color:var(--text-main);">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         </div>
@@ -3367,14 +3467,14 @@ body.zen-mode #chatMessageArea {
     </div>
 </div>
 
-        <div class="sub-panel" id="exchangeDetailPanel" style="z-index: 150; background: linear-gradient(135deg, #FDFBF7, #F6F4F0); padding: 0; display: flex; flex-direction: column;">
+        <div class="sub-panel" id="exchangeDetailPanel" style="z-index: 150; background: linear-gradient(135deg, #FFFFFF, #FFFFFF); padding: 0; display: flex; flex-direction: column;">
     
     <!-- 顶部模拟皮质封皮边缘 -->
     <div style="background: rgba(184,156,142,0.08); padding: 6vh 5vw 16px 5vw; border-bottom: 1.5px dashed rgba(184,156,142,0.25);">
     <div class="diary-book-header" style="margin-bottom: 0; position: relative;">
         <div style="font-size: 18px; font-weight: 800; color: var(--text-main); letter-spacing: 1px;" id="exchangeDetailName">与 TA 的日记本</div>
         <div style="font-size: 10px; color: var(--text-sub); letter-spacing: 2px; margin-top: 4px; margin-bottom: 12px; font-family: serif;">SECRET WHISPERS</div>
-        <div id="exchangeCheckinBadge" style="display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(184,156,142,0.15); padding: 4px 14px; border-radius: 12px; letter-spacing: 1px;">已打卡 0 / 7 天</div>
+        <div id="exchangeCheckinBadge" style="display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(0,0,0,0.06); padding: 4px 14px; border-radius: 12px; letter-spacing: 1px;">已打卡 0 / 7 天</div>
     </div>
 </div>
 <!-- 悬浮羽毛笔按钮 -->
@@ -3398,7 +3498,7 @@ body.zen-mode #chatMessageArea {
     </div>
     
     <!-- 底部合上日记本的悬浮栏 -->
-    <div style="padding: 10px 5vw 5vh 5vw; background: rgba(253,251,247,0.9); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border-top: 1px solid rgba(184,156,142,0.15); box-shadow: 0 -4px 16px rgba(0,0,0,0.02);">
+    <div style="padding: 10px 5vw 5vh 5vw; background: rgba(253,251,247,0.9); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); border-top: 1px solid rgba(0,0,0,0.06); box-shadow: 0 -4px 16px rgba(0,0,0,0.02);">
         <button class="s-btn" id="closeExchangeDetailBtn" style="flex: none; min-height: 52px; max-height: 52px; border-radius: 16px; width: 100%; display: flex; justify-content: center; align-items: center; margin: 0; background: rgba(184,156,142,0.12); color: var(--accent); font-weight: 800; letter-spacing: 1px;">合上日记本</button>
     </div>
 </div>
@@ -3502,7 +3602,7 @@ body.zen-mode #chatMessageArea {
 
 <!-- 日记设置与统计弹窗 -->
 <div class="custom-confirm-overlay" id="diarySettingsModal">
-    <div class="custom-confirm-box" style="background:#F6F4F0; width: 85vw; max-width: 360px; padding: 24px 20px;">
+    <div class="custom-confirm-box" style="background:#FFFFFF; width: 85vw; max-width: 360px; padding: 24px 20px;">
         <div class="cc-title" style="margin-bottom: 20px;">日记设置与统计</div>
         
         <!-- API开关 -->
@@ -3622,7 +3722,7 @@ body.zen-mode #chatMessageArea {
 <div style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 24px; padding: 20px; box-shadow: 0 8px 24px rgba(128,118,110,0.06); border: 1px solid rgba(255,255,255,0.8); margin-bottom: 24px;">
     <div style="font-size: 11px; color: var(--accent); font-weight: 800; letter-spacing: 1px; margin-bottom: 8px;">BAND INFO</div>
     <div style="display: flex; gap: 12px; align-items: center;">
-        <div id="newGroupAvatarPreview" style="width: 50px; height: 50px; border-radius: 14px; background-color: rgba(184,156,142,0.15); border: 1.5px dashed rgba(184,156,142,0.4); display: flex; justify-content: center; align-items: center; cursor: pointer; flex-shrink: 0; background-size: cover; background-position: center; transition: 0.2s;">
+        <div id="newGroupAvatarPreview" style="width: 50px; height: 50px; border-radius: 14px; background-color: rgba(0,0,0,0.06); border: 1.5px dashed rgba(184,156,142,0.4); display: flex; justify-content: center; align-items: center; cursor: pointer; flex-shrink: 0; background-size: cover; background-position: center; transition: 0.2s;">
             <svg id="newGroupAvatarIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </div>
         <input type="text" class="s-input" id="newGroupName" placeholder="为新群聊起个名字..." style="font-weight: 700; font-size: 15px; background: rgba(246, 244, 240, 0.6); border: 1.5px solid transparent; border-radius: 16px; padding: 14px; flex: 1; margin: 0;">
@@ -3847,7 +3947,7 @@ body.zen-mode #chatMessageArea {
     </div>
     
     <!-- 全新的果冻悬浮 Tab -->
-    <div style="display:flex; background:rgba(246,244,240,0.8); border-radius:24px; padding:6px; margin-bottom: 20px; border:1px solid rgba(184,156,142,0.15); box-shadow:inset 0 2px 6px rgba(0,0,0,0.02);" id="searchTabSelector">
+    <div style="display:flex; background:rgba(246,244,240,0.8); border-radius:24px; padding:6px; margin-bottom: 20px; border:1px solid rgba(0,0,0,0.06); box-shadow:inset 0 2px 6px rgba(0,0,0,0.02);" id="searchTabSelector">
         <div class="search-tab-btn active" data-tab="history">聊天记录</div>
         <div class="search-tab-btn" data-tab="memory">记忆卡片</div>
     </div>
@@ -3943,16 +4043,16 @@ body.zen-mode #chatMessageArea {
             <div style="font-size: 13px; color: var(--text-main); font-weight: 600;">使用副 API (省流)</div>
             <label class="switch" style="transform: scale(0.85); transform-origin: right center;"><input type="checkbox" id="phoneUseSubApiToggle"><span class="slider"></span></label>
         </div>
-        <div style="height:1px; background:rgba(184,156,142,0.15); margin-bottom:12px;"></div>
+        <div style="height:1px; background:rgba(0,0,0,0.06); margin-bottom:12px;"></div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
             <div style="font-size: 13px; color: var(--text-main); font-weight: 600;">读取文字聊天记录</div>
                     <label class="switch" style="transform: scale(0.85); transform-origin: right center;"><input type="checkbox" id="phoneReadChatToggle"><span class="slider"></span></label>
                 </div>
                 <div id="phoneChatCountSetting" style="display: none; margin-bottom: 16px;">
                     <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px;">读取几条最新聊天记录？</div>
-                    <input type="number" class="s-input" id="phoneChatCount" placeholder="默认 15 条" style="text-align: center; background: #FDFBF7;">
+                    <input type="number" class="s-input" id="phoneChatCount" placeholder="默认 15 条" style="text-align: center; background: #FFFFFF;">
                 </div>
-                <div style="height:1px; background:rgba(184,156,142,0.15); margin-bottom:12px;"></div>
+                <div style="height:1px; background:rgba(0,0,0,0.06); margin-bottom:12px;"></div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <div style="font-size: 13px; color: var(--text-main); font-weight: 600;">读取常驻记忆星轨</div>
@@ -3970,7 +4070,7 @@ body.zen-mode #chatMessageArea {
                     <button class="s-btn" id="phoneClearWallpaperBtn" style="font-size: 13px; color: #D67A7A; height: 44px; min-height: 44px; border-radius: 14px; background: #FFF0F0;">清除壁纸</button>
                 </div>
                 <div class="block-title">自定义电话 CSS</div>
-                <textarea class="s-input edit-textarea" id="phoneCustomCss" placeholder="在此输入自定义CSS代码..." style="min-height: 100px; resize: vertical; margin-bottom: 8px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FDFBF7;"></textarea>
+                <textarea class="s-input edit-textarea" id="phoneCustomCss" placeholder="在此输入自定义CSS代码..." style="min-height: 100px; resize: vertical; margin-bottom: 8px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FFFFFF;"></textarea>
             </div>
         </div>
         <button class="s-btn primary" id="savePhoneSettingsBtn" style="flex:none; width:100%; height: 50px; min-height: 50px; border-radius: 16px; margin-top: 10px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(184,156,142,0.3);">归档</button>
@@ -4027,7 +4127,7 @@ body.zen-mode #chatMessageArea {
     <div class="mem-top-bar" style="position: relative; z-index: 1;">
         <div id="closeMemoryPanelBtn" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.8); border-radius:50%; cursor:pointer; box-shadow:0 6px 16px rgba(128,118,110,0.06); color:var(--text-sub); transition: 0.2s;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; padding-left: 20px;">
-    <div id="castOutlineBtn" class="mem-nav-btn" style="background: rgba(184,156,142,0.15); color: var(--accent);">铸造大纲</div>
+    <div id="castOutlineBtn" class="mem-nav-btn" style="background: rgba(0,0,0,0.06); color: var(--accent);">铸造大纲</div>
     <div id="exportUnoutlinedBtn" class="mem-nav-btn" style="background: rgba(150,143,137,0.1); color: var(--text-sub);">导出碎片</div>
     <div id="openMemorySettingsBtn" class="mem-nav-btn" style="background: rgba(150,143,137,0.1); color: var(--text-sub);">设置</div>
     <div id="openPrefsPanelBtn" class="mem-nav-btn">镜中回像</div>
@@ -4156,14 +4256,14 @@ body.zen-mode #chatMessageArea {
                 <span id="groupProfileNameText">未命名群聊</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
         </div>
-        <div style="height:1px; background:rgba(184,156,142,0.15);"></div>
+        <div style="height:1px; background:rgba(0,0,0,0.06);"></div>
         <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" id="editGroupNoticeBtn">
             <span style="font-size: 14px; font-weight: 600; color: var(--text-main);">群公告</span>
             <div style="display:flex; align-items:center; gap:4px; color:var(--text-sub); font-size:13px;">
                 <span id="groupProfileNoticeText" style="max-width:120px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">暂无公告</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
         </div>
-        <div style="height:1px; background:rgba(184,156,142,0.15);"></div>
+        <div style="height:1px; background:rgba(0,0,0,0.06);"></div>
         <!-- 群头像 -->
         <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" id="editGroupAvatarBtn">
             <span style="font-size: 14px; font-weight: 600; color: var(--text-main);">群头像</span>
@@ -4208,7 +4308,7 @@ body.zen-mode #chatMessageArea {
         #chatSettingsUserRoleChips .acc-chip.active, #chatSettingsCommandChips .acc-chip.active {
             border-color: var(--accent);
             background: var(--surface);
-            box-shadow: 0 4px 12px rgba(184,156,142,0.15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
         /* 全新的独立卡片模块风格 */
         .chat-setting-block {
@@ -4315,7 +4415,7 @@ body.zen-mode #chatMessageArea {
 }
 
 .bubble-context-menu .menu-item:active {
-    background: rgba(184,156,142,0.15);
+    background: rgba(0,0,0,0.06);
     color: var(--accent);
 }
 
@@ -4546,7 +4646,7 @@ body.zen-mode #chatMessageArea {
         <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 12px;">与 TA 聊天时，对方将读取你的这个私人设定。</div>
         <div id="chatSettingsUserRoleChips" style="margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
 <div class="block-title">修改 TA 的备注名</div>
-<input type="text" class="s-input" id="chatSettingsTaNote" placeholder="输入新的备注名" style="margin-bottom: 24px; text-align: center; background: #FDFBF7; border-radius: 14px;">
+<input type="text" class="s-input" id="chatSettingsTaNote" placeholder="输入新的备注名" style="margin-bottom: 24px; text-align: center; background: #FFFFFF; border-radius: 14px;">
         <div class="block-title">绑定附加指令 <span style="font-size: 10px; color: var(--text-sub); font-weight: normal;">(点击可多选)</span></div>
         <div id="chatSettingsCommandChips" style="margin-bottom: 4px; display: flex; flex-wrap: wrap; gap: 8px;"></div>
     </div>
@@ -4625,7 +4725,7 @@ body.zen-mode #chatMessageArea {
             </div>
         </div>
 
-        <textarea class="s-input edit-textarea" id="chatCustomCss" placeholder="在此输入自定义气泡CSS代码...\n例如: \n.chat-bubble-row.me .chat-bubble { background: #FFC0CB; color: #333; }" style="min-height: 120px; resize: vertical; margin-bottom: 16px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FDFBF7;"></textarea>
+        <textarea class="s-input edit-textarea" id="chatCustomCss" placeholder="在此输入自定义气泡CSS代码...\n例如: \n.chat-bubble-row.me .chat-bubble { background: #FFC0CB; color: #333; }" style="min-height: 120px; resize: vertical; margin-bottom: 16px; font-family: monospace; line-height: 1.6; border-radius: 14px; padding: 14px; border: 1px solid rgba(184,156,142,0.3); background: #FFFFFF;"></textarea>
         
         <div style="display: flex; gap: 8px; margin-bottom: 4px; align-items: center;">
             <div class="acc-cards-wrapper" id="chatCssPresetsList" style="flex: 1; margin-bottom: 0; padding-bottom: 0;"></div>
@@ -4654,18 +4754,18 @@ body.zen-mode #chatMessageArea {
 </div>
 <div id="chatInnerVoiceSettings" style="display: none; margin-bottom: 16px;">
     <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px;">自定义心声提示词 (留空用默认)</div>
-    <textarea class="s-input edit-textarea" id="chatInnerVoicePrompt" placeholder="默认: 请写出你此刻最真实、未经修饰的内心想法，包含表层情绪和深层顾虑。" style="min-height: 80px; margin-bottom: 8px; background: #FDFBF7;"></textarea>
+    <textarea class="s-input edit-textarea" id="chatInnerVoicePrompt" placeholder="默认: 请写出你此刻最真实、未经修饰的内心想法，包含表层情绪和深层顾虑。" style="min-height: 80px; margin-bottom: 8px; background: #FFFFFF;"></textarea>
 </div>
         <div id="chatAutoSummarySettings" style="display: none; margin-bottom: 16px;">
             <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px;">多少条对话总结一次</div>
-            <input type="number" class="s-input" id="chatSummaryMessages" placeholder="例如: 30" style="text-align: center; background: #FDFBF7;">
+            <input type="number" class="s-input" id="chatSummaryMessages" placeholder="例如: 30" style="text-align: center; background: #FFFFFF;">
         </div>
 
         <div style="font-size: 12px; margin-bottom: 8px; color: var(--text-main); font-weight: 600;">自定义连发条数控制</div>
-        <input type="text" class="s-input" id="chatReplyCount" placeholder="留空则AI随机发挥；可填 1 或 1-3" style="margin-bottom: 20px; text-align: center; background: #FDFBF7;">
+        <input type="text" class="s-input" id="chatReplyCount" placeholder="留空则AI随机发挥；可填 1 或 1-3" style="margin-bottom: 20px; text-align: center; background: #FFFFFF;">
 
         <div style="font-size: 12px; margin-bottom: 8px; color: var(--text-main); font-weight: 600;">读取上下文条数限制</div>
-        <input type="number" class="s-input" id="chatContextCount" placeholder="默认 15 条" style="margin-bottom: 20px; text-align: center; background: #FDFBF7;">
+        <input type="number" class="s-input" id="chatContextCount" placeholder="默认 15 条" style="margin-bottom: 20px; text-align: center; background: #FFFFFF;">
 
         <div style="font-size: 12px; margin-bottom: 8px; color: var(--text-main); font-weight: 600;">Tokens 实时预估</div>
         <div style="background: rgba(184,156,142,0.08); border-radius: 14px; padding: 16px; text-align: center; margin-bottom: 4px;" id="chatPromptPreview">
@@ -4727,17 +4827,17 @@ body.zen-mode #chatMessageArea {
             </div>
 
             <!-- 调整作息表按钮 -->
-            <button class="s-btn" id="openScheduleEditBtn" style="width: 100%; border-radius: 12px; background: linear-gradient(135deg, #F0EDE8, #E6E3DE); color: var(--text-main); font-weight: 800; height: 38px; min-height: 38px; margin: 0; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 12px rgba(128,118,110,0.06); font-size: 12px; border: 1px solid rgba(255,255,255,0.6); transition: 0.2s;">调整 TA 的作息表</button>
+            <button class="s-btn" id="openScheduleEditBtn" style="width: 100%; border-radius: 12px; background: linear-gradient(135deg, #FFFFFF, #E6E3DE); color: var(--text-main); font-weight: 800; height: 38px; min-height: 38px; margin: 0; box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 12px rgba(128,118,110,0.06); font-size: 12px; border: 1px solid rgba(255,255,255,0.6); transition: 0.2s;">调整 TA 的作息表</button>
         </div>
 
         <!-- 2. 详细编辑面板 (默认隐藏) -->
         <div id="scheduleEditArea" style="display: none;">
             <div style="display:flex; align-items:center; gap: 8px; margin-bottom: 14px;">
-                <div id="backToMiniProfileBtn" style="width:28px; height:28px; border-radius:8px; background:#F0EDE8; display:flex; justify-content:center; align-items:center; cursor:pointer; color:var(--text-main);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+                <div id="backToMiniProfileBtn" style="width:28px; height:28px; border-radius:8px; background:#FFFFFF; display:flex; justify-content:center; align-items:center; cursor:pointer; color:var(--text-main);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
                 <span style="font-size: 14px; font-weight: 800; color: var(--text-main);">作息表设定</span>
             </div>
             
-            <div style="background: rgba(246, 244, 240, 0.6); border-radius: 12px; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(184,156,142,0.15);">
+            <div style="background: rgba(246, 244, 240, 0.6); border-radius: 12px; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.06);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
                     <div style="font-size: 12px; font-weight:800; color:var(--text-main);">状态跟随作息表</div>
                     <label class="switch" style="transform: scale(0.7); transform-origin: right center; margin:0;"><input type="checkbox" id="scheduleEnableToggle"><span class="slider"></span></label>
@@ -4767,7 +4867,7 @@ body.zen-mode #chatMessageArea {
     .reading-select-mode #readPageText p:active { background: rgba(184,156,142,0.25); }
     .reading-select-mode #readPageText p.selected { background: rgba(184,156,142,0.4); }
 </style>
-<div class="modal-header" style="background: rgba(253,251,247,0.9); z-index:20; border-bottom: 1px solid rgba(184,156,142,0.15); padding-left: 4vw; padding-right: 4vw;">
+<div class="modal-header" style="background: rgba(253,251,247,0.9); z-index:20; border-bottom: 1px solid rgba(0,0,0,0.06); padding-left: 4vw; padding-right: 4vw;">
     <!-- 左侧：返回书架 + 标题 -->
     <div style="display:flex; align-items:center; gap: 8px;">
         <div id="backToReadShelfBtn" style="display:none; padding: 4px; cursor: pointer; color: var(--text-main);">
@@ -4797,7 +4897,7 @@ body.zen-mode #chatMessageArea {
     </div>
     
     <!-- 全新阅读多本书架视图 -->
-    <div id="readShelfState" style="flex:1; display:flex; flex-direction:column; background: #FDFBF7; padding: 20px 5vw; overflow-y:auto; position: relative;">
+    <div id="readShelfState" style="flex:1; display:flex; flex-direction:column; background: #FFFFFF; padding: 20px 5vw; overflow-y:auto; position: relative;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
             <div style="font-size: 18px; font-weight: bold; color: var(--text-main);">我的书架</div>
             <div style="display:flex; gap:8px;" id="shelfTopBtns">
@@ -4852,10 +4952,10 @@ body.zen-mode #chatMessageArea {
         <div class="rc-bubble rc-sys">长按书籍文字进行划线，我就可以专门为你解读这一句话哦~</div>
     </div>
     <div style="padding:10px; border-top:1px solid rgba(184,156,142,0.1); display:flex; flex-direction:column; gap:8px; background:rgba(253,251,247,0.9);">
-        <button class="read-btn" id="askPageBtn" style="width:100%; background:#F6F4F0; height:32px;">让 TA 评价当前这页</button>
+        <button class="read-btn" id="askPageBtn" style="width:100%; background:#FFFFFF; height:32px;">让 TA 评价当前这页</button>
         <div style="display:flex; gap:6px;">
-    <input type="text" id="readChatInput" placeholder="和伴读说点什么..." style="flex:1; border:none; background:#F0EDE8; border-radius:16px; padding:0 12px; font-size:13px; outline:none; color:var(--text-main);">
-    <button id="readChatAiReplyBtn" style="background:#F0EDE8; color:var(--text-main); border:none; width:36px; height:36px; border-radius:50%; display:flex; justify-content:center; align-items:center;">
+    <input type="text" id="readChatInput" placeholder="和伴读说点什么..." style="flex:1; border:none; background:#FFFFFF; border-radius:16px; padding:0 12px; font-size:13px; outline:none; color:var(--text-main);">
+    <button id="readChatAiReplyBtn" style="background:#FFFFFF; color:var(--text-main); border:none; width:36px; height:36px; border-radius:50%; display:flex; justify-content:center; align-items:center;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
     <button id="readChatSendBtn" style="background:var(--accent); color:#fff; border:none; width:36px; height:36px; border-radius:50%; display:flex; justify-content:center; align-items:center;">
@@ -4892,9 +4992,9 @@ body.zen-mode #chatMessageArea {
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
                 <span style="font-size:13px; font-weight:600; color:var(--text-main);">正文字号大小</span>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <button class="s-btn" id="rFontMinus" style="margin:0; min-height:30px; height:30px; width:40px; padding:0; border-radius:8px; background:rgba(184,156,142,0.15); color:var(--accent); font-weight:bold; font-size:14px;">A -</button>
+                    <button class="s-btn" id="rFontMinus" style="margin:0; min-height:30px; height:30px; width:40px; padding:0; border-radius:8px; background:rgba(0,0,0,0.06); color:var(--accent); font-weight:bold; font-size:14px;">A -</button>
                     <span id="rFontDisp" style="font-size:14px; font-weight:bold; width:30px; text-align:center;">17</span>
-                    <button class="s-btn" id="rFontPlus" style="margin:0; min-height:30px; height:30px; width:40px; padding:0; border-radius:8px; background:rgba(184,156,142,0.15); color:var(--accent); font-weight:bold; font-size:14px;">A +</button>
+                    <button class="s-btn" id="rFontPlus" style="margin:0; min-height:30px; height:30px; width:40px; padding:0; border-radius:8px; background:rgba(0,0,0,0.06); color:var(--accent); font-weight:bold; font-size:14px;">A +</button>
                 </div>
             </div>
             
@@ -5035,8 +5135,8 @@ body.zen-mode #chatMessageArea {
 <!-- 全局通用美化弹窗 -->
 <div class="custom-confirm-overlay" id="customConfirm">
     <div class="custom-confirm-box">
-        <div class="cc-title">提示</div>
-        <div class="cc-desc">内容</div>
+        <div class="cc-title">心脏碎裂，首先露出的是回忆</div>
+        <div class="cc-desc">请问你是否要进行此行为呢？可能会导致不可逆的伤害</div>
         <!-- 第一行输入框 -->
         <input type="text" class="cc-input" style="display:none; margin-bottom:12px;" placeholder="在此输入...">
         <!-- 第二行输入框 -->
@@ -5106,7 +5206,7 @@ body.zen-mode #chatMessageArea {
 
 <!-- 梦境设置弹窗 -->
 <div class="custom-confirm-overlay" id="dreamSettingsModal">
-    <div class="custom-confirm-box" style="background:#F6F4F0; width: 80vw; max-width: 340px;">
+    <div class="custom-confirm-box" style="background:#FFFFFF; width: 80vw; max-width: 340px;">
         <div class="cc-title" style="margin-bottom: 20px;">梦境捕获器设置</div>
         <div class="tower-row">
             <div>
@@ -5123,7 +5223,7 @@ body.zen-mode #chatMessageArea {
 <!-- === 梦境 APP 结束 === -->
 
 <!-- 全新信笺 APP -->
-<div class="app-modal" id="letterAppModal" style="padding:0; display:flex; flex-direction:column; background: #FDFBF7;">
+<div class="app-modal" id="letterAppModal" style="padding:0; display:flex; flex-direction:column; background: #FFFFFF;">
     <!-- 顶部操作栏 -->
     <div class="letter-topbar">
         <div style="display:flex; align-items:center; gap:12px;">
@@ -5164,7 +5264,7 @@ body.zen-mode #chatMessageArea {
 
 <!-- 1. 信号塔面板 -->
 <div class="custom-confirm-overlay" id="towerModal">
-    <div class="custom-confirm-box" style="background:#F6F4F0; width: 80vw; max-width: 340px;">
+    <div class="custom-confirm-box" style="background:#FFFFFF; width: 80vw; max-width: 340px;">
         <div class="cc-title" style="margin-bottom: 20px;">信箱设置</div>
         
         <div class="tower-row">
@@ -5201,7 +5301,7 @@ body.zen-mode #chatMessageArea {
 
     <!-- 2. 羁绊记忆面板 -->
     <div class="custom-confirm-overlay" id="bondModal">
-        <div class="custom-confirm-box" style="background:#FDFBF7; max-width: 85vw; width: 85vw;">
+        <div class="custom-confirm-box" style="background:#FFFFFF; max-width: 85vw; width: 85vw;">
             <div class="cc-title">笔友羁绊记忆</div>
             <div class="cc-desc" style="font-size:11px; margin-bottom:12px;">记录你们的暗号与记忆，TA回信时会参考这些内容</div>
             <textarea class="s-input edit-textarea" id="bondMemoryContent" placeholder="暂时还没有和任何人的羁绊记忆..." style="height: 180px; margin-bottom: 20px;"></textarea>
@@ -5214,7 +5314,7 @@ body.zen-mode #chatMessageArea {
 
 <!-- 信物珍藏册面板 -->
 <div class="custom-confirm-overlay" id="keepsakeModal">
-    <div class="custom-confirm-box" style="background:#FDFBF7; max-width: 85vw; width: 85vw;">
+    <div class="custom-confirm-box" style="background:#FFFFFF; max-width: 85vw; width: 85vw;">
         <div class="cc-title">信物珍藏册</div>
         <div class="cc-desc" style="font-size:11px; margin-bottom:12px;">记录你收到的专属信物，以及它是谁送的，写信时随时查阅</div>
         <textarea class="s-input edit-textarea" id="keepsakeContent" placeholder="例如：&#10;蓝色的欧石楠花瓣 —— 来自 观测员-K&#10;一枚生锈的齿轮 —— 来自 流浪商人" style="height: 180px; margin-bottom: 20px;"></textarea>
@@ -5243,10 +5343,10 @@ body.zen-mode #chatMessageArea {
     </div>
 
 <!-- 4. 邮筒面板 -->
-<div class="sub-panel" id="letterMailboxPanel" style="background: #EAE6DF; z-index: 200;">
+<div class="sub-panel" id="letterMailboxPanel" style="background: #FFFFFF; z-index: 200;">
     <div class="panel-header" style="margin-bottom: 24px;">邮筒</div>
     
-    <button class="s-btn" id="checkNewMailBtn" style="flex: none; min-height: 52px; max-height: 52px; display: flex; justify-content: center; align-items: center; background: #FDFBF7; color: var(--accent); border: 1.5px dashed var(--accent); margin-bottom: 16px; width: 100%;">翻看是否有新信件...</button>
+    <button class="s-btn" id="checkNewMailBtn" style="flex: none; min-height: 52px; max-height: 52px; display: flex; justify-content: center; align-items: center; background: #FFFFFF; color: var(--accent); border: 1.5px dashed var(--accent); margin-bottom: 16px; width: 100%;">翻看是否有新信件...</button>
     
     <div id="mailboxList" style="flex:1; overflow-y:auto; padding-bottom:20px;"></div>
     
@@ -5254,7 +5354,7 @@ body.zen-mode #chatMessageArea {
 </div>
 
     <!-- 5. 读信面板 -->
-    <div class="sub-panel" id="letterReadPanel" style="background: #FDFBF7; z-index: 300;">
+    <div class="sub-panel" id="letterReadPanel" style="background: #FFFFFF; z-index: 300;">
         <div class="panel-header" id="readLetterHeader">来信</div>
         <div style="flex:1; overflow-y:auto; padding: 20px 0;">
             <div style="text-align:center; font-size:18px; font-weight:bold;" id="readLetterTitle"></div>
@@ -5280,7 +5380,7 @@ body.zen-mode #chatMessageArea {
                 <div class="cal-custom-text" contenteditable="true" id="calCustomText" spellcheck="false">LUMINA</div>
             </div>
 
-            <div class="app"><div class="icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="app-name">聊天</div></div>
+            <div class="app"><div class="icon"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><div class="app-name">私语</div></div>
             <div class="app"><div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div><div class="app-name">信笺</div></div>
             <div class="app"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8 M10 10h4 M10 14h4"/></svg></div><div class="app-name">记账</div></div>
             <div class="app"><div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div><div class="app-name">设置</div></div>
@@ -5454,7 +5554,7 @@ window.showToast = function(msg) {
     const toast = document.createElement('div');
     toast.innerText = msg;
     // 修改为搭配 UI 的通透毛玻璃效果
-    toast.style.cssText = 'position:fixed; top:-50px; left:50%; transform:translateX(-50%); background:rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color:var(--text-main); padding:12px 24px; border-radius:24px; font-size:13px; font-weight:bold; z-index:99999; box-shadow:0 8px 24px rgba(184,156,142,0.15); opacity:0; transition:opacity 0.4s, top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(255,255,255,0.8); max-width: 85vw; text-align: center;';
+    toast.style.cssText = 'position:fixed; top:-50px; left:50%; transform:translateX(-50%); background:rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color:var(--text-main); padding:12px 24px; border-radius:24px; font-size:13px; font-weight:bold; z-index:99999; box-shadow:0 8px 24px rgba(0,0,0,0.06); opacity:0; transition:opacity 0.4s, top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); border: 1px solid rgba(255,255,255,0.8); max-width: 85vw; text-align: center;';
     document.body.appendChild(toast);
     
     // 弹性掉落动画
@@ -6907,7 +7007,7 @@ async function renderCommandList() {
         const catBadge = item.category ? `<span class="cmd-badge">${item.category}</span>` : '';
         const posBadge = item.position === 'back'
             ? `<span class="cmd-badge" style="background: rgba(214,122,122,0.15); color: #D67A7A;">后置</span>`
-            : `<span class="cmd-badge" style="background: rgba(184,156,142,0.15); color: var(--accent);">前置</span>`;
+            : `<span class="cmd-badge" style="background: rgba(0,0,0,0.06); color: var(--accent);">前置</span>`;
         const globalBadge = item.isGlobal
             ? `<span class="cmd-badge" style="background: rgba(139,168,136,0.15); color: #8BA888;">全局</span>`
             : '';
@@ -9327,7 +9427,7 @@ async function renderExchangeDetailList() {
             badge.style.background = '#FFF0F0';
             badge.style.color = '#D67A7A';
         } else {
-            badge.style.background = 'rgba(184,156,142,0.15)';
+            badge.style.background = 'rgba(0,0,0,0.06)';
             badge.style.color = 'var(--accent)';
         }
     }
@@ -9787,7 +9887,7 @@ document.getElementById('openDiarySettingsBtn').addEventListener('click', async 
             const count = exchangeDiaries.filter(d => d.aiId === char.id).length;
             if(count > 0) {
                 charStatsHtml += `
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-sub); border-bottom: 1px dashed rgba(184,156,142,0.15); padding-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--text-sub); border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 8px;">
                     <span style="font-weight: 700; color: var(--text-main);">${char.name}</span>
                     <span style="background: rgba(184,156,142,0.1); padding: 4px 10px; border-radius: 8px; color: var(--accent); font-weight: 600;">共交换 ${count} 篇</span>
                 </div>`;
@@ -10309,7 +10409,7 @@ document.getElementById('readPencilBtn').addEventListener('click', function() {
     isPencilMode = !isPencilMode;
     if (isPencilMode) {
         this.style.color = 'var(--accent)';
-        this.style.background = 'rgba(184,156,142,0.15)';
+        this.style.background = 'rgba(0,0,0,0.06)';
         this.style.borderRadius = '8px';
         document.body.classList.add('reading-select-mode');
         selectedParagraphs = [];
@@ -10451,7 +10551,7 @@ document.getElementById('openReadCompanionBtn').addEventListener('click', async 
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <div class="char-card-info">
-            <div class="char-card-name">内置伴读助手 <span class="role-badge badge-char" style="background:rgba(184,156,142,0.15); color:var(--accent);">默认</span></div>
+            <div class="char-card-name">内置伴读助手 <span class="role-badge badge-char" style="background:rgba(0,0,0,0.06); color:var(--accent);">默认</span></div>
             <div class="char-card-desc">纯粹、安静的 角色 读书助手</div>
         </div>
     `;
@@ -11057,7 +11157,7 @@ async function renderChatContacts() {
                     ${!avatarUrl ? groupIcon : ''}
                 </div>
                 <div class="artistic-contact-info" style="text-align: left;">
-                    <div class="artistic-contact-name">${contact.name} ${contact.isGroup ? '<span style="font-size:10px; background:rgba(184,156,142,0.15); color:var(--accent); padding:3px 6px; border-radius:6px; vertical-align:middle; margin-left:4px; font-weight:800;">群聊</span>' : ''}</div>
+                    <div class="artistic-contact-name">${contact.name} ${contact.isGroup ? '<span style="font-size:10px; background:rgba(0,0,0,0.06); color:var(--accent); padding:3px 6px; border-radius:6px; vertical-align:middle; margin-left:4px; font-weight:800;">群聊</span>' : ''}</div>
                     <div class="artistic-contact-desc" style="font-style:italic;">${descText}</div>
                 </div>
             </div>
@@ -12374,7 +12474,7 @@ function showPhotoChoiceDialog() {
 
     btnBox.innerHTML = `
         <button class="cc-btn cancel" id="photoChoiceCancelBtn">取消</button>
-        <button class="cc-btn" id="photoChoiceFakeBtn" style="background:#F0EDE8; color:var(--text-main);">文字图</button>
+        <button class="cc-btn" id="photoChoiceFakeBtn" style="background:#FFFFFF; color:var(--text-main);">文字图</button>
         <button class="cc-btn primary" id="photoChoiceRealBtn" style="background:var(--accent); color:#fff;">真实相册</button>
     `;
 
@@ -12688,7 +12788,7 @@ if (contactInfo.members && contactInfo.members.length > 0) {
 
             membersHtml += `
                 <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex-shrink:0; cursor:pointer;" onclick="manageGroupMember('${char.id}', '${char.name}')">
-                    <div style="width:54px; height:54px; border-radius:18px; background-size:cover; background-position:center; background-color:rgba(184,156,142,0.15); ${avatarUrl ? `background-image:url(${avatarUrl})` : ''}; box-shadow:0 4px 12px rgba(128,118,110,0.06); border:1px solid rgba(255,255,255,0.6); position:relative;">
+                    <div style="width:54px; height:54px; border-radius:18px; background-size:cover; background-position:center; background-color:rgba(0,0,0,0.06); ${avatarUrl ? `background-image:url(${avatarUrl})` : ''}; box-shadow:0 4px 12px rgba(128,118,110,0.06); border:1px solid rgba(255,255,255,0.6); position:relative;">
                         ${muteBadge}
                     </div>
                     <div style="font-size:12px; font-weight:700; color:var(--text-main); max-width:54px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">${char.name}</div>
@@ -14915,7 +15015,7 @@ if (contactInfo.members && contactInfo.members.length > 0) {
 
             memberListEl.innerHTML += `
                 <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex-shrink:0; cursor:pointer;" onclick="manageGroupMember('${char.id}', '${char.name}')">
-                    <div style="width:54px; height:54px; border-radius:18px; background-size:cover; background-position:center; background-color:rgba(184,156,142,0.15); ${avatarUrl ? `background-image:url(${avatarUrl})` : ''}; box-shadow:0 4px 12px rgba(128,118,110,0.06); border:1px solid rgba(255,255,255,0.6); position:relative;">
+                    <div style="width:54px; height:54px; border-radius:18px; background-size:cover; background-position:center; background-color:rgba(0,0,0,0.06); ${avatarUrl ? `background-image:url(${avatarUrl})` : ''}; box-shadow:0 4px 12px rgba(128,118,110,0.06); border:1px solid rgba(255,255,255,0.6); position:relative;">
                         ${muteBadge}
                     </div>
                     <div style="font-size:12px; font-weight:700; color:var(--text-main); max-width:54px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">${char.name}</div>
@@ -15151,7 +15251,7 @@ window.manageGroupMember = async function(charId, charName) {
     
     // 1. 禁言 / 解除禁言
     if (isMuted) {
-        buttonsHtml += `<button class="cc-btn" onclick="executeGroupAction('${charId}', '${charName}', 'unmute')" style="width:100%; margin-bottom:12px; background:#F0EDE8; color:var(--text-main);">解除禁言</button>`;
+        buttonsHtml += `<button class="cc-btn" onclick="executeGroupAction('${charId}', '${charName}', 'unmute')" style="width:100%; margin-bottom:12px; background:#FFFFFF; color:var(--text-main);">解除禁言</button>`;
     } else {
         buttonsHtml += `<button class="cc-btn danger" onclick="executeGroupAction('${charId}', '${charName}', 'mute')" style="width:100%; margin-bottom:12px; background:#FFF0F0; color:#D67A7A;">关进小黑屋 (禁言)</button>`;
     }
@@ -15159,7 +15259,7 @@ window.manageGroupMember = async function(charId, charName) {
     // 2. 群主特权：管理员分配与转让
     if (myRole === 2) {
         if (admins.includes(charId)) {
-            buttonsHtml += `<button class="cc-btn" onclick="executeGroupAction('${charId}', '${charName}', 'revoke_admin')" style="width:100%; margin-bottom:12px; background:#F0EDE8; color:var(--text-main);">撤销管理员</button>`;
+            buttonsHtml += `<button class="cc-btn" onclick="executeGroupAction('${charId}', '${charName}', 'revoke_admin')" style="width:100%; margin-bottom:12px; background:#FFFFFF; color:var(--text-main);">撤销管理员</button>`;
         } else {
             buttonsHtml += `<button class="cc-btn primary" onclick="executeGroupAction('${charId}', '${charName}', 'grant_admin')" style="width:100%; margin-bottom:12px; background:rgba(51,144,236,0.15); color:#3390EC;">设为管理员</button>`;
         }
@@ -15178,7 +15278,7 @@ window.manageGroupMember = async function(charId, charName) {
         document.body.appendChild(modal);
     }
     modal.innerHTML = `
-        <div class="custom-confirm-box" style="background:#F6F4F0; width: 75vw; max-width: 280px; padding: 24px 20px;">
+        <div class="custom-confirm-box" style="background:#FFFFFF; width: 75vw; max-width: 280px; padding: 24px 20px;">
             <div class="cc-title" style="margin-bottom:20px; font-size:16px;">管理 ${charName}</div>
             <div style="display:flex; flex-direction:column; width:100%;">
                 ${buttonsHtml}
@@ -15253,7 +15353,7 @@ const quietRefresh = async () => {
 
                 membersHtml += `
                     <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex-shrink:0; cursor:pointer;" onclick="manageGroupMember('${char.id}', '${char.name.replace(/'/g, "\\'")}')">
-                        <div style="width:54px; height:54px; border-radius:18px; background-size:cover; background-position:center; background-color:rgba(184,156,142,0.15); ${avatarUrl ? `background-image:url(${avatarUrl})` : ''}; box-shadow:0 4px 12px rgba(128,118,110,0.06); border:1px solid rgba(255,255,255,0.6); position:relative;">
+                        <div style="width:54px; height:54px; border-radius:18px; background-size:cover; background-position:center; background-color:rgba(0,0,0,0.06); ${avatarUrl ? `background-image:url(${avatarUrl})` : ''}; box-shadow:0 4px 12px rgba(128,118,110,0.06); border:1px solid rgba(255,255,255,0.6); position:relative;">
                             ${muteBadge}
                         </div>
                         <div style="font-size:12px; font-weight:700; color:var(--text-main); max-width:54px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">${char.name}</div>
@@ -15658,7 +15758,7 @@ window.openInviteMemberModal = async function() {
     }
     
     modal.innerHTML = `
-        <div class="custom-confirm-box" style="background:#F6F4F0; width: 85vw; max-width: 320px; padding: 24px 20px; display:flex; flex-direction:column; max-height:80vh;">
+        <div class="custom-confirm-box" style="background:#FFFFFF; width: 85vw; max-width: 320px; padding: 24px 20px; display:flex; flex-direction:column; max-height:80vh;">
             <div class="cc-title" style="margin-bottom:16px; font-size:16px;">邀请新成员</div>
             <style>
                 .invite-char-card.selected { background: #fff !important; border-color: var(--accent) !important; box-shadow: 0 12px 32px rgba(184,156,142,0.18) !important; }
@@ -17295,13 +17395,13 @@ window.archiveMemory = async function(id) {
         modal.id = 'archiveMemoryModal';
         modal.className = 'custom-confirm-overlay'; // 复用全局背景样式
         modal.innerHTML = `
-            <div class="custom-confirm-box" style="background:#F6F4F0; width: 85vw; max-width: 320px; text-align: center;">
+            <div class="custom-confirm-box" style="background:#FFFFFF; width: 85vw; max-width: 320px; text-align: center;">
                 <div class="cc-title" style="margin-bottom: 8px;">封存记忆</div>
                 <div class="cc-desc" style="font-size:11px; margin-bottom:16px;">请输入触发关键词(逗号隔开)，留空则作为静默档案收藏，雷达将无法触发。</div>
                 
                 <div style="position: relative; margin-bottom: 20px; text-align: left;">
                     <input type="text" class="s-input cc-input" id="archiveKeywordInput" placeholder="例如: 项链,游乐园" style="width:100%; padding-right: 80px; box-sizing: border-box; font-size:14px;">
-                    <div id="archiveAiBtn" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: bold; color: var(--accent); background: rgba(184,156,142,0.15); padding: 6px 10px; border-radius: 8px; cursor: pointer; transition: 0.2s;">AI提取</div>
+                    <div id="archiveAiBtn" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: bold; color: var(--accent); background: rgba(0,0,0,0.06); padding: 6px 10px; border-radius: 8px; cursor: pointer; transition: 0.2s;">AI提取</div>
                 </div>
 
                 <div class="cc-btns">
@@ -17565,7 +17665,7 @@ async function performSearch() {
     if (kwMatch) {
         const keys = kwMatch[1].split(/[,，、]/).filter(k => k.trim());
         keywordsHtml = `<div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">` + 
-            keys.map(k => `<span style="background:rgba(184,156,142,0.15); color:var(--accent); padding:2px 8px; border-radius:8px; font-size:11px; font-weight:bold;"># ${k.trim()}</span>`).join('') +
+            keys.map(k => `<span style="background:rgba(0,0,0,0.06); color:var(--accent); padding:2px 8px; border-radius:8px; font-size:11px; font-weight:bold;"># ${k.trim()}</span>`).join('') +
             `</div>`;
         pureText = mem.content.replace(/\[旧日关键词:.*?\]\s*/, '');
     }
@@ -17580,7 +17680,7 @@ async function performSearch() {
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <span style="font-size:10px; font-weight:800; color:var(--text-sub); letter-spacing:1px;">ARCHIVED / ${timeStr}</span>
                                         <div style="display:flex; gap:8px;">
-                            <button class="s-btn" style="margin:0; min-height:26px; height:26px; padding:0 10px; font-size:11px; border-radius:8px; flex:none; width:max-content; background:#F0EDE8; color:var(--text-main);" onclick="editArchivedMemory(${mem.id})">编辑</button>
+                            <button class="s-btn" style="margin:0; min-height:26px; height:26px; padding:0 10px; font-size:11px; border-radius:8px; flex:none; width:max-content; background:#FFFFFF; color:var(--text-main);" onclick="editArchivedMemory(${mem.id})">编辑</button>
                             <button class="s-btn danger" style="margin:0; min-height:26px; height:26px; padding:0 10px; font-size:11px; border-radius:8px; flex:none+ width:max-content;" onclick="deleteArchivedMemory(${mem.id})">抹除</button>
                             <button class="s-btn primary" style="margin:0; min-height:26px; height:26px; padding:0 10px; font-size:11px; border-radius:8px; flex:none; width:max-content;" onclick="recallMemory(${mem.id})">召回</button>
                         </div>
@@ -17715,7 +17815,7 @@ window.editArchivedMemory = async function(id) {
         modal.id = 'editArchiveModal';
         modal.className = 'custom-confirm-overlay';
         modal.innerHTML = `
-            <div class="custom-confirm-box" style="background:#F6F4F0; width: 85vw; max-width: 340px; text-align: center;">
+            <div class="custom-confirm-box" style="background:#FFFFFF; width: 85vw; max-width: 340px; text-align: center;">
                 <div class="cc-title" style="margin-bottom: 16px;">编辑归档记忆</div>
                 <input type="text" class="s-input" id="editArchiveKeyword" placeholder="触发关键词 (如: 项链,约定)" style="width:100%; margin-bottom: 12px; font-size: 13px; box-sizing:border-box;">
                 <textarea class="s-input edit-textarea" id="editArchiveContent" style="width:100%; min-height:140px; font-size:13px; line-height:1.6; box-sizing:border-box;" placeholder="记忆内容..."></textarea>
@@ -18752,7 +18852,7 @@ window.openPhoneApp = async function() {
         phonePanel.style.backgroundPosition = 'center';
     } else {
         phonePanel.style.backgroundImage = '';
-        phonePanel.style.background = 'linear-gradient(180deg, #FDFBF7 0%, #F6F4F0 100%)';
+        phonePanel.style.background = 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)';
     }
     
     // 【添加这部分：读取CSS】
@@ -19137,7 +19237,7 @@ document.getElementById('phoneSetWallpaperBtn').addEventListener('click', () => 
 document.getElementById('phoneClearWallpaperBtn').addEventListener('click', async () => {
     const phonePanel = document.getElementById('phoneAppPanel');
     phonePanel.style.backgroundImage = '';
-    phonePanel.style.background = 'linear-gradient(180deg, #FDFBF7 0%, #F6F4F0 100%)';
+    phonePanel.style.background = 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%)';
     await saveToDB(`phone_bg_${currentChatContact.id}`, null); 
     showToast('电话壁纸已清除');
 });

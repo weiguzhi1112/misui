@@ -3285,12 +3285,14 @@ body.zen-mode #chatMessageArea {
             <div class="role-btn" data-lib="worldbook">世界书</div>
         </div>
 
-        <div class="row-flex" style="margin-top: 0; margin-bottom: 12px;">
-            <label class="s-btn" style="flex:1; cursor:pointer; display:flex; justify-content:center; align-items:center;">
+        <div class="row-flex" style="margin-top: 0; margin-bottom: 14px; gap: 12px;">
+            <label class="s-btn" style="flex:1; cursor:pointer; display:flex; justify-content:center; align-items:center; min-height:42px; max-height:42px; border-radius:14px; background:linear-gradient(135deg, #ffffff, #f6f4f0); border:1px solid rgba(184,156,142,0.2); box-shadow:0 4px 12px rgba(128,118,110,0.05); font-size:13px; font-weight:700; color:var(--text-main); letter-spacing:0.5px; transition:0.2s; margin:0;">
                 导入当前库
-                <input type="file" id="commandImportInput" accept=".json,.txt,.md,.text" style="display:none;">
+                <input type="file" id="commandImportInput" accept=".json,.txt,.md,.text,.csv,.log,.xml,.html,.htm,.docx,.doc,.rtf,.yaml,.yml" style="display:none;">
             </label>
-            <button class="s-btn" id="commandExportBtn" style="flex:1;">导出当前库</button>
+            <button class="s-btn" id="commandExportBtn" style="flex:1; min-height:42px; max-height:42px; border-radius:14px; background:linear-gradient(135deg, #ffffff, #f6f4f0); border:1px solid rgba(184,156,142,0.2); box-shadow:0 4px 12px rgba(128,118,110,0.05); font-size:13px; font-weight:700; color:var(--text-main); letter-spacing:0.5px; transition:0.2s; margin:0;">
+                导出当前库
+            </button>
         </div>
 
         <div class="cmd-filter-bar" id="commandFilterBar"></div>
@@ -3776,8 +3778,11 @@ body.zen-mode #chatMessageArea {
         <!-- 沉浸式聊天室 -->
         <div class="sub-panel" id="chatRoomPanel" style="z-index: 200; padding: 0; display: flex; flex-direction: column; background: var(--bg-color); overflow: hidden;">
             
+            <!-- 新增：专门用于处理背景模糊的独立遮罩层，彻底解决滑动卡死和不显示的问题 -->
+            <div id="chatRoomBgOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></div>
+            
             <!-- 悬浮胶囊头部 -->
-            <div class="chat-floating-header">
+            <div class="chat-floating-header" style="z-index: 100;">
                 <div class="chat-back-btn" id="backToChatListBtn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </div>
@@ -7295,7 +7300,22 @@ document.getElementById('commandImportInput').addEventListener('change', async (
     if (!file) return;
 
     try {
-        const rawText = await file.text();
+        let rawText = '';
+        // 智能判断：如果是 docx 文件，调用 mammoth.js 解析
+        if (file.name.toLowerCase().endsWith('.docx')) {
+            if (typeof mammoth === 'undefined') {
+                showToast('缺少 mammoth.js 库，无法解析 docx');
+                e.target.value = '';
+                return;
+            }
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+            rawText = result.value;
+        } else {
+            // 其他文本格式 (txt, json, md 等) 直接读取文本
+            rawText = await file.text();
+        }
+
         const importGroupName = `导入_${file.name.replace(/\.[^.]+$/, '')}_${new Date().getMonth() + 1}-${new Date().getDate()}`;
         let importedItems = [];
 
@@ -10037,7 +10057,7 @@ if (!isGlobalAutoDiaryEnabled) return; // 开关关了，直接退出不花钱
         }
         
     } catch(e) {
-        console.log("后台自动写日记失败: ", e);
+        console.error("后台自动写日记失败:", e && e.message ? e.message : e);
     }
 }
 
@@ -11067,7 +11087,7 @@ async function renderChatSessionList() {
 
         html += `
             <div class="chat-session-swipe-wrap" data-contact-id="${contact.id}">
-                <div class="chat-session-card chat-session-main-card" onclick="openChatRoom('${contact.id}', '${contact.name}')">
+                <div class="chat-session-card chat-session-main-card" data-name="${contact.name}">
                     <div class="chat-avatar" style="${avatarUrl ? `background-image:url(${avatarUrl}); border:none;` : ''}">
                         ${!avatarUrl ? `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(184,156,142,0.5)" stroke-width="2" style="margin: 14px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>` : ''}
                     </div>
@@ -11201,13 +11221,14 @@ window.openChatRoom = async function(id, name) {
         panel.style.backgroundImage = '';
     }
     
-    // 应用背景模糊度
-    if (settings.bgBlur) {
-        area.style.backdropFilter = `blur(${settings.bgBlur}px)`;
-        area.style.webkitBackdropFilter = `blur(${settings.bgBlur}px)`;
+    // 应用背景模糊度 (作用于独立的遮罩层)
+    const blurOverlay = document.getElementById('chatRoomBgOverlay');
+    if (settings.bgBlur && settings.bgBlur > 0) {
+        blurOverlay.style.backdropFilter = `blur(${settings.bgBlur}px)`;
+        blurOverlay.style.webkitBackdropFilter = `blur(${settings.bgBlur}px)`;
     } else {
-        area.style.backdropFilter = 'none';
-        area.style.webkitBackdropFilter = 'none';
+        blurOverlay.style.backdropFilter = 'none';
+        blurOverlay.style.webkitBackdropFilter = 'none';
     }
     
     applyChatCustomCss(settings.customCss);
@@ -11219,6 +11240,38 @@ window.openChatRoom = async function(id, name) {
         document.getElementById('chatQuickBar').style.display = 'flex';
     }
     await loadChatHistory(id); // 先在后台把聊天记录拼好
+    
+    // ==== 永生记忆：久别重逢与怀旧涟漪 ====
+    let history = await loadFromDB(`chat_history_${id}`) || [];
+    if (history.length > 0) {
+        const lastMsg = history[history.length - 1];
+        const hoursPassed = (Date.now() - lastMsg.timestamp) / (1000 * 60 * 60);
+        
+        // 1. 久别重逢唤醒 (> 7天)
+        if (hoursPassed > 24 * 7) {
+            const allMems = await loadFromDB(`chat_memories_${id}`) || [];
+            const topMems = allMems.filter(m => !m.isArchived).sort((a, b) => (b.strength||0) - (a.strength||0)).slice(0, 3);
+            if (topMems.length > 0) {
+                const reunionText = `[系统提示] 你们已经很久没联系了。TA 的脑海中浮现出这些最深刻的记忆：\n${topMems.map(m => m.content).join('\n')}\n请以“好久不见”为基调，自然地提起其中一件事作为开场白。`;
+                history.push({ role: 'system', content: reunionText, timestamp: Date.now() });
+                await saveToDB(`chat_history_${id}`, history);
+            }
+        } 
+        // 2. 随机怀旧涟漪 (> 2小时 80%概率，或直接打开 30%概率)
+        else if ((hoursPassed > 2 && Math.random() < 0.8) || Math.random() < 0.3) {
+            const allMems = await loadFromDB(`chat_memories_${id}`) || [];
+            const strongMems = allMems.filter(m => !m.isArchived && (m.strength || 0) > 50);
+            if (strongMems.length > 0) {
+                const randomMem = strongMems[Math.floor(Math.random() * strongMems.length)];
+                // 弹出横幅
+                window.showInAppBanner('💭 记忆涌动', `你想起了：${randomMem.triggerKeys || '往事'}...`);
+                // 悄悄注入系统提示
+                history.push({ role: 'system', content: `[潜意识涌动] 看着聊天框，你突然回想起了这件事：${randomMem.content}。请在接下来的聊天中，找机会自然地带出这种怀旧的情绪。`, timestamp: Date.now() });
+                await saveToDB(`chat_history_${id}`, history);
+            }
+        }
+    }
+    // ====================================
     
     // 终极修复：在面板处于屏幕下方隐身时，先给浏览器 30 毫秒把排版算好并顶到底部
     setTimeout(() => {
@@ -11597,28 +11650,13 @@ document.getElementById('sendChatBtn').addEventListener('click', async () => {
         const safeQuote = currentQuoteText.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         quoteHtml = `<div class="chat-bubble-quote">${safeQuote}</div>`;
     }
-    let md = new Date(ts);
-let tStr = `${md.getHours().toString().padStart(2,'0')}:${md.getMinutes().toString().padStart(2,'0')}`;
-
-// ★新增：发文字时，只要过了午夜12点就弹日期小字
-let dateDividerHtml = '';
-let lastMsgTs = history.length > 1 ? history[history.length - 2].timestamp : 0;
-if (lastMsgTs) {
-    let lastD = new Date(lastMsgTs);
-    if (lastD.getDate() !== md.getDate() || lastD.getMonth() !== md.getMonth() || lastD.getFullYear() !== md.getFullYear()) {
-        dateDividerHtml = `<div class="chat-system-msg"><span class="chat-system-msg-text" style="background: transparent; color: var(--text-sub); opacity: 0.7; font-weight: bold; font-size: 11px;">${md.getFullYear()}年${md.getMonth() + 1}月${md.getDate()}日</span></div>`;
+        // 强制重新渲染整个聊天列表，以严格遵循当前的头像显示模式 (kkt/merge等)
+    await loadChatHistory(currentChatContact.id);
+    const area = document.getElementById('chatMessageArea');
+    const bubbles = area.querySelectorAll('.chat-bubble-row');
+    if (bubbles.length > 0) {
+        bubbles[bubbles.length - 1].classList.add('new-pop'); // 补上弹出动画
     }
-}
-
-const area = document.getElementById('chatMessageArea');
-area.insertAdjacentHTML('beforeend', dateDividerHtml + `
-    <div class="chat-bubble-row me new-pop" data-ts="${ts}">
-            <div class="ms-checkbox"></div>
-            <div class="chat-time-stamp">${tStr}</div>
-            <div class="chat-bubble">${quoteHtml}${content}</div>
-            <div class="chat-bubble-avatar" style="${myAvatarUrl ? `background-image:url(${myAvatarUrl});border:none;` : 'background-color: #D4CCC2;'}"></div>
-        </div>
-    `);
     area.scrollTop = area.scrollHeight;
     
     // 发送完毕，重置引用预览框状态
@@ -11804,64 +11842,80 @@ function bindChatSessionSwipeActions() {
 
         let startX = 0;
         let startY = 0;
-        let longPressTimer = null;
-
-        const clearLongPress = () => {
-            if (longPressTimer) {
-                clearTimeout(longPressTimer);
-                longPressTimer = null;
-            }
-        };
+        let isSwiping = false;
 
         card.addEventListener('touchstart', (e) => {
             const touch = e.touches[0];
             startX = touch.clientX;
             startY = touch.clientY;
-
-            clearLongPress();
-            longPressTimer = setTimeout(() => {
-                clearLongPress();
-                showChatSessionContextMenu(wrap.dataset.contactId, touch);
-            }, 520);
+            isSwiping = false;
         }, { passive: true });
 
         card.addEventListener('touchmove', (e) => {
+            if (!startX || !startY) return;
             const touch = e.touches[0];
-            const deltaX = Math.abs(touch.clientX - startX);
-            const deltaY = Math.abs(touch.clientY - startY);
-            if (deltaX > 6 || deltaY > 6) {
-                clearLongPress();
+            const deltaX = touch.clientX - startX;
+            const deltaY = touch.clientY - startY;
+
+            // 如果水平滑动距离大于 40px (左滑或右滑)，且垂直滑动较小，判定为滑动操作
+            if (Math.abs(deltaX) > 40 && Math.abs(deltaY) < 30) {
+                isSwiping = true;
             }
         }, { passive: true });
 
-        card.addEventListener('touchend', () => {
-            clearLongPress();
+        card.addEventListener('touchend', (e) => {
+            if (isSwiping) {
+                // 触发滑动菜单
+                const touch = e.changedTouches[0];
+                showChatSessionContextMenu(wrap.dataset.contactId, touch);
+            }
+            startX = 0;
+            startY = 0;
         });
 
         card.addEventListener('touchcancel', () => {
-            clearLongPress();
+            startX = 0;
+            startY = 0;
+            isSwiping = false;
         });
 
+        // 电脑端鼠标滑动兼容
         card.addEventListener('mousedown', (e) => {
-            clearLongPress();
-            longPressTimer = setTimeout(() => {
-                clearLongPress();
-                showChatSessionContextMenu(wrap.dataset.contactId, e);
-            }, 520);
+            startX = e.clientX;
+            startY = e.clientY;
+            isSwiping = false;
         });
 
-        card.addEventListener('mouseup', () => {
-            clearLongPress();
+        card.addEventListener('mousemove', (e) => {
+            if (!startX || !startY) return;
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            if (Math.abs(deltaX) > 40 && Math.abs(deltaY) < 30) {
+                isSwiping = true;
+            }
+        });
+
+        card.addEventListener('mouseup', (e) => {
+            if (isSwiping) {
+                showChatSessionContextMenu(wrap.dataset.contactId, e);
+            }
+            startX = 0;
+            startY = 0;
         });
 
         card.addEventListener('mouseleave', () => {
-            clearLongPress();
+            startX = 0;
+            startY = 0;
         });
 
-        card.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            clearLongPress();
-            showChatSessionContextMenu(wrap.dataset.contactId, e);
+        // 点击事件正常保留
+        card.addEventListener('click', (e) => {
+            if (isSwiping) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
+            openChatRoom(wrap.dataset.contactId, card.dataset.name);
         });
     });
 }
@@ -11873,21 +11927,24 @@ document.addEventListener('click', function(e) {
 });
 
 document.getElementById('sessionMenuPin').addEventListener('click', async () => {
+    const contactId = activeSessionMenuContactId;
     hideChatSessionContextMenu();
-    if (!activeSessionMenuContactId) return;
-    await togglePinChat(activeSessionMenuContactId);
+    if (!contactId) return;
+    await togglePinChat(contactId);
 });
 
 document.getElementById('sessionMenuCss').addEventListener('click', async () => {
+    const contactId = activeSessionMenuContactId;
     hideChatSessionContextMenu();
-    if (!activeSessionMenuContactId) return;
-    await clearChatCssQuick(activeSessionMenuContactId);
+    if (!contactId) return;
+    await clearChatCssQuick(contactId);
 });
 
 document.getElementById('sessionMenuClear').addEventListener('click', async () => {
+    const contactId = activeSessionMenuContactId;
     hideChatSessionContextMenu();
-    if (!activeSessionMenuContactId) return;
-    await clearChatHistoryQuick(activeSessionMenuContactId);
+    if (!contactId) return;
+    await clearChatHistoryQuick(contactId);
 });
 
 // 7. 修复打开时同步加载两边列表
@@ -12896,11 +12953,13 @@ document.getElementById('groupProfileMemberCount').innerText = `群聊成员 (${
     document.getElementById('chatAvatarDisplayMode').value = settings.avatarDisplayMode || 'default';
     
     // 监听滑块实时显示数值并预览模糊效果
-    document.getElementById('chatBgBlurSlider').addEventListener('input', (e) => {
+          document.getElementById('chatBgBlurSlider').addEventListener('input', (e) => {
     document.getElementById('chatBgBlurValue').innerText = e.target.value + 'px';
-    document.getElementById('chatMessageArea').style.backdropFilter = `blur(${e.target.value}px)`;
-    document.getElementById('chatMessageArea').style.webkitBackdropFilter = `blur(${e.target.value}px)`;
-    refreshCurrentChatViewRealtime();
+    const blurOverlay = document.getElementById('chatRoomBgOverlay');
+    if (blurOverlay) {
+        blurOverlay.style.backdropFilter = `blur(${e.target.value}px)`;
+        blurOverlay.style.webkitBackdropFilter = `blur(${e.target.value}px)`;
+    }
 });
 
         // 打开面板时，初始化预览气泡的 CSS
@@ -13263,39 +13322,90 @@ async function buildChatSystemPrompt(history = []) {
         }
     }
 
-    // ==== 【核心引擎】：记忆分类与关键词雷达系统 ====
-const allMemories = await loadFromDB(`chat_memories_${currentChatContact.id}`) || [];
+    // ==== 【永生记忆引擎】：RAG 检索、衰减与强化系统 ====
+    const allMemories = await loadFromDB(`chat_memories_${currentChatContact.id}`) || [];
+    let memoriesUpdated = false;
+    const nowTime = Date.now();
 
-// 1. 过滤出常驻活跃记忆（未归档的精华）
-const activeMemories = allMemories.filter(m => !m.isArchived); 
-// 2. 过滤出地下档案馆里，带有触发钥匙的旧日碎片
-const archivedMemories = allMemories.filter(m => m.isArchived && m.triggerKeys); 
-
-// 3. 启动雷达扫描：抓取你最近发送的 3 条消息进行比对
-const recentUserMsgs = history.filter(m => m.role === 'user').slice(-3).map(m => m.content).join(' ');
-let awakenedMemories = [];
-
-if (recentUserMsgs) {
-    archivedMemories.forEach(mem => {
-        // 把 "下雪,约定" 拆分成数组 ["下雪", "约定"]，同时兼容中英文逗号
-        const keys = mem.triggerKeys.split(/[,，、]/).map(k => k.trim()).filter(k => k);
-        for (let key of keys) {
-            // 如果你的话里包含这个词
-            if (recentUserMsgs.includes(key)) {
-                awakenedMemories.push(mem.content);
-                break; // 命中一个词就够了，立刻把这条旧回忆塞进数组，并跳过当前卡片的其余词
+    // 1. 每日衰减计算 (仅对未置顶记忆)
+    allMemories.forEach(m => {
+        if (m.strength === undefined) m.strength = 100;
+        if (m.accessCount === undefined) m.accessCount = 0;
+        
+        if (!m.isPinned && m.lastDecayTime) {
+            const daysPassed = Math.floor((nowTime - m.lastDecayTime) / (1000 * 60 * 60 * 24));
+            if (daysPassed > 0) {
+                // 愤怒或惊喜情绪衰减减半
+                let decayRate = (m.emotion === '愤怒' || m.emotion === '惊喜') ? 0.5 : 1.0;
+                let decayAmount = daysPassed * (0.8 + Math.random() * 0.4) * decayRate;
+                m.strength = Math.max(0, m.strength - decayAmount);
+                m.lastDecayTime = nowTime;
+                memoriesUpdated = true;
+                
+                // 强度归零自动归档
+                if (m.strength <= 0 && !m.isArchived) {
+                    m.isArchived = true;
+                }
             }
+        } else if (!m.lastDecayTime) {
+            m.lastDecayTime = nowTime;
+            memoriesUpdated = true;
         }
     });
-}
 
-// 4. 组装最终喂给 角色 的记忆模块
-let radarText = awakenedMemories.length > 0 ? `\n\n【被当前对话触动唤醒的旧日记忆】（这让TA回想起了这些往事）：\n${awakenedMemories.join('\n')}` : '';
+    // 2. 过滤出活跃记忆 (未归档且强度 > 20)
+    const activeMemories = allMemories.filter(m => !m.isArchived && m.strength > 20); 
+    
+    // 3. 关键词雷达扫描 (抓取最近3条消息)
+    const recentUserMsgs = history.filter(m => m.role === 'user').slice(-3).map(m => m.content).join(' ');
+    let awakenedMemories = [];
+    
+    if (recentUserMsgs) {
+        // 评分系统：根据关键词命中率和基础强度打分
+        let scoredMemories = activeMemories.map(mem => {
+            let score = mem.strength; // 基础分为当前强度
+            if (mem.triggerKeys) {
+                const keys = mem.triggerKeys.split(/[,，、]/).map(k => k.trim()).filter(k => k);
+                for (let key of keys) {
+                    if (recentUserMsgs.includes(key)) {
+                        score += 50; // 命中关键词大幅加分
+                        break;
+                    }
+                }
+            }
+            return { mem, score };
+        });
 
-const memoryText = (activeMemories.length > 0 || awakenedMemories.length > 0) 
-    ? `\n【往期剧情与常驻记忆】：\n${activeMemories.map(m => m.content).join('\n')}${radarText}` 
-    : '';
-// ========================================================
+        // 按分数降序，严格截取 Top 3
+        scoredMemories.sort((a, b) => b.score - a.score);
+        let topMemories = scoredMemories.slice(0, 3).filter(item => item.score > item.mem.strength); // 只取被唤醒的
+
+        topMemories.forEach(item => {
+            awakenedMemories.push(item.mem.content);
+            // 记忆强化：被成功检索，强度增加，调用次数+1
+            item.mem.strength = Math.min(100, item.mem.strength + 5);
+            item.mem.accessCount += 1;
+            
+            // 记忆生长机制
+            if (item.mem.accessCount >= 3 && item.mem.growthStage === '初识') {
+                item.mem.growthStage = '熟悉';
+            } else if (item.mem.accessCount >= 10 && item.mem.growthStage === '熟悉') {
+                item.mem.growthStage = '羁绊';
+            }
+            memoriesUpdated = true;
+        });
+    }
+
+    if (memoriesUpdated) {
+        await saveToDB(`chat_memories_${currentChatContact.id}`, allMemories);
+    }
+
+    let radarText = awakenedMemories.length > 0 ? `\n\n【被当前对话触动唤醒的旧日记忆】（这让TA回想起了这些往事）：\n${awakenedMemories.join('\n')}` : '';
+
+    const memoryText = (activeMemories.length > 0 || awakenedMemories.length > 0) 
+        ? `\n【往期剧情与常驻记忆】：\n${activeMemories.slice(0, 5).map(m => m.content).join('\n')}${radarText}` 
+        : '';
+    // ========================================================
     const prefs = await loadFromDB(`chat_user_prefs_${currentChatContact.id}`) || '';
     const prefsText = prefs ? `\n【你在聊天中观察到的关于我的情报与喜好】：\n${prefs}` : '';
     // ========================================================
@@ -14001,8 +14111,8 @@ if (contactInfo && contactInfo.isGroup) {
     if (!msg) return;
 
     const innerVoiceModal = document.getElementById('innerVoiceModal');
-    const avatarBg = avatarEl.style.backgroundImage || avatarEl.style.backgroundColor;
-    document.getElementById('innerVoiceAvatar').style.background = avatarBg;
+    document.getElementById('innerVoiceAvatar').style.backgroundImage = avatarEl.style.backgroundImage;
+    document.getElementById('innerVoiceAvatar').style.backgroundColor = avatarEl.style.backgroundColor;
     
     let name = document.getElementById('chatRoomTitle').innerText || 'TA';
     if (msg.speakerName) name = msg.speakerName;
@@ -15812,6 +15922,7 @@ window.openInviteMemberModal = async function() {
 };
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
     <!-- 👇 新增的 4 个拆分文件 👇 -->
     <script>
 /* --- app_chat_ai.js --- */
@@ -16291,38 +16402,23 @@ if (msgType === 'voice') {
 let currentAiName = document.getElementById('chatRoomTitle').innerText || 'TA';
 let roleBadge = '';
 
-            const newRowHtml = dateDividerHtml + `
-    <div class="chat-bubble-row ai new-pop" data-ts="${ts}">
-                    <div class="ms-checkbox"></div>
-                    <div class="chat-bubble-avatar" style="${aiAvatarUrl ? `background-image:url(${aiAvatarUrl});border:none;` : 'background-color: rgba(184,156,142,0.2);'}"></div>
-                    <div style="display:flex; flex-direction:column; max-width:85%; align-items:flex-start;">
-                        <div style="font-size:10px; color:var(--text-sub); margin-left:4px; margin-bottom:2px; font-weight:bold; display:flex; align-items:center;">${roleBadge}${currentAiName}</div>
-                        <div ${bubbleStyle} style="max-width: 100%;">${quoteHtml}${contentHtml}</div>
-                    </div>
-                    ${timeHtml}
-                </div>
-            
-`;
+            // 强制重新渲染整个聊天列表，以严格遵循当前的头像显示模式 (kkt/merge等)
+            await loadChatHistory(contactId);
+            const area = document.getElementById('chatMessageArea');
+            const bubbles = area.querySelectorAll('.chat-bubble-row');
+            if (bubbles.length > 0) {
+                const lastBubble = Array.from(bubbles).reverse().find(b => b.id !== 'chatLoadingBubble');
+                if (lastBubble) lastBubble.classList.add('new-pop');
+            }
+            area.scrollTop = area.scrollHeight;
 
-const area = document.getElementById('chatMessageArea');
-const loadingEl = document.getElementById('chatLoadingBubble');
-if (loadingEl) {
-    loadingEl.insertAdjacentHTML('beforebegin', newRowHtml);
-} else {
-    area.insertAdjacentHTML('beforeend', newRowHtml);
-}
-area.scrollTop = area.scrollHeight;
-
-let purePreviewText = cleanText.replace(/\[(?:译|翻译|EN|En|Eng)[:：]\s*([\s\S]*?)\]/gi, '').trim();
-let preText = '';
-if (msgType === 'voice') preText = `[语音] ${purePreviewText}`;
-else if (msgType === 'redpacket') preText = `[红包] ${purePreviewText}`;
-else if (msgType === 'location') preText = `[定位] ${locName}`;
-else preText = purePreviewText;
-await updateContactPreview(contactId, preText);
-// == 替换结束 ==
-
- 
+            let purePreviewText = cleanText.replace(/\[(?:译|翻译|EN|En|Eng)[:：]\s*([\s\S]*?)\]/gi, '').trim();
+            let preText = '';
+            if (msgType === 'voice') preText = `[语音] ${purePreviewText}`;
+            else if (msgType === 'redpacket') preText = `[红包] ${purePreviewText}`;
+            else if (msgType === 'location') preText = `[定位] ${locName}`;
+            else preText = purePreviewText;
+            await updateContactPreview(contactId, preText);
         }
         
 hideTyping(); // 所有的消息连发完毕后，彻底隐藏正在输入气泡
@@ -16995,24 +17091,17 @@ formattedCleanText = formattedCleanText.replace(/[\(（]【?发送了?表情包[
                 quoteHtml = `<div class="chat-bubble-quote">${safeQuote}</div>`;
             }
 
-            const newRowHtml = dateDividerHtml + `
-    <div class="chat-bubble-row ai new-pop" data-ts="${ts}">
-                    <div class="ms-checkbox"></div>
-                    <div class="chat-bubble-avatar" style="${aiAvatarUrl ? `background-image:url(${aiAvatarUrl});border:none;` : 'background-color: rgba(184,156,142,0.2);'}"></div>
-                    <div style="display:flex; flex-direction:column; max-width:85%; align-items:flex-start;">
-                        <div style="font-size:10px; color:var(--text-sub); margin-left:4px; margin-bottom:2px; font-weight:bold;">${role ? role.name : 'TA'}</div>
-                        <div ${bubbleStyle} style="max-width: 100%;">${quoteHtml}${contentHtml}</div>
-                    </div>
-                    ${timeHtml}
-                </div>
-            `;
-            
-            const loadingEl = document.getElementById('chatLoadingBubble');
-            if (loadingEl) loadingEl.insertAdjacentHTML('beforebegin', newRowHtml);
-            else area.insertAdjacentHTML('beforeend', newRowHtml);
-            
+            // 强制重新渲染整个聊天列表，以严格遵循当前的头像显示模式 (kkt/merge等)
+            await loadChatHistory(contactId);
+            const area = document.getElementById('chatMessageArea');
+            const bubbles = area.querySelectorAll('.chat-bubble-row');
+            if (bubbles.length > 0) {
+                // 找到最后一个不是 loading 的气泡加上动画
+                const lastBubble = Array.from(bubbles).reverse().find(b => b.id !== 'chatLoadingBubble');
+                if (lastBubble) lastBubble.classList.add('new-pop');
+            }
             area.scrollTop = area.scrollHeight;
-                    await updateContactPreview(contactId, `${role ? role.name : 'TA'}: ${cleanText}`);
+            await updateContactPreview(contactId, `${role ? role.name : 'TA'}: ${cleanText}`);
     }
 hideTyping();
 checkAndTriggerMemorySummary(contactId);
@@ -17070,7 +17159,7 @@ async function checkAndTriggerMemorySummary(contactId) {
     }
 }
 
-// 2. 生成客观记忆卡片 (支持单聊/群聊智能切换)
+// 2. 生成客观记忆卡片 (支持单聊/群聊智能切换，永生记忆系统版)
 async function generateChatMemory(contactId, chatText, realName, currentHistoryLength = 0, isGroup = false) {
     const useSubApi = await loadFromDB('memoryUseSubApi') || false; 
     const apiUrl = (await loadFromDB(useSubApi ? 'subApiUrl' : 'mainApiUrl')) || 'https://api.openai.com/v1';
@@ -17079,7 +17168,6 @@ async function generateChatMemory(contactId, chatText, realName, currentHistoryL
 
     if (!apiKey) return;
 
-    // 获取玩家(用户)设定的真实姓名
     let playerName = '我';
     const settings = await loadFromDB(`chat_settings_${contactId}`) || {};
     if (settings.userRoleId) {
@@ -17092,28 +17180,21 @@ async function generateChatMemory(contactId, chatText, realName, currentHistoryL
 
     let sysPrompt = '';
     
-    // ★ 智能判断：如果是群聊，使用第三人称上帝视角
     if (isGroup) {
         sysPrompt = `你是一个记忆提取模块。请根据以下的群聊记录，撰写一份客观的群聊剧情摘要。
 【核心要求】：
-1. 视角：必须以【第三人称上帝视角】进行客观记录，清晰地写出每个人物（包括${playerName}和其他群成员）的互动与事件。
-2. 绝对客观：只记录发生了什么、大家讨论了什么、重要决定和约定。剥离繁复的情绪描写，文风平实克制。
-3. 内容：提取群聊中的核心话题、冲突或关键情节。
-4. 格式：直接输出正文段落。绝对禁止输出任何“标题”或表单列点。绝对不要用任何 Markdown 格式。
-5. 字数控制：严格控制在 350 字以内，精炼紧凑。`;
+1. 视角：必须以【第三人称上帝视角】进行客观记录。
+2. 绝对客观：只记录发生了什么、重要决定和约定。
+3. 格式强制要求：必须在开头打上情绪和关键词标签，格式严格为：[情绪:平静] [关键词:词1,词2] 正文内容。
+4. 字数控制：严格控制在 350 字以内。`;
         sysPrompt += `\n\n近期群聊【${realName}】记录如下：\n${chatText}`;
     } else {
-        // 单聊则使用原来的第一人称逻辑
-        sysPrompt = await loadFromDB('memoryPrompt1');
-        if (!sysPrompt) {
-            sysPrompt = `你是一个记忆提取模块。请根据以下对话记录，撰写一份客观的剧情摘要。
+        sysPrompt = `你是一个记忆提取模块。请根据以下对话记录，撰写一份客观的剧情摘要。
 【核心要求】：
-1. 视角与称呼：请以第一人称（即“我”）视角来记录，这个“我”代表【${realName}】。指代对话的另一方（用户）时，必须使用名字【${playerName}】！绝对禁止搞反人称！
-2. 绝对客观：只记录发生了什么、双方表达了什么、重要约定和物品。剥离繁复的情绪描写、环境渲染或小说式的修辞，文风平实克制。
-3. 内容：准确提取出双方明确表达的喜好、关键个人信息与约定。
-4. 格式绝对纯净：直接输出正文段落。绝对禁止输出任何“档案编号”、“记录对象”、“标题”或表单列点。绝对不要用任何 Markdown 格式。
-5. 字数控制：严格控制在 350 字以内，精炼紧凑。`;
-        }
+1. 视角与称呼：以第一人称（“我”）视角记录，“我”代表【${realName}】，对方是【${playerName}】。
+2. 绝对客观：只记录发生了什么、双方表达了什么、重要约定和物品。
+3. 格式强制要求：必须在开头打上情绪和关键词标签，情绪只能从(开心/难过/愤怒/惊喜/恐惧/期待/平静)中选一。格式严格为：[情绪:开心] [关键词:词1,词2] 正文内容。
+4. 字数控制：严格控制在 350 字以内。`;
         sysPrompt += `\n\n近期对话记录如下(注意记录中'TA'代表${realName}，'我'代表${playerName})：\n${chatText}`;
     }
 
@@ -17124,10 +17205,36 @@ async function generateChatMemory(contactId, chatText, realName, currentHistoryL
             body: JSON.stringify({ model, messages: [{ role: "system", content: sysPrompt }], temperature: 0.3 })
         });
         const data = await safeApiJson(res);
-        const memoryContent = data.choices[0].message.content.trim();
+        let memoryContent = data.choices[0].message.content.trim();
+
+        // 解析情绪和关键词
+        let emotion = '平静';
+        let keywords = '';
+        const emoMatch = memoryContent.match(/\[情绪[:：]\s*(.*?)\]/);
+        const kwMatch = memoryContent.match(/\[关键词[:：]\s*(.*?)\]/);
+        
+        if (emoMatch) emotion = emoMatch[1].trim();
+        if (kwMatch) keywords = kwMatch[1].trim();
+        
+        // 剥离标签，保留纯净正文
+        memoryContent = memoryContent.replace(/\[情绪[:：].*?\]/g, '').replace(/\[关键词[:：].*?\]/g, '').trim();
 
         let memories = await loadFromDB(`chat_memories_${contactId}`) || [];
-        memories.push({ id: Date.now(), content: memoryContent, timestamp: Date.now(), isArchived: false });
+        
+        // 永生记忆数据模型
+        memories.push({ 
+            id: Date.now(), 
+            content: memoryContent, 
+            timestamp: Date.now(), 
+            isArchived: false,
+            isPinned: false,
+            strength: 100, // 初始强度满分
+            accessCount: 0,
+            emotion: emotion,
+            triggerKeys: keywords,
+            growthStage: '初识'
+        });
+        
         await saveToDB(`chat_memories_${contactId}`, memories);
         
         if (currentHistoryLength > 0) {
@@ -17136,12 +17243,9 @@ async function generateChatMemory(contactId, chatText, realName, currentHistoryL
             await saveToDB(`chat_settings_${contactId}`, settings);
         }
         
-                // 单聊才提取【TA眼中的我】(群聊人太多，提取偏好容易混乱，直接跳过)
         if (!isGroup) {
             const isAutoPrefs = await loadFromDB('autoExtractPrefs') !== false;
-            if (isAutoPrefs) {
-                extractUserPreferences(contactId, chatText);
-            }
+            if (isAutoPrefs) extractUserPreferences(contactId, chatText);
         }
 
     } catch (e) {
@@ -17303,12 +17407,27 @@ memories.sort((a, b) => b.timestamp - a.timestamp);
         const dObj = new Date(mem.timestamp);
         const timeStr = `${dObj.getFullYear()}.${(dObj.getMonth()+1).toString().padStart(2,'0')}.${dObj.getDate().toString().padStart(2,'0')} - ${dObj.getHours().toString().padStart(2,'0')}:${dObj.getMinutes().toString().padStart(2,'0')}`;
         
+        let strength = mem.strength !== undefined ? Math.round(mem.strength) : 100;
+        let stage = mem.growthStage || '初识';
+        let pinColor = mem.isPinned ? 'var(--accent)' : 'var(--text-sub)';
+        let pinText = mem.isPinned ? '已置顶' : '置顶';
+
         div.innerHTML = `
-    <div class="mem-glass-header"><span>RECORD / ${timeStr}</span></div>
+    <div class="mem-glass-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>RECORD / ${timeStr}</span>
+        <div style="display:flex; gap:8px; align-items:center;">
+            <span style="font-size:9px; background:rgba(184,156,142,0.15); padding:2px 6px; border-radius:4px; color:var(--accent);">${stage}</span>
+            <span style="font-size:9px; color:var(--text-sub);">强度: ${strength}%</span>
+        </div>
+    </div>
+    <!-- 强度进度条 -->
+    <div style="width:100%; height:2px; background:rgba(0,0,0,0.05); margin-bottom:12px; border-radius:1px; overflow:hidden;">
+        <div style="width:${strength}%; height:100%; background:var(--accent); transition:width 0.3s;"></div>
+    </div>
     <textarea class="mem-glass-textarea" spellcheck="false" id="mem_text_${mem.id}" onblur="saveMemory(${mem.id})">${mem.content}</textarea>
     <div class="mem-action-row">
         <div class="mem-btn-text danger" onclick="deleteMemory(${mem.id})">抹除</div>
-        <!-- 新增了归档按钮 -->
+        <div class="mem-btn-text" style="color:${pinColor};" onclick="togglePinMemory(${mem.id})">${pinText}</div>
         <div class="mem-btn-text" style="color:var(--text-sub);" onclick="archiveMemory(${mem.id})">归档</div>
         <div class="mem-btn-text primary" onclick="saveMemory(${mem.id})">重塑</div>
     </div>
@@ -17324,6 +17443,18 @@ window.saveMemory = async function(id) {
         target.content = document.getElementById(`mem_text_${id}`).value.trim();
         await saveToDB(`chat_memories_${currentChatContact.id}`, memories);
         showToast('记忆已重塑。');
+    }
+};
+
+window.togglePinMemory = async function(id) {
+    let memories = await loadFromDB(`chat_memories_${currentChatContact.id}`) || [];
+    const target = memories.find(m => m.id === id);
+    if (target) {
+        target.isPinned = !target.isPinned;
+        if (target.isPinned) target.strength = 100; // 置顶时恢复满强度
+        await saveToDB(`chat_memories_${currentChatContact.id}`, memories);
+        renderChatMemories();
+        showToast(target.isPinned ? '记忆已置顶，永不衰减' : '已取消置顶');
     }
 };
 
@@ -19463,12 +19594,29 @@ window.sendSystemNotification = async function(title, body) {
     <script>
         // 注册 PWA Service Worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(registration => {
-                    console.log('ServiceWorker 注册成功: ', registration.scope);
-                }).catch(err => {
-                    console.log('ServiceWorker 注册失败: ', err);
-                });
+            window.addEventListener('load', async () => {
+                try {
+                    const allowRegister =
+                        location.protocol === 'https:' ||
+                        location.hostname === 'localhost' ||
+                        location.hostname === '127.0.0.1';
+
+                    if (!allowRegister) {
+                        console.warn('ServiceWorker 已跳过：当前不是 https 或 localhost 环境');
+                        return;
+                    }
+
+                    const swCheck = await fetch('./sw.js', { method: 'HEAD', cache: 'no-store' });
+                    if (!swCheck.ok) {
+                        console.warn('ServiceWorker 已跳过：未找到 sw.js');
+                        return;
+                    }
+
+                    const registration = await navigator.serviceWorker.register('./sw.js');
+                    console.log('ServiceWorker 注册成功:', registration.scope);
+                } catch (err) {
+                    console.error('ServiceWorker 注册失败:', err && err.message ? err.message : err);
+                }
             });
         }
 </script>
